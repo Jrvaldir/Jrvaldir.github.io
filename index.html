@@ -3,25 +3,460 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Portfólio</title>
+    <title>Portfólio - Valdir Jr</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <style>
-        body { 
-            font-family: sans-serif; 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f0f2f5;
+        /* --- RESET BÁSICO --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .container {
+
+        /* --- ESTILO GERAL --- */
+        html {
+            scroll-behavior: smooth; /* Rolagem suave */
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #222;
+            margin-bottom: 15px;
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        section {
+            background-color: #ffffff;
+            margin-bottom: 20px;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        /* --- BARRA LATERAL (SIDEBAR) --- */
+        .sidebar {
+            width: 280px;
+            background-color: #222;
+            color: white;
+            padding: 30px;
+            height: 100vh;
+            position: fixed;
             text-align: center;
         }
+
+        .sidebar .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 20px auto;
+            border: 5px solid #ffc107;
+            
+            /* --- EDITADO: Caminho da sua foto de perfil --- */
+            background-image: url('assets/images/foto-perfil.jpeg'); 
+            background-size: cover;
+            background-position: center;
+        }
+
+        .sidebar h2 {
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .sidebar nav ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar nav li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar nav a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 1.1em;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar nav a:hover {
+            background-color: #ffc107;
+            color: #222;
+        }
+
+        .sidebar .social-links {
+            margin-top: 40px;
+        }
+
+        .sidebar .social-links a {
+            color: #ccc;
+            font-size: 1.5em;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+        
+        .sidebar .social-links a:hover {
+            color: #ffc107;
+        }
+
+
+        /* --- CONTEÚDO PRINCIPAL --- */
+        .main-content {
+            margin-left: 280px;
+            padding: 40px;
+            width: 100%;
+        }
+
+        /* Seção "Início" */
+        #inicio {
+            background-color: #333;
+            color: white;
+        }
+        #inicio h1 {
+            color: white;
+            font-size: 3em;
+        }
+        #inicio .highlight {
+            color: #ffc107;
+        }
+        #inicio p {
+            font-size: 1.5em;
+            color: #eee;
+        }
+
+        /* Seção "Sobre Mim" */
+        .about-container {
+            display: flex;
+            gap: 30px;
+        }
+        .about-text { flex: 2; }
+        .about-skills { flex: 1; }
+        .about-skills ul { list-style: none; }
+        .about-skills li {
+            background-color: #f0f0f0;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        /* Seção "Resume" */
+        .resume-item {
+            border-left: 3px solid #ffc107;
+            padding-left: 20px;
+            margin-bottom: 30px;
+        }
+        .resume-item h3 { color: #333; }
+        .resume-item .period {
+            font-style: italic;
+            color: #777;
+            margin-bottom: 5px;
+        }
+
+        /* Seção "Portfolio" */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .portfolio-item {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            overflow: hidden; /* Para a imagem se ajustar bem */
+        }
+        .portfolio-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .portfolio-item .portfolio-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover; /* Garante que a imagem cubra o espaço */
+            display: block;
+        }
+
+        .portfolio-item .info {
+            padding: 20px;
+        }
+        .portfolio-item .info h3 { color: #333; }
+        .portfolio-item .info .tags { margin-bottom: 15px; }
+        .portfolio-item .info .tags span {
+            background-color: #ffc107;
+            color: #333;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            margin-right: 5px;
+        }
+        .portfolio-item .info a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+        .portfolio-item .info a:hover { color: #ffc107; }
+
+        /* --- NOVO: Animação de "Pulsação" --- */
+        .portfolio-item.in-discussion {
+            animation: pulse-animation 4s infinite ease-in-out;
+        }
+
+        @keyframes pulse-animation {
+            0% { opacity: 0.8; }
+            50% { opacity: 0.5; } /* Fica um pouco transparente */
+            100% { opacity: 0.8; }
+        }
+        /* --- FIM DA ANIMAÇÃO --- */
+
+
+        /* Seção "Contato" */
+        #contato p {
+            font-size: 1.2em;
+            text-align: center;
+        }
+        #contato .contact-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+        #contato .contact-links a {
+            font-size: 2.5em;
+            color: #333;
+            margin: 0 20px;
+            transition: color 0.3s ease;
+        }
+        #contato .contact-links a:hover { color: #ffc107; }
+
+        /* --- AJUSTES PARA TELAS PEQUENAS (MOBILE) --- */
+        @media (max-width: 768px) {
+            
+            body {
+                display: block; /* Remove o layout 'flex' (lado a lado) */
+            }
+
+            .sidebar {
+                width: 100%;       /* Faz a barra lateral ocupar a largura total */
+                height: auto;        /* Altura se ajusta ao conteúdo */
+                position: relative;  /* Remove o 'position: fixed' */
+                padding: 20px;
+            }
+
+            .sidebar .profile-pic {
+                width: 120px;    /* Diminui um pouco a foto no mobile */
+                height: 120px;
+                margin-top: 0;
+                margin-bottom: 10px;
+            }
+            
+            .sidebar nav ul {
+                display: flex;       /* Coloca os links do menu lado a lado */
+                flex-wrap: wrap;     /* Permite que quebrem a linha se não couberem */
+                justify-content: center; /* Centraliza os links */
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+
+            .sidebar nav li {
+                margin-bottom: 5px;
+                margin-left: 5px;
+                margin-right: 5px;
+            }
+
+            .sidebar .social-links {
+                margin-top: 20px; /* Diminui o espaço dos links sociais */
+            }
+
+            .main-content {
+                margin-left: 0;      /* Remove a margem lateral */
+                padding: 20px;       /* Reduz o padding geral do conteúdo */
+            }
+
+            section {
+                padding: 20px;       /* Reduz o padding das seções internas */
+            }
+
+            /* Ajusta o tamanho das fontes de título */
+            #inicio h1 {
+                font-size: 2.2em;
+            }
+            #inicio p {
+                font-size: 1.2em;
+            }
+            
+            /* Faz as colunas "Sobre mim" e "Habilidades" ficarem uma em cima da outra */
+            .about-container {
+                flex-direction: column; /* Empilha as colunas */
+                gap: 20px;
+            }
+
+            /* Opcional: Centraliza os ícones de contato */
+            #contato .contact-links a {
+                font-size: 2.2em;
+                margin: 0 15px; /* Menos espaço entre eles */
+            }
+        }
+
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Olá!</h1>
-        <p>Bem-vindo ao meu portfólio. Em breve, mais informações aqui!</p>
-    </div>
+
+    <aside class="sidebar">
+        
+        <div class="profile-pic"></div>
+        
+        <h2>Valdir Jr</h2>
+
+        <nav>
+            <ul>
+                <li><a href="#inicio">Início</a></li>
+                <li><a href="#sobre-mim">Sobre Mim</a></li>
+                <li><a href="#resume">Currículo</a></li>
+                <li><a href="#portfolio">Portfólio</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+        </nav>
+
+        <div class="social-links">
+            <a href="https://github.com/Jrvaldir" title="GitHub"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/valdir-moura-89bbbb110/" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            <a href="https://www.instagram.com/valdir_moura/?igsh=MTZ1eHJrcjdxenpwdg%3D%3D#" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="mailto:valdirjr.vj@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+
+        <section id="inicio">
+            <h1>Olá, eu sou <span class="highlight">Valdir Jr</span></h1>
+            <p>Estudante de Programação com foco em Desenvolvimento Full-Stack.</p>
+        </section>
+
+        <section id="sobre-mim">
+            <h2>Sobre Mim</h2>
+            <div class="about-container">
+                <div class="about-text">
+                    <p>
+                        Sou um estudante de tecnologia no início da minha jornada, com um objetivo claro: 
+                        tornar-me um desenvolvedor Full-Stack especializado em <strong>Flutter</strong> e <strong>Laravel</strong>.
+                    </p>
+                    <p>
+                        Minha formação anterior como <strong>Técnico em Design de Interiores</strong> me proporcionou 
+                        uma base sólida em estética e funcionalidade. Isso me ajuda a ter um 
+                        resultado muito melhor em <strong>UX/UI Design</strong>, criando interfaces que 
+                        não são apenas funcionais, mas também intuitivas e agradáveis de usar.
+                    </p>
+                </div>
+                <div class="about-skills">
+                    <h3>Principais Habilidades</h3>
+                    <ul>
+                       <li><i class="fas fa-palette"></i> UX/UI Design</li>
+                    </ul><br>
+                    <h3>Habilidades em Construção</h3>
+                    <ul>
+                        <li><i class="fas fa-mobile-alt"></i> Desenvolvimento Flutter</li>
+                        <li><i class="fab fa-laravel"></i> Desenvolvimento Laravel</li>
+                        <li><i class="fas fa-code"></i> Desenvolvimento Web</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="resume">
+            <h2>Currículo</h2>
+            <h3>Educação</h3>
+            
+            <div class="resume-item">
+                <h4>Superior em Análise e Desenvolvimento de Sistemas</h4>
+                <div class="period">2024 - Presente</div>
+                <p><em>Unopar</em></p>
+            </div>
+            
+            <div class="resume-item">
+                <h4>Técnico em Análise e Desenvolvimento de Sistemas</h4>
+                <div class="period">Concluído em 2023</div>
+                <p><em>ETE Antônio Arruda de Farias</em></p>
+            </div>
+
+            <div class="resume-item">
+                <h4>Técnico em Design de Interiores</h4>
+                <div class="period">Concluído em 2022</div>
+                <p><em>ETE Antônio Arruda de Farias</em></p>
+            </div>
+        </section>
+
+        <section id="portfolio">
+            <h2>Portfólio</h2>
+            <div class="portfolio-grid">
+
+                <div class="portfolio-item">
+                    <img src="assets/images/projeto-curriculo.png" alt="Print do Criador de Currículo" class="portfolio-image">
+                    
+                    <div class="info">
+                        <h3>Criador de Currículo</h3>
+                        <div class="tags">
+                            <span>HTML</span>
+                            <span>CSS</span>
+                            <span>JavaScript</span>
+                        </div>
+                        <p>Plataforma web para criar e baixar currículos de forma simples e rápida.</p>
+                        <a href="https://criador-curriculos.vercel.app/" target="_blank">Ver Projeto &rarr;</a>
+                    </div>
+                </div>
+
+                <div class="portfolio-item">
+                    <img src="assets/images/projeto-agenda.png" alt="App de Agendamentos" class="portfolio-image">
+                    
+                    <div class="info">
+                        <h3>Plataforma de Agendamentos</h3>
+                        <div class="tags">
+                            <span>Flutter</span>
+                            <span>Firebase</span>
+                        </div>
+                        <p>App de agendamentos para profissionais no setor estetico. (Em Breve)</p>
+                        <a href="./agenda.html" target="_blank">Ver Página de Lançamento &rarr;</a>
+                    </div>
+                </div>
+
+                <div class="portfolio-item in-discussion"> <img src="assets/images/projeto-energia.jpg" alt="Gestor de Energia" class="portfolio-image">
+                    
+                    <div class="info">
+                        <h3>Gestão de Energia Renovável</h3> <div class="tags">
+                            <span>Em Planejamento</span>
+                        </div>
+                        <p>Plataforma para monitoramento e gestão de sistemas de energia renovável. (Em discussão)</p>
+                        </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="contato">
+            <h2>Vamos Conversar?</h2>
+            <p>Estou aberto a novas oportunidades e conexões. Sinta-se à vontade para entrar em contato!</p>
+            
+            <div class="contact-links">
+                 <a href="https://github.com/Jrvaldir" title="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/valdir-moura-89bbbb110/" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="https://www.instagram.com/valdir_moura/?igsh=MTZ1eHJrcjdxenpwdg%3D%3D#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="mailto:valdirjr.vj@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+            </div>
+        </section>
+
+    </main>
+    
 </body>
 </html>

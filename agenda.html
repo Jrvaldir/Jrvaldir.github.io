@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agenda Clean — Sua agenda inteligente</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Inter',sans-serif;
+  background:linear-gradient(135deg,#f9f9f9,#f3f3f3);
+  color:#2E4A62;
+  overflow-x:hidden;
+  scroll-behavior:smooth;
+}
+
+/* ---------- HEADER ---------- */
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:25px 8%;
+  background:#fff;
+  box-shadow:0 4px 14px rgba(0,0,0,0.05);
+  position:sticky;
+  top:0;
+  z-index:10;
+  animation:slideDown .8s ease;
+}
+@keyframes slideDown{from{transform:translateY(-60px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+.logo{
+  font-family:'Poppins',sans-serif;
+  font-size:28px;
+  font-weight:600;
+  color:#2E4A62;
+  cursor:pointer;
+  transition:transform .3s ease;
+  text-decoration:none;
+}
+.logo span{color:#FF6F61;}
+.logo:hover{transform:scale(1.06);}
+
+/* ---------- HERO ---------- */
+.hero{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:100px 10%;
+  min-height:85vh;
+  background:linear-gradient(160deg,#FF6F61,#2E4A62);
+  color:#fff;
+  animation:fadeIn 1s ease;
+  position:relative;
+  overflow:hidden;
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(40px);}to{opacity:1;transform:translateY(0);}}
+
+.hero h1, .hero p, .hero a.btn {
+  position:relative;
+  z-index:2;
+}
+
+.hero h1{
+  font-family:'Poppins',sans-serif;
+  font-size:2.8rem;
+  margin-bottom:18px;
+  letter-spacing:1px;
+  max-width:90%;
+  line-height:1.2;
+  word-break:break-word;
+}
+.hero p{
+  font-size:1.1rem;
+  max-width:650px;
+  line-height:1.6;
+  opacity:0.9;
+  margin-bottom:35px;
+}
+.btn{
+  display:inline-block;
+  background:linear-gradient(45deg,#FF6F61,#2E4A62);
+  color:#fff;
+  padding:12px 28px;
+  border-radius:12px;
+  font-weight:600;
+  text-decoration:none;
+  transition:all .3s ease;
+  box-shadow:0 4px 14px rgba(0,0,0,0.2);
+}
+.btn:hover{
+  transform:translateY(-3px);
+  box-shadow:0 6px 18px rgba(0,0,0,0.25);
+}
+
+/* ---------- PLANS ---------- */
+.plans{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:30px;
+  padding:80px 10%;
+}
+.plan-card{
+  background:#fff;
+  border-radius:20px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.08);
+  text-align:center;
+  padding:35px 20px;
+  transition:all .4s ease;
+  position:relative;
+  overflow:hidden;
+}
+.plan-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 10px 28px rgba(0,0,0,0.12);
+}
+.plan-card h3{
+  color:#2E4A62;
+  font-size:1.3rem;
+  margin-bottom:10px;
+}
+.plan-card p{
+  color:#555;
+  font-size:0.95rem;
+  line-height:1.5;
+  margin-bottom:20px;
+}
+.price{
+  font-size:1.8rem;
+  font-weight:600;
+  color:#FF6F61;
+  margin-bottom:20px;
+}
+.plan-card a.btn{
+  background:linear-gradient(45deg,#2E4A62,#FF6F61);
+}
+
+/* ---------- CARD PREMIUM (ATUALIZAÇÃO) ---------- */
+.plan-card/*.premium*/::before{
+  content:"Construção em andamento...";
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(46,74,98,0.85);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:600;
+  font-size:1rem;
+  border-radius:20px;
+  backdrop-filter:blur(3px);
+  animation:fadePulse 1.8s ease-in-out infinite alternate;
+}
+@keyframes fadePulse{
+  from{opacity:0.7;}
+  to{opacity:1;}
+}
+
+/* ---------- FOOTER ---------- */
+footer{
+  background:#2E4A62;
+  color:#fff;
+  text-align:center;
+  padding:40px 10%;
+  margin-top:60px;
+  font-size:0.95rem;
+  letter-spacing:0.3px;
+  position:relative;
+}
+footer::before{
+  content:"";
+  position:absolute;
+  top:-60px;
+  left:0;
+  width:100%;
+  height:60px;
+  background:linear-gradient(to top,rgba(46,74,98,0.2),transparent);
+}
+
+/* ---------- ANIMAÇÃO DE ÍCONES (Sua Ideia) ---------- */
+.hero-icons {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+.hero-icon {
+  position: absolute;
+  display: block;
+  /* MUDANÇA 2: Opacidade aumentada para 25% */
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 55px;
+  animation: floatUp 20s linear infinite;
+  bottom: -50px;
+  user-select:none;
+}
+@keyframes floatUp {
+  from {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-105vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+.icon-1 { left: 10%; animation-delay: 0s; animation-duration: 15s; }
+.icon-2 { left: 25%; animation-delay: 4s; animation-duration: 20s; font-size: 33px; }
+.icon-3 { left: 40%; animation-delay: 2s; animation-duration: 18s; }
+.icon-4 { left: 60%; animation-delay: 7s; animation-duration: 22s; font-size: 44px; }
+.icon-5 { left: 75%; animation-delay: 5s; animation-duration: 16s; }
+.icon-6 { left: 90%; animation-delay: 9s; animation-duration: 25s; font-size: 39px; }
+
+
+/* ---------- TYPING EFFECT ---------- */
+.typing{
+  display:inline-block;
+  border-right:3px solid rgba(255,255,255,0.9);
+  overflow:hidden;
+  animation:blink 0.8s infinite;
+  /* Garante que a quebra de linha natural funcione */
+  white-space: normal;
+}
+
+/* ---------- RESPONSIVO ---------- */
+@media (max-width:768px){
+  .hero{padding:80px 6%;}
+  .hero h1{font-size:2rem;}
+  .hero p{font-size:1rem;}
+  .plans{padding:60px 6%;}
+
+  /* MUDANÇA 1: Removida a regra 'white-space:nowrap' que quebrava o layout */
+
+  /* MUDANÇA 2: Reduz a opacidade dos ícones no mobile */
+  .hero-icon {
+    color: rgba(255, 255, 255, 0.18); /* Mais sutil no celular */
+    font-size: 40px;
+  }
+  .icon-2 { font-size: 24px; }
+  .icon-4 { font-size: 32px; }
+  .icon-6 { font-size: 28px; }
+}
+
+@media (max-width:480px){
+  header{padding:20px 6%;}
+  .logo{font-size:22px;}
+  .btn{padding:10px 22px;}
+  .hero h1{font-size:1.6rem;}
+}
+@keyframes blink{50%{border-color:transparent;}}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="#" class="logo">Agenda<span>Clean</span></a>
+  <a href="#plans" class="btn">Planos</a>
+</header>
+
+<section class="hero">
+
+  <div class="hero-icons">
+    <span class="hero-icon icon-1">✂️</span>
+    <span class="hero-icon icon-2">💈</span>
+    <span class="hero-icon icon-3">💅</span>
+    <span class="hero-icon icon-4">🧔</span>
+    <span class="hero-icon icon-5">💇‍♀️</span>
+    <span class="hero-icon icon-6">🖌️</span>
+  </div>
+
+  <h1 id="typing-text" class="typing"></h1>
+  <p>O Agenda Clean é sua agenda automatizada e inteligente para simplificar sua rotina e otimizar o tempo.</p>
+  <a href="#plans" class="btn">Explorar planos</a>
+</section>
+
+<section class="plans" id="plans">
+  <div class="plan-card">
+    <h3>Essencial</h3>
+    <p>Controle básico de agendamentos e gestão simples de clientes.</p>
+    <div class="price">R$19,90/mês</div>
+    <!-- <a href="#" class="btn">Assinar</a> -->
+  </div>
+  <div class="plan-card">
+    <h3>Profissional</h3>
+    <p>Automatize lembretes e reorganize cancelamentos com um toque.</p>
+    <div class="price">R$29,90/mês</div>
+    <!-- <a href="#" class="btn">Assinar</a> -->
+  </div>
+  <div class="plan-card premium">
+    <h3>Premium</h3>
+    <p>Recursos exclusivos personalizados para sua equipe.</p>
+    <!-- <div class="price">R$69,90/mês</div> -->
+  </div>
+</section>
+
+<footer>
+  © 2025 Agenda Clean — Inteligência para o seu tempo
+</footer>
+
+<script>
+const text = "Organize seu tempo com elegância e inteligência";
+const typing = document.getElementById("typing-text");
+let i = 0;
+function type() {
+  if (i < text.length) {
+    typing.textContent += text.charAt(i);
+    i++;
+    setTimeout(type, 50);
+  }
+}
+window.onload = type;
+</script>
+
+</body>
+</html>
