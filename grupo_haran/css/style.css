@@ -1,0 +1,243 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #0a0a0a;
+    color: #e0e0e0;
+    line-height: 1.6;
+}
+
+:root {
+    --preto: #0a0a0a;
+    --preto-claro: #111111;
+    --dourado: #D4AF37;
+    --cinza: #2a2a2a;
+    --cinza-claro: #cccccc;
+}
+
+/* HEADER */
+.header {
+    background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+    border-bottom: 3px solid var(--dourado);
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+    flex-wrap: wrap;
+}
+
+.logo h1 {
+    color: var(--dourado);
+    font-size: 1.5rem;
+}
+
+.logo p {
+    font-size: 0.7rem;
+    color: var(--cinza-claro);
+}
+
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--dourado);
+}
+
+/* CONTAINER */
+.container {
+    max-width: 95%;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+/* TÍTULOS */
+.section-title {
+    font-size: 2rem;
+    color: var(--dourado);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.section-title::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 3px;
+    background: var(--dourado);
+    margin: 0.5rem auto 0;
+}
+
+/* ===== GRID PRINCIPAL - CORREÇÃO ===== */
+.grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 1.5rem !important;
+}
+
+/* Tablet */
+@media (max-width: 992px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+/* Celular ativar se ficar muito estranho em celulares*/
+@media (max-width: 576px) {
+    .grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* CARDS */
+.card {
+    background-color: var(--preto-claro);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid var(--cinza);
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(212, 175, 55, 0.2);
+    border-color: var(--dourado);
+}
+
+.card-imagem {
+    width: 100%;
+    aspect-ratio: 16 / 9; /* Proporção 16:9 (vídeo padrão) */
+    object-fit: cover;
+    object-position: center; /* Centraliza o corte */
+    border-bottom: 2px solid var(--dourado);
+}
+
+/* Para imagens mais altas, mantém a proporção */
+@media (max-width: 768px) {
+    .card-imagem {
+        aspect-ratio: 4 / 3; /* Proporção mais quadrada em celular */
+    }
+}
+
+@media (max-width: 480px) {
+    .card-imagem {
+        aspect-ratio: 1 / 1; /* Quadrado em telas muito pequenas */
+    }
+}
+
+.card-conteudo {
+    padding: 1.2rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-titulo {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--dourado);
+    margin-bottom: 0.5rem;
+}
+
+.card-categoria {
+    display: inline-block;
+    background-color: var(--dourado);
+    color: #000;
+    font-size: 0.7rem;
+    font-weight: bold;
+    padding: 0.2rem 0.7rem;
+    border-radius: 20px;
+    margin-bottom: 0.75rem;
+    width: fit-content;
+}
+
+.card-info {
+    font-size: 0.8rem;
+    color: #bbb;
+    margin-bottom: 0.3rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.card-info span:first-child {
+    color: var(--dourado);
+    font-weight: bold;
+}
+
+.card-descricao {
+    font-size: 0.85rem;
+    color: var(--cinza-claro);
+    margin: 0.75rem 0;
+    line-height: 1.4;
+    flex: 1;
+}
+
+.card-botao {
+    display: inline-block;
+    background-color: transparent;
+    border: 2px solid var(--dourado);
+    color: var(--dourado);
+    padding: 0.5rem 1rem;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.card-botao:hover {
+    background-color: var(--dourado);
+    color: #000;
+}
+
+/* LOADING */
+.loading, .sem-eventos {
+    text-align: center;
+    padding: 3rem;
+    font-size: 1.2rem;
+}
+
+.loading {
+    color: var(--dourado);
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    padding: 2rem;
+    background-color: #000;
+    border-top: 1px solid var(--cinza);
+    color: #888;
+    font-size: 0.85rem;
+}
+
+.footer a {
+    color: var(--dourado);
+    text-decoration: none;
+}

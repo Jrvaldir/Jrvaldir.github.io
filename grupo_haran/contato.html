@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contato - Haran Grupo de Dança</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .contato-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .contato-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        .info-card {
+            background-color: var(--preto-claro);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--cinza);
+            margin-bottom: 1.5rem;
+        }
+        
+        .info-card h3 {
+            color: var(--dourado);
+            margin-bottom: 1rem;
+        }
+        
+        .info-card p {
+            margin-bottom: 0.5rem;
+        }
+        
+        .info-card a {
+            color: var(--cinza-claro);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .info-card a:hover {
+            color: var(--dourado);
+        }
+        
+        .redes-sociais {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .rede-link {
+            display: inline-block;
+            background-color: transparent;
+            border: 2px solid var(--dourado);
+            color: var(--dourado);
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .rede-link:hover {
+            background-color: var(--dourado);
+            color: #000;
+        }
+        
+        .form-contato {
+            background-color: var(--preto-claro);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--cinza);
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--dourado);
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #1a1a1a;
+            border: 1px solid var(--cinza);
+            border-radius: 8px;
+            color: white;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--dourado);
+        }
+        
+        .btn-enviar {
+            background-color: var(--dourado);
+            color: #000;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-enviar:hover {
+            background-color: #b8860b;
+        }
+        
+        @media (max-width: 768px) {
+            .contato-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .mensagem-sucesso {
+            background-color: #1e7e34;
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            text-align: center;
+            display: none;
+        }
+        
+        .mensagem-erro {
+            background-color: #c82333;
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <h1>🎭 HARAN</h1>
+                <p>Grupo de Dança</p>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html">Início</a>
+                <a href="catalogo.html">Catálogo</a>
+                <a href="agenda.html">Agenda</a>
+                <a href="sobre.html">Sobre</a>
+                <a href="contato.html">Contato</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="contato-container">
+                <h2 class="section-title">📞 Contato</h2>
+                <p style="text-align: center; margin-bottom: 2rem;">Entre em contato para contratações, parcerias ou convites para eventos</p>
+                
+                <div class="contato-grid">
+                    <div>
+                        <div class="info-card">
+                            <h3>📧 E-mail</h3>
+                            <p><a href="mailto:harangrupodedanca@gmail.com">harangrupodedanca@gmail.com</a></p>
+                        </div>
+                        
+                        <div class="info-card">
+                            <h3>📱 WhatsApp</h3>
+                            <p><a href="https://wa.me/5581999999999" target="_blank">(81) 99999-9999</a></p>
+                        </div>
+                        
+                        <div class="info-card">
+                            <h3>📍 Localização</h3>
+                            <p>Bom Jardim - PE</p>
+                        </div>
+                        
+                        <div class="info-card">
+                            <h3>🌐 Redes Sociais</h3>
+                            <div class="redes-sociais">
+                                <a href="#" class="rede-link" id="link-instagram">📷 Instagram</a>
+                                <a href="#" class="rede-link" id="link-facebook">📘 Facebook</a>
+                                <a href="#" class="rede-link" id="link-youtube">🎬 YouTube</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <form class="form-contato" id="form-contato" action="https://formsubmit.co/harangrupodedanca@gmail.com" method="POST">
+                            <h3 style="color: var(--dourado); margin-bottom: 1rem;">Envie uma mensagem</h3>
+                            
+                            <input type="hidden" name="_subject" value="Novo contato do site - Haran Grupo de Dança">
+                            <input type="hidden" name="_captcha" value="false">
+                            <input type="hidden" name="_next" value="https://jrvaldir.github.io/grupo-haran/contato.html?enviado=sucesso">
+                            
+                            <div class="form-group">
+                                <label for="nome">Nome</label>
+                                <input type="text" id="nome" name="nome" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">E-mail</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="assunto">Assunto</label>
+                                <input type="text" id="assunto" name="assunto" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="mensagem">Mensagem</label>
+                                <textarea id="mensagem" name="mensagem" rows="5" required></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn-enviar">Enviar mensagem →</button>
+                            
+                            <div id="mensagem-sucesso" class="mensagem-sucesso">
+                                ✅ Mensagem enviada com sucesso! Entraremos em contato em breve.
+                            </div>
+                            <div id="mensagem-erro" class="mensagem-erro">
+                                ❌ Erro ao enviar mensagem. Tente novamente ou entre em contato pelo WhatsApp.
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>📸 Fotos e vídeos hospedados no Google Drive | 🔗 Catálogo atualizado automaticamente</p>
+        <p>© Haran Grupo de Dança - Bom Jardim/PE | <a href="contato.html">Contato</a></p>
+    </footer>
+
+    <script src="js/config.js"></script>
+    <script>
+        // Atualiza os links das redes sociais com base no config.js
+        if (typeof REDES_SOCIAIS !== 'undefined') {
+            const instagramLink = document.getElementById('link-instagram');
+            const facebookLink = document.getElementById('link-facebook');
+            const youtubeLink = document.getElementById('link-youtube');
+            
+            if (instagramLink) instagramLink.href = REDES_SOCIAIS.instagram || '#';
+            if (facebookLink) facebookLink.href = REDES_SOCIAIS.facebook || '#';
+            if (youtubeLink) youtubeLink.href = REDES_SOCIAIS.youtube || '#';
+        }
+        
+        // Verifica se o formulário foi enviado com sucesso
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('enviado') === 'sucesso') {
+            document.getElementById('mensagem-sucesso').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('mensagem-sucesso').style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Evento - Haran Grupo de Dança</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .evento-detalhe {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--preto-claro);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--cinza);
+        }
+        
+        .evento-detalhe-imagem {
+            width: 100%;
+            max-height: 500px;
+            object-fit: cover;
+        }
+        
+        .evento-detalhe-conteudo {
+            padding: 2rem;
+        }
+        
+        .evento-detalhe-titulo {
+            font-size: 2rem;
+            color: var(--dourado);
+            margin-bottom: 0.5rem;
+        }
+        
+        .evento-detalhe-categoria {
+            display: inline-block;
+            background-color: var(--dourado);
+            color: #000;
+            padding: 0.25rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .evento-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+            padding: 1rem 0;
+            border-top: 1px solid var(--cinza);
+            border-bottom: 1px solid var(--cinza);
+        }
+        
+        .evento-info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--cinza-claro);
+        }
+        
+        .evento-info-item span:first-child {
+            color: var(--dourado);
+            font-weight: bold;
+        }
+        
+        .evento-descricao {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin: 1.5rem 0;
+            color: var(--cinza-claro);
+        }
+        
+        .evento-galeria {
+            margin-top: 2rem;
+        }
+        
+        .evento-galeria h3 {
+            color: var(--dourado);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .galeria-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .galeria-item {
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            border-radius: 8px;
+            aspect-ratio: 1;
+        }
+        
+        .galeria-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        
+        .galeria-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        /* Modal para ver foto em tamanho grande */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            z-index: 1000;
+            cursor: pointer;
+        }
+        
+        .modal img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .carregando-fotos {
+            text-align: center;
+            padding: 2rem;
+            color: var(--dourado);
+        }
+        
+        .sem-fotos {
+            text-align: center;
+            padding: 2rem;
+            color: var(--cinza-claro);
+        }
+        
+        .btn-voltar {
+            display: inline-block;
+            margin-top: 2rem;
+            background-color: transparent;
+            border: 2px solid var(--dourado);
+            color: var(--dourado);
+            padding: 0.5rem 1.5rem;
+            border-radius: 30px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .btn-voltar:hover {
+            background-color: var(--dourado);
+            color: #000;
+        }
+        
+        .nao-encontrado {
+            text-align: center;
+            padding: 3rem;
+            color: var(--cinza-claro);
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <h1>🎭 HARAN</h1>
+                <p>Grupo de Dança</p>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html">Início</a>
+                <a href="catalogo.html">Catálogo</a>
+                <a href="agenda.html">Agenda</a>
+                <a href="sobre.html">Sobre</a>
+                <a href="contato.html">Contato</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div id="detalhe-evento">
+                <div class="loading">🎭 Carregando detalhes do evento...</div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal para fotos em tamanho grande -->
+    <div id="modal" class="modal" onclick="fecharModal()">
+        <span class="modal-close">&times;</span>
+        <img id="modal-img" src="">
+    </div>
+
+    <footer class="footer">
+        <p>📸 Fotos e vídeos hospedados no Google Drive | 🔗 Catálogo atualizado automaticamente</p>
+        <p>© Haran Grupo de Dança - Bom Jardim/PE | <a href="contato.html">Contato</a></p>
+    </footer>
+
+    <script src="js/config.js"></script>
+    <script src="js/eventos.js"></script>
+    <script>
+        // Função para extrair o ID da pasta do Google Drive
+        function extrairIdPasta(link) {
+            if (!link) return null;
+            
+            // Formato: /folders/ID
+            let match = link.match(/\/folders\/([^\/?]+)/);
+            if (match) return match[1];
+            
+            // Formato: id=ID
+            match = link.match(/[?&]id=([^&]+)/);
+            if (match) return match[1];
+            
+            // Formato: /file/d/ID (se for arquivo, não pasta)
+            match = link.match(/\/file\/d\/([^\/]+)/);
+            if (match) return match[1];
+            
+            return null;
+        }
+        
+        // Função para carregar fotos da pasta do Google Drive
+        async function carregarFotosDaPasta(pastaId) {
+            if (!pastaId || !GOOGLE_DRIVE_API_KEY) {
+                return [];
+            }
+            
+            try {
+                const url = `https://www.googleapis.com/drive/v3/files?q='${pastaId}'+in+parents&key=${GOOGLE_DRIVE_API_KEY}&fields=files(id,name,mimeType,webContentLink)&pageSize=50`;
+                const resposta = await fetch(url);
+                const dados = await resposta.json();
+                
+                if (!dados.files) return [];
+                
+                // Filtra apenas imagens
+                const imagens = dados.files.filter(file => file.mimeType.startsWith('image/'));
+                
+                // Retorna os links das imagens
+                return imagens.map(img => ({
+                    id: img.id,
+                    nome: img.name,
+                    url: `https://drive.google.com/thumbnail?id=${img.id}&sz=w800`
+                }));
+                
+            } catch (error) {
+                console.error("Erro ao carregar fotos:", error);
+                return [];
+            }
+        }
+        
+        // Função para converter link do Google Drive
+        function converterLinkGoogleDrive(link) {
+            if (!link) return "https://placehold.co/600x400?text=Sem+Imagem";
+            
+            if (link.includes("placehold.co") || link.includes("imgur.com") || link.includes("i.ibb.co")) {
+                return link;
+            }
+            
+            let id = null;
+            let match = link.match(/\/file\/d\/([^\/]+)/);
+            if (match) id = match[1];
+            
+            if (!id) {
+                match = link.match(/[?&]id=([^&]+)/);
+                if (match) id = match[1];
+            }
+            
+            if (!id) {
+                match = link.match(/thumbnail\?id=([^&]+)/);
+                if (match) id = match[1];
+            }
+            
+            if (id) {
+                return `https://drive.google.com/thumbnail?id=${id}&sz=w800`;
+            }
+            
+            return link;
+        }
+        
+        // Modal para ver fotos
+        function abrirModal(url) {
+            const modal = document.getElementById('modal');
+            const modalImg = document.getElementById('modal-img');
+            modal.style.display = 'block';
+            modalImg.src = url;
+        }
+        
+        function fecharModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+        
+        async function carregarDetalheEvento() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const tituloEvento = urlParams.get('evento');
+            
+            if (!tituloEvento) {
+                document.getElementById('detalhe-evento').innerHTML = `
+                    <div class="nao-encontrado">
+                        <h2>❓ Nenhum evento selecionado</h2>
+                        <p>Volte para o <a href="catalogo.html" style="color: var(--dourado);">catálogo</a> e escolha um evento.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const eventos = await carregarEventos();
+            const evento = eventos.find(e => e["Nome do Evento"] === tituloEvento);
+            
+            if (!evento) {
+                document.getElementById('detalhe-evento').innerHTML = `
+                    <div class="nao-encontrado">
+                        <h2>❌ Evento não encontrado</h2>
+                        <p>O evento "${tituloEvento}" não foi encontrado.</p>
+                        <a href="catalogo.html" class="btn-voltar">← Voltar ao catálogo</a>
+                    </div>
+                `;
+                return;
+            }
+            
+            const titulo = evento["Nome do Evento"] || "Evento";
+            const categoria = evento["Categoria"] || "Apresentação";
+            const data = evento["Data"] || "Data não informada";
+            const local = evento["Local"] || "Local não informado";
+            const sinopse = evento["Sinopse/Descrição"] || evento["Descrição"] || "Descrição não disponível.";
+            const duracao = evento["Duração"] || "Não informada";
+            const coreografo = evento["Coreógrafo(s)"] || "Não informado";
+            
+            let linkCapa = evento["Link da Capa"] || "https://placehold.co/800x500?text=Sem+Imagem";
+            linkCapa = converterLinkGoogleDrive(linkCapa);
+            
+            const linkPasta = evento["Link da Pasta"] || "";
+            const pastaId = extrairIdPasta(linkPasta);
+            
+            // HTML base do evento
+            let html = `
+                <div class="evento-detalhe">
+                    <img class="evento-detalhe-imagem" src="${linkCapa}" alt="${titulo}" onerror="this.src='https://placehold.co/800x500?text=Imagem+Indisponível'">
+                    <div class="evento-detalhe-conteudo">
+                        <span class="evento-detalhe-categoria">${categoria}</span>
+                        <h1 class="evento-detalhe-titulo">${titulo}</h1>
+                        
+                        <div class="evento-info">
+                            <div class="evento-info-item"><span>📅</span> ${data}</div>
+                            <div class="evento-info-item"><span>📍</span> ${local}</div>
+                            <div class="evento-info-item"><span>⏱️</span> ${duracao}</div>
+                            <div class="evento-info-item"><span>💃</span> Coreógrafo: ${coreografo}</div>
+                        </div>
+                        
+                        <div class="evento-descricao">
+                            <h3 style="color: var(--dourado); margin-bottom: 0.5rem;">📖 Sinopse</h3>
+                            <p>${sinopse}</p>
+                        </div>
+                        
+                        <div class="evento-galeria">
+                            <h3>📸 Galeria de Fotos</h3>
+                            <div id="galeria-fotos" class="galeria-grid">
+                                <div class="carregando-fotos">🎭 Carregando fotos...</div>
+                            </div>
+                        </div>
+                        
+                        <a href="catalogo.html" class="btn-voltar">← Voltar ao catálogo</a>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('detalhe-evento').innerHTML = html;
+            
+            // Carrega as fotos da pasta se tiver ID
+            if (pastaId && GOOGLE_DRIVE_API_KEY && GOOGLE_DRIVE_API_KEY !== "SUA_API_KEY_AQUI") {
+                const fotos = await carregarFotosDaPasta(pastaId);
+                const galeriaContainer = document.getElementById('galeria-fotos');
+                
+                if (fotos.length === 0) {
+                    galeriaContainer.innerHTML = `<div class="sem-fotos">📭 Nenhuma foto encontrada nesta pasta.</div>`;
+                } else {
+                    let galeriaHtml = '';
+                    for (const foto of fotos) {
+                        galeriaHtml += `
+                            <div class="galeria-item" onclick="abrirModal('${foto.url}')">
+                                <img src="${foto.url}" alt="${foto.nome}" loading="lazy" onerror="this.src='https://placehold.co/200x200?text=Erro'">
+                            </div>
+                        `;
+                    }
+                    galeriaContainer.innerHTML = galeriaHtml;
+                }
+            } else if (pastaId && (!GOOGLE_DRIVE_API_KEY || GOOGLE_DRIVE_API_KEY === "SUA_API_KEY_AQUI")) {
+                document.getElementById('galeria-fotos').innerHTML = `
+                    <div class="sem-fotos">
+                        ⚠️ API do Google Drive não configurada. 
+                        <a href="${linkPasta}" target="_blank" style="color: var(--dourado);">Clique aqui</a> para ver as fotos no Google Drive.
+                    </div>
+                `;
+            } else if (linkPasta) {
+                document.getElementById('galeria-fotos').innerHTML = `
+                    <div class="sem-fotos">
+                        📁 <a href="${linkPasta}" target="_blank" style="color: var(--dourado);">Clique aqui</a> para ver as fotos no Google Drive.
+                    </div>
+                `;
+            } else {
+                document.getElementById('galeria-fotos').innerHTML = `<div class="sem-fotos">📭 Nenhuma pasta de fotos vinculada a este evento.</div>`;
+            }
+        }
+        
+        carregarDetalheEvento();
+    </script>
+</body>
+</html>

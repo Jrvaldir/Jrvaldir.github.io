@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre - Haran Grupo de Dança</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .sobre-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .sobre-imagem {
+            width: 100%;
+            border-radius: 16px;
+            margin: 2rem 0;
+        }
+        
+        .sobre-texto {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: var(--cinza-claro);
+            text-align: justify;
+        }
+        
+        .sobre-texto p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .integrantes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .integrante-card {
+            background-color: var(--preto-claro);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid var(--cinza);
+        }
+        
+        .integrante-card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 0.5rem;
+        }
+        
+        .integrante-nome {
+            font-weight: bold;
+            color: var(--dourado);
+        }
+        
+        .integrante-funcao {
+            font-size: 0.8rem;
+            color: var(--cinza-claro);
+        }
+        
+        .citacao {
+            font-style: italic;
+            border-left: 4px solid var(--dourado);
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <h1>🎭 HARAN</h1>
+                <p>Grupo de Dança</p>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html">Início</a>
+                <a href="catalogo.html">Catálogo</a>
+                <a href="agenda.html">Agenda</a>
+                <a href="sobre.html">Sobre</a>
+                <a href="contato.html">Contato</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="sobre-container">
+                <h2 class="section-title">🎭 Sobre o Haran Grupo de Dança</h2>
+                
+                <img class="sobre-imagem" src="https://placehold.co/900x400?text=Haran+Grupo+de+Danca" alt="Haran Grupo de Dança" onerror="this.src='https://placehold.co/900x400?text=Haran+em+Ação'">
+                
+                <div class="sobre-texto">
+                    <p>O <strong>Haran Grupo de Dança</strong> nasceu em 2015 na cidade de Bom Jardim - PE, com o propósito de levar arte, cultura e emoção através da dança teatral. Com mais de 10 anos de história, o grupo se consolidou como uma referência na região, participando de eventos importantes como as festas juninas, encenações da Paixão de Cristo e festivais de dança.</p>
+                    
+                    <p>Com um estilo único que mistura dança contemporânea, elementos teatrais e tradições nordestinas, o Haran encanta públicos de todas as idades. Cada apresentação é pensada nos mínimos detalhes, desde a coreografia até o figurino, para proporcionar uma experiência inesquecível.</p>
+                    
+                    <p>O grupo é formado por mais de 10 bailarinos dedicados, coreógrafos e profissionais da arte que compartilham a mesma paixão: transformar histórias em movimentos e levar emoção ao público.</p>
+                </div>
+                
+                <div class="citacao">
+                    "A dança é nossa forma de contar histórias. Cada movimento carrega emoção, cada apresentação é um pedaço da nossa alma no palco."
+                    <br>— Fundador do Haran Grupo de Dança
+                </div>
+                
+                <h3 style="color: var(--dourado); margin-top: 2rem;">💃 Integrantes</h3>
+                <div class="integrantes-grid">
+                    <div class="integrante-card">
+                        <img src="https://placehold.co/100x100?text=Perfil" alt="Integrante">
+                        <div class="integrante-nome">[Nome do Integrante]</div>
+                        <div class="integrante-funcao">Coreógrafo / Fundador</div>
+                    </div>
+                    <div class="integrante-card">
+                        <img src="https://placehold.co/100x100?text=Perfil" alt="Integrante">
+                        <div class="integrante-nome">[Nome do Integrante]</div>
+                        <div class="integrante-funcao">Bailarina / Professora</div>
+                    </div>
+                    <div class="integrante-card">
+                        <img src="https://placehold.co/100x100?text=Perfil" alt="Integrante">
+                        <div class="integrante-nome">[Nome do Integrante]</div>
+                        <div class="integrante-funcao">Bailarino</div>
+                    </div>
+                    <div class="integrante-card">
+                        <img src="https://placehold.co/100x100?text=Perfil" alt="Integrante">
+                        <div class="integrante-nome">[Nome do Integrante]</div>
+                        <div class="integrante-funcao">Figurinista</div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 2rem;">
+                    <a href="contato.html" class="card-botao">📞 Entre em contato</a>
+                    <a href="catalogo.html" class="card-botao" style="margin-left: 1rem;">🎬 Conheça nosso trabalho</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>📸 Fotos e vídeos hospedados no Google Drive | 🔗 Catálogo atualizado automaticamente</p>
+        <p>© Haran Grupo de Dança - Bom Jardim/PE | <a href="contato.html">Contato</a></p>
+    </footer>
+
+    <script src="js/config.js"></script>
+</body>
+</html>

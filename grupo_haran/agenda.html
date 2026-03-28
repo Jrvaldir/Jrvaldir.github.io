@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda - Haran Grupo de Dança</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .agenda-lista {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .agenda-item {
+            background-color: var(--preto-claro);
+            border-left: 4px solid var(--dourado);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
+            transition: transform 0.3s;
+            position: relative;
+        }
+        
+        .agenda-item:hover {
+            transform: translateX(5px);
+        }
+        
+        .agenda-data {
+            font-size: 0.85rem;
+            color: var(--dourado);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .agenda-titulo {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+        
+        .agenda-local {
+            color: var(--cinza-claro);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .agenda-descricao {
+            color: #aaa;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .agenda-status {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 20px;
+            background-color: var(--cinza);
+        }
+        
+        .status-confirmado {
+            background-color: #1e7e34;
+            color: white;
+        }
+        
+        .status-pendente {
+            background-color: #b8860b;
+            color: white;
+        }
+        
+        .status-cancelado {
+            background-color: #c82333;
+            color: white;
+        }
+        
+        .agenda-link {
+            display: inline-block;
+            margin-top: 0.75rem;
+            color: var(--dourado);
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+        
+        .agenda-link:hover {
+            text-decoration: underline;
+        }
+        
+        .sem-agenda {
+            text-align: center;
+            padding: 3rem;
+            color: var(--cinza-claro);
+        }
+        
+        .legenda {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1rem;
+            background-color: var(--preto-claro);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: var(--cinza-claro);
+        }
+        
+        .carregando {
+            text-align: center;
+            padding: 3rem;
+            color: var(--dourado);
+        }
+        
+        .erro {
+            text-align: center;
+            padding: 3rem;
+            color: #ff6b6b;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <h1>🎭 HARAN</h1>
+                <p>Grupo de Dança</p>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html">Início</a>
+                <a href="catalogo.html">Catálogo</a>
+                <a href="agenda.html">Agenda</a>
+                <a href="sobre.html">Sobre</a>
+                <a href="contato.html">Contato</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <h2 class="section-title">📅 Agenda de Apresentações</h2>
+            <p style="text-align: center; margin-bottom: 2rem;">Fique por dentro das próximas apresentações do Haran Grupo de Dança</p>
+            
+            <div id="agenda-proximos" class="agenda-lista">
+                <div class="carregando">🎭 Carregando agenda...</div>
+            </div>
+            
+            <div class="legenda">
+                ⭐ Agenda atualizada automaticamente a partir da planilha. Para convites e contratações, entre em contato pelo <a href="contato.html" style="color: var(--dourado);">nosso WhatsApp</a>.
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>📸 Fotos e vídeos hospedados no Google Drive | 🔗 Catálogo atualizado automaticamente</p>
+        <p>© Haran Grupo de Dança - Bom Jardim/PE | <a href="contato.html">Contato</a></p>
+    </footer>
+
+    <script src="js/config.js"></script>
+    <script>
+        // Função para parse do CSV da agenda
+        async function carregarAgenda() {
+            try {
+                if (!AGENDA_URL) {
+                    console.error("AGENDA_URL não definida no config.js");
+                    return [];
+                }
+                
+                console.log("Carregando agenda...");
+                const resposta = await fetch(AGENDA_URL);
+                const texto = await resposta.text();
+                
+                console.log("CSV da agenda recebido");
+                
+                const linhas = texto.split("\n").filter(linha => linha.trim() !== "");
+                if (linhas.length < 2) return [];
+                
+                // Pega cabeçalhos
+                const cabecalhos = [];
+                let temp = "";
+                let dentroAspas = false;
+                for (let char of linhas[0]) {
+                    if (char === '"') {
+                        dentroAspas = !dentroAspas;
+                    } else if (char === "," && !dentroAspas) {
+                        cabecalhos.push(temp.trim());
+                        temp = "";
+                    } else {
+                        temp += char;
+                    }
+                }
+                cabecalhos.push(temp.trim());
+                
+                for (let i = 0; i < cabecalhos.length; i++) {
+                    cabecalhos[i] = cabecalhos[i].replace(/^"|"$/g, "");
+                }
+                
+                const agenda = [];
+                const hoje = new Date();
+                hoje.setHours(0, 0, 0, 0);
+                
+                for (let i = 1; i < linhas.length; i++) {
+                    const valores = [];
+                    let tempValor = "";
+                    let dentroAspas = false;
+                    
+                    for (let char of linhas[i]) {
+                        if (char === '"') {
+                            dentroAspas = !dentroAspas;
+                        } else if (char === "," && !dentroAspas) {
+                            valores.push(tempValor.trim());
+                            tempValor = "";
+                        } else {
+                            tempValor += char;
+                        }
+                    }
+                    valores.push(tempValor.trim());
+                    
+                    for (let j = 0; j < valores.length; j++) {
+                        valores[j] = valores[j].replace(/^"|"$/g, "");
+                    }
+                    
+                    if (valores.length >= 1 && valores[0] !== "") {
+                        const item = {};
+                        cabecalhos.forEach((cabecalho, idx) => {
+                            item[cabecalho] = valores[idx] || "";
+                        });
+                        
+                        const status = item["Status"] || "Confirmado";
+                        const dataReal = item["Data Real"];
+                        let exibir = true;
+                        
+                        // Lógica de exibição
+                        if (status === "Cancelado") {
+                            exibir = true;
+                        } else if (status === "Pendente") {
+                            exibir = true;
+                        } else if (status === "Confirmado" && dataReal) {
+                            const partes = dataReal.split(/[\/\-]/);
+                            let dataEvento;
+                            
+                            if (partes.length === 3) {
+                                dataEvento = new Date(partes[2], partes[1] - 1, partes[0]);
+                            } else {
+                                dataEvento = new Date(dataReal);
+                            }
+                            
+                            if (!isNaN(dataEvento.getTime())) {
+                                dataEvento.setHours(0, 0, 0, 0);
+                                if (dataEvento < hoje) {
+                                    exibir = false;
+                                }
+                            }
+                        }
+                        
+                        if (exibir) {
+                            agenda.push(item);
+                        }
+                    }
+                }
+                
+                // Ordena por data (mais próximo primeiro)
+                agenda.sort((a, b) => {
+                    function converterData(dataStr) {
+                        if (!dataStr) return new Date(8640000000000000);
+                        
+                        const partes = dataStr.split(/[\/\-]/);
+                        if (partes.length >= 3) {
+                            const dia = parseInt(partes[0]);
+                            const mes = parseInt(partes[1]) - 1;
+                            const ano = parseInt(partes[2]);
+                            if (!isNaN(dia) && !isNaN(mes) && !isNaN(ano)) {
+                                return new Date(ano, mes, dia);
+                            }
+                        }
+                        
+                        const dataObj = new Date(dataStr);
+                        if (!isNaN(dataObj.getTime())) {
+                            return dataObj;
+                        }
+                        
+                        return new Date(8640000000000000);
+                    }
+                    
+                    const dataA = converterData(a["Data Real"] || a["Data"]);
+                    const dataB = converterData(b["Data Real"] || b["Data"]);
+                    
+                    return dataA - dataB;
+                });
+                
+                console.log(`Eventos na agenda: ${agenda.length}`);
+                return agenda;
+                
+            } catch (error) {
+                console.error("Erro ao carregar agenda:", error);
+                return [];
+            }
+        }
+        
+        function exibirAgenda(agenda) {
+            const container = document.getElementById('agenda-proximos');
+            if (!container) return;
+            
+            if (!agenda || agenda.length === 0) {
+                container.innerHTML = `<div class="sem-agenda">📭 Nenhuma apresentação agendada no momento. Em breve teremos novidades!</div>`;
+                return;
+            }
+            
+            let html = '';
+            for (const item of agenda) {
+                // Usa a data de exibição se tiver, senão usa a Data Real
+                const dataExibicao = item["Data"] || item["Data Real"] || "Data a confirmar";
+                const titulo = item["Título"] || "Apresentação";
+                const local = item["Local"] || "Local a confirmar";
+                const descricao = item["Descrição"] || "";
+                const linkIngresso = item["Link Ingresso"] || "";
+                const status = item["Status"] || "Confirmado";
+                
+                let statusClass = "status-confirmado";
+                if (status === "Pendente") statusClass = "status-pendente";
+                if (status === "Cancelado") statusClass = "status-cancelado";
+                
+                html += `
+                    <div class="agenda-item">
+                        <div class="agenda-status ${statusClass}">${status}</div>
+                        <div class="agenda-data">📅 ${dataExibicao}</div>
+                        <div class="agenda-titulo">${titulo}</div>
+                        <div class="agenda-local">📍 ${local}</div>
+                        ${descricao ? `<div class="agenda-descricao">${descricao}</div>` : ""}
+                        ${linkIngresso ? `<a href="${linkIngresso}" target="_blank" class="agenda-link">🎟️ Garantir ingresso →</a>` : ""}
+                    </div>
+                `;
+            }
+            
+            container.innerHTML = html;
+        }
+        
+        // Carrega a agenda quando a página abrir
+        carregarAgenda().then(agenda => {
+            exibirAgenda(agenda);
+        });
+    </script>
+</body>
+</html>
