@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Fácil - Ingressos para eventos locais</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            color: #ff6b6b;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 1.5rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Filtros */
+        .filtros {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filtros select, .filtros input {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+
+        .grid-eventos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .card-evento {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .card-evento:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-imagem {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            background: #f0f0f0;
+        }
+
+        .card-conteudo {
+            padding: 1rem;
+        }
+
+        .card-titulo {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-info {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 0.3rem;
+        }
+
+        .card-preco {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ff6b6b;
+            margin: 0.5rem 0;
+        }
+
+        .card-status {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .status-disponivel {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .status-esgotado {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .card-botao {
+            display: block;
+            text-align: center;
+            background-color: #ff6b6b;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 0.5rem;
+        }
+
+        .loading, .erro {
+            text-align: center;
+            padding: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .erro {
+            color: #f44336;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: #1a1a2e;
+            color: #888;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <h1>🎟️ TICKET FÁCIL</h1>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html">Início</a>
+                <a href="criar-evento.html">Criar Evento</a>
+                <a href="validar.html">Validar</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>🎭 Seu ingresso para os melhores eventos</h1>
+        <p>Compre ingressos online de forma rápida, segura e sem taxas abusivas.</p>
+    </section>
+
+    <main class="container">
+        <div class="filtros">
+            <select id="filtro-tipo">
+                <option value="todos">Todos os eventos</option>
+                <option value="ticket">Ticket (digital)</option>
+                <option value="pulseira">Pulseira</option>
+            </select>
+            <input type="text" id="filtro-busca" placeholder="Buscar evento...">
+        </div>
+
+        <div id="lista-eventos" class="grid-eventos">
+            <div class="loading">🎭 Carregando eventos...</div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>🎟️ Ticket Fácil - Plataforma de ingressos para eventos locais</p>
+        <p>© 2025 Ticket Fácil</p>
+    </footer>
+
+    <script>
+        // URL CORRETA DA API
+        const API_URL = "https://script.google.com/macros/s/AKfycbxL4fdl7JNPJuA-7dPTNKX-OGQ6GqNn507ZBJVs5vMtKqLOiWd8cnHsugDzgTrEK5-lNA/exec";
+
+        let todosEventos = [];
+
+        async function listarEventos() {
+            try {
+                console.log("Chamando API:", API_URL + "?acao=listarEventos");
+                const response = await fetch(API_URL + "?acao=listarEventos");
+                const dados = await response.json();
+                console.log("Eventos recebidos:", dados);
+                return dados;
+            } catch (error) {
+                console.error("Erro ao listar eventos:", error);
+                return [];
+            }
+        }
+
+        async function listarSessoes(eventoId) {
+            try {
+                const response = await fetch(`${API_URL}?acao=listarSessoes&eventoId=${eventoId}`);
+                return await response.json();
+            } catch (error) {
+                console.error("Erro ao listar sessões:", error);
+                return [];
+            }
+        }
+
+        async function carregarSessoesParaEventos(eventos) {
+            // Carrega sessões em paralelo para todos os eventos
+            const eventosComSessoes = [];
+            for (const evento of eventos) {
+                const sessoes = await listarSessoes(evento.ID);
+                eventosComSessoes.push({
+                    ...evento,
+                    sessoes: sessoes,
+                    preco: sessoes && sessoes.length > 0 ? sessoes[0].Preco : 0,
+                    dataExibicao: sessoes && sessoes.length > 0 ? `${sessoes[0].Data} - ${sessoes[0].Horario}` : 'Data a confirmar',
+                    localExibicao: sessoes && sessoes.length > 0 ? sessoes[0].Local : 'Local a confirmar'
+                });
+            }
+            return eventosComSessoes;
+        }
+
+        function exibirEventos(eventos) {
+            const container = document.getElementById('lista-eventos');
+            
+            if (!eventos || eventos.length === 0) {
+                container.innerHTML = '<div class="erro">📭 Nenhum evento encontrado.</div>';
+                return;
+            }
+
+            let html = '';
+            for (const evento of eventos) {
+                const nome = evento.Nome || "Evento";
+                const descricao = evento.Descrição || "";
+                const capa = evento.Capa || "https://placehold.co/600x400?text=Evento";
+                const tipo = evento.Tipo || "ticket";
+                const preco = evento.preco || 0;
+                const dataExibicao = evento.dataExibicao;
+                const localExibicao = evento.localExibicao;
+                
+                html += `
+                    <div class="card-evento" data-tipo="${tipo}" data-nome="${nome.toLowerCase()}">
+                        <img class="card-imagem" src="${capa}" alt="${nome}" onerror="this.src='https://placehold.co/600x400?text=Evento'">
+                        <div class="card-conteudo">
+                            <h3 class="card-titulo">🎭 ${nome}</h3>
+                            <div class="card-info">📅 ${dataExibicao}</div>
+                            <div class="card-info">📍 ${localExibicao}</div>
+                            <div class="card-info">🎟️ ${tipo === 'ticket' ? 'Ticket digital' : 'Pulseira'}</div>
+                            <div class="card-preco">R$ ${preco}</div>
+                            <span class="card-status status-disponivel">✅ Disponível</span>
+                            <a href="comprar.html?evento=${evento.ID}" class="card-botao">🎟️ Garantir ingresso →</a>
+                        </div>
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+        }
+
+        function filtrarEventos() {
+            const tipo = document.getElementById('filtro-tipo').value;
+            const busca = document.getElementById('filtro-busca').value.toLowerCase();
+            
+            let eventosFiltrados = [...todosEventos];
+            
+            if (tipo !== 'todos') {
+                eventosFiltrados = eventosFiltrados.filter(e => e.Tipo === tipo);
+            }
+            
+            if (busca) {
+                eventosFiltrados = eventosFiltrados.filter(e => 
+                    e.Nome.toLowerCase().includes(busca) || 
+                    (e.Descrição && e.Descrição.toLowerCase().includes(busca))
+                );
+            }
+            
+            exibirEventos(eventosFiltrados);
+        }
+
+        async function carregar() {
+            const container = document.getElementById('lista-eventos');
+            container.innerHTML = '<div class="loading">🎭 Carregando eventos...</div>';
+            
+            const eventos = await listarEventos();
+            
+            if (eventos && eventos.length > 0) {
+                // Carrega sessões para obter preço, data e local
+                todosEventos = await carregarSessoesParaEventos(eventos);
+                exibirEventos(todosEventos);
+            } else {
+                container.innerHTML = '<div class="erro">❌ Nenhum evento encontrado. Verifique a planilha.</div>';
+            }
+        }
+
+        // Event listeners para os filtros
+        document.getElementById('filtro-tipo').addEventListener('change', filtrarEventos);
+        document.getElementById('filtro-busca').addEventListener('input', filtrarEventos);
+        
+        // Inicializa
+        carregar();
+    </script>
+</body>
+</html>

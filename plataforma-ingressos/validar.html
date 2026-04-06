@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validar Ingresso - Ticket Fácil</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            color: #ff6b6b;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 1.5rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .card-validacao {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .card-validacao h2 {
+            color: #1a1a2e;
+            margin-bottom: 1rem;
+        }
+
+        .qrcode-reader {
+            margin: 2rem 0;
+            padding: 2rem;
+            border: 2px dashed #ddd;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        .qrcode-reader:hover {
+            border-color: #ff6b6b;
+        }
+
+        .qrcode-reader p {
+            color: #888;
+        }
+
+        #video {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            border-radius: 12px;
+            display: none;
+        }
+
+        .input-manual {
+            margin: 1.5rem 0;
+        }
+
+        .input-manual input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .btn-validar {
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .btn-validar:hover {
+            background-color: #ff5252;
+        }
+
+        .resultado {
+            margin-top: 2rem;
+            padding: 1rem;
+            border-radius: 12px;
+            display: none;
+        }
+
+        .resultado.valido {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .resultado.invalido {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .resultado.usado {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+        }
+
+        .info-ingresso {
+            margin-top: 1rem;
+            text-align: left;
+            border-top: 1px solid #ddd;
+            padding-top: 1rem;
+        }
+
+        .badge-cortesia {
+            display: inline-block;
+            background-color: #ff9800;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: bold;
+            padding: 0.2rem 0.5rem;
+            border-radius: 20px;
+            margin-left: 0.5rem;
+        }
+
+        .badge-pago {
+            display: inline-block;
+            background-color: #28a745;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: bold;
+            padding: 0.2rem 0.5rem;
+            border-radius: 20px;
+            margin-left: 0.5rem;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: #1a1a2e;
+            color: #888;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .card-validacao {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+    <!-- Biblioteca para leitura de QR Code -->
+    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+</head>
+<body>
+
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <h1>🎟️ TICKET FÁCIL</h1>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Início</a>
+                <a href="criar-evento.html">Criar Evento</a>
+                <a href="validar.html" style="color: #ff6b6b;">Validar</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="card-validacao">
+            <h2>🔍 Validar Ingresso</h2>
+            <p>Aponte a câmera para o QR Code ou digite o código manualmente</p>
+
+            <div id="qrcode-reader" class="qrcode-reader">
+                <p>📷 Clique aqui para abrir a câmera</p>
+            </div>
+
+            <div id="video-container" style="display: none;">
+                <video id="video" autoplay playsinline></video>
+            </div>
+
+            <div class="input-manual">
+                <input type="text" id="codigo-manual" placeholder="Digite o código do ingresso (ex: ING-123456 ou CORT-123456)">
+                <button id="btn-validar-manual" class="btn-validar">🔍 Validar</button>
+            </div>
+
+            <div id="resultado" class="resultado"></div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>🎟️ Ticket Fácil - Plataforma de ingressos para eventos locais</p>
+        <p>© 2025 Ticket Fácil - Todos os direitos reservados</p>
+    </footer>
+
+    <script>
+        // ===== DADOS DE EXEMPLO (atualizados com cortesia) =====
+        const ingressosExemplo = [
+            {
+                codigo: "ING-1734567890123-ABC123",
+                tipo: "pago",
+                evento_id: 1,
+                evento_nome: "Festival de Dança 2025",
+                sessao: "15/06/2025 - 19:00",
+                local: "Arraial Municipal",
+                comprador: "João Silva",
+                quantidade: 2,
+                valor: 40,
+                status: "vendido",
+                data_venda: "28/03/2025"
+            },
+            {
+                codigo: "ING-1734567890456-DEF456",
+                tipo: "pago",
+                evento_id: 1,
+                evento_nome: "Festival de Dança 2025",
+                sessao: "15/06/2025 - 21:00",
+                local: "Arraial Municipal",
+                comprador: "Maria Santos",
+                quantidade: 1,
+                valor: 20,
+                status: "validado",
+                data_venda: "28/03/2025"
+            },
+            {
+                codigo: "CORT-1734567890789-GHI789",
+                tipo: "cortesia",
+                evento_id: 1,
+                evento_nome: "Festival de Dança 2025",
+                sessao: "15/06/2025 - 19:00",
+                local: "Arraial Municipal",
+                comprador: "Pedro Costa (Cortesia - Patrocinador)",
+                quantidade: 2,
+                valor: 0,
+                status: "vendido",
+                data_venda: "28/03/2025"
+            }
+        ];
+
+        // Função para buscar ingresso pelo código (aceita ING- e CORT-)
+        function buscarIngresso(codigo) {
+            return ingressosExemplo.find(i => i.codigo === codigo);
+        }
+
+        // Função para extrair informações do QR Code (se for um objeto JSON)
+        function extrairCodigoDoQR(texto) {
+            try {
+                // Tenta fazer parse como JSON
+                const dados = JSON.parse(texto);
+                if (dados.codigo) {
+                    return dados.codigo;
+                }
+            } catch (e) {
+                // Se não for JSON, retorna o texto como está
+                return texto;
+            }
+            return texto;
+        }
+
+        // Função para validar ingresso
+        function validarIngresso(codigoInput) {
+            const codigo = extrairCodigoDoQR(codigoInput);
+            const ingresso = buscarIngresso(codigo);
+            const resultadoDiv = document.getElementById('resultado');
+            
+            if (!ingresso) {
+                resultadoDiv.className = 'resultado invalido';
+                resultadoDiv.innerHTML = `
+                    <h3>❌ Ingresso Inválido</h3>
+                    <p>O código <strong>${codigo}</strong> não foi encontrado no sistema.</p>
+                    <p style="margin-top: 0.5rem; font-size: 0.85rem;">Verifique se o código está correto ou tente novamente.</p>
+                `;
+                resultadoDiv.style.display = 'block';
+                return false;
+            }
+            
+            // Determina a badge de tipo
+            const tipoBadge = ingresso.tipo === 'cortesia' 
+                ? '<span class="badge-cortesia">🎁 CORTESIA</span>' 
+                : '<span class="badge-pago">💰 PAGO</span>';
+            
+            const valorTexto = ingresso.tipo === 'cortesia' ? 'GRÁTIS' : `R$ ${ingresso.valor},00`;
+            
+            if (ingresso.status === 'validado') {
+                resultadoDiv.className = 'resultado usado';
+                resultadoDiv.innerHTML = `
+                    <h3>⚠️ Ingresso já utilizado</h3>
+                    <p>Este ingresso já foi validado na entrada em ${ingresso.data_validacao || 'data não registrada'}.</p>
+                    <div class="info-ingresso">
+                        <p><strong>🎟️ Código:</strong> ${ingresso.codigo} ${tipoBadge}</p>
+                        <p><strong>🎭 Evento:</strong> ${ingresso.evento_nome}</p>
+                        <p><strong>🕐 Sessão:</strong> ${ingresso.sessao || 'Não especificada'}</p>
+                        <p><strong>📍 Local:</strong> ${ingresso.local || 'Não especificado'}</p>
+                        <p><strong>👤 Comprador:</strong> ${ingresso.comprador}</p>
+                        <p><strong>📦 Quantidade:</strong> ${ingresso.quantidade} ingresso(s)</p>
+                        <p><strong>💰 Valor:</strong> ${valorTexto}</p>
+                        <p><strong>📅 Data da venda:</strong> ${ingresso.data_venda}</p>
+                    </div>
+                `;
+                resultadoDiv.style.display = 'block';
+                return false;
+            }
+            
+            if (ingresso.status === 'vendido') {
+                // Marca como validado
+                ingresso.status = 'validado';
+                ingresso.data_validacao = new Date().toLocaleString();
+                
+                const mensagemCortesia = ingresso.tipo === 'cortesia' 
+                    ? '<p style="margin-top: 0.5rem; color: #ff9800;">🎁 Ingresso cortesia - cortesia do patrocinador</p>'
+                    : '';
+                
+                resultadoDiv.className = 'resultado valido';
+                resultadoDiv.innerHTML = `
+                    <h3>✅ Ingresso Válido!</h3>
+                    <p>Entrada liberada! ${tipoBadge}</p>
+                    ${mensagemCortesia}
+                    <div class="info-ingresso">
+                        <p><strong>🎟️ Código:</strong> ${ingresso.codigo}</p>
+                        <p><strong>🎭 Evento:</strong> ${ingresso.evento_nome}</p>
+                        <p><strong>🕐 Sessão:</strong> ${ingresso.sessao || 'Não especificada'}</p>
+                        <p><strong>📍 Local:</strong> ${ingresso.local || 'Não especificado'}</p>
+                        <p><strong>👤 Comprador:</strong> ${ingresso.comprador}</p>
+                        <p><strong>📦 Quantidade:</strong> ${ingresso.quantidade} ingresso(s)</p>
+                        <p><strong>💰 Valor:</strong> ${valorTexto}</p>
+                        <p><strong>📅 Data da venda:</strong> ${ingresso.data_venda}</p>
+                        <p><strong>✅ Data da validação:</strong> ${ingresso.data_validacao}</p>
+                    </div>
+                    <p style="margin-top: 1rem; color: green;">✅ Validação registrada com sucesso!</p>
+                `;
+                resultadoDiv.style.display = 'block';
+                
+                // TODO: Salvar validação na planilha
+                console.log(`Ingresso ${codigo} (${ingresso.tipo}) validado com sucesso!`);
+                return true;
+            }
+            
+            return false;
+        }
+
+        // Validação manual
+        document.getElementById('btn-validar-manual').addEventListener('click', () => {
+            const codigo = document.getElementById('codigo-manual').value.trim();
+            if (!codigo) {
+                alert('Digite o código do ingresso');
+                return;
+            }
+            validarIngresso(codigo);
+        });
+
+        // Leitor de QR Code
+        const qrcodeReader = document.getElementById('qrcode-reader');
+        const videoContainer = document.getElementById('video-container');
+        const video = document.getElementById('video');
+        let html5QrCode = null;
+
+        qrcodeReader.addEventListener('click', async () => {
+            qrcodeReader.style.display = 'none';
+            videoContainer.style.display = 'block';
+            
+            html5QrCode = new Html5Qrcode("video");
+            
+            try {
+                const devices = await Html5Qrcode.getCameras();
+                if (devices && devices.length) {
+                    const cameraId = devices[0].id;
+                    await html5QrCode.start(
+                        cameraId,
+                        { fps: 10, qrbox: { width: 250, height: 250 } },
+                        (decodedText) => {
+                            // Quando ler o QR Code
+                            html5QrCode.stop();
+                            videoContainer.style.display = 'none';
+                            qrcodeReader.style.display = 'block';
+                            validarIngresso(decodedText);
+                        },
+                        (errorMessage) => {
+                            console.log("Erro ao ler QR Code:", errorMessage);
+                        }
+                    );
+                }
+            } catch (err) {
+                console.error("Erro ao acessar câmera:", err);
+                alert("Não foi possível acessar a câmera. Verifique as permissões.");
+                videoContainer.style.display = 'none';
+                qrcodeReader.style.display = 'block';
+            }
+        });
+
+        // Função para parar a câmera quando sair da página
+        window.addEventListener('beforeunload', () => {
+            if (html5QrCode && html5QrCode.isScanning) {
+                html5QrCode.stop();
+            }
+        });
+    </script>
+</body>
+</html>

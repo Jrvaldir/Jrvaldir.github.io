@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bora Agendar - Protótipo Completo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- LOGIN SCREEN -->
+        <section id="screen-login" class="screen active">
+            <div class="login-card">
+                <div class="brand-logo">
+                    <i class="fa-solid fa-calendar-check"></i>
+                </div>
+                <h1 class="brand-name">Bora Agendar</h1>
+                <p class="brand-tagline">Seu tempo, do seu jeito.</p>
+                
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <input type="email" id="login-email" value="admin@teste.com">
+                </div>
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" id="login-password" value="123456">
+                </div>
+                
+                <button class="btn-main" onclick="router.navigate('home')">Entrar</button>
+                <p class="text-mute mt-2">Protótipo Estático - Sem Backend</p>
+            </div>
+        </section>
+
+        <!-- HOME SCREEN -->
+        <section id="screen-home" class="screen">
+            <header class="main-header">
+                <div>
+                    <span class="text-mute">Bem-vindo,</span>
+                    <h2 id="user-display-name">Administrador</h2>
+                </div>
+                <div class="header-actions">
+                    <i class="fa-regular fa-bell icon-btn"></i>
+                    <div class="user-avatar" onclick="router.navigate('profile')">A</div>
+                </div>
+            </header>
+
+            <div class="content-scroll">
+                <div class="search-bar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Buscar profissionais ou serviços...">
+                </div>
+
+                <section class="section">
+                    <div class="section-header">
+                        <h3>Categorias</h3>
+                        <a href="#">Ver todas</a>
+                    </div>
+                    <div class="categories-grid">
+                        <div class="cat-item" onclick="app.filterCategory('Barba')">
+                            <div class="cat-icon"><i class="fa-solid fa-scissors"></i></div>
+                            <span>Barba</span>
+                        </div>
+                        <div class="cat-item" onclick="app.filterCategory('Estética')">
+                            <div class="cat-icon"><i class="fa-solid fa-face-smile"></i></div>
+                            <span>Estética</span>
+                        </div>
+                        <div class="cat-item" onclick="app.filterCategory('Saúde')">
+                            <div class="cat-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+                            <span>Saúde</span>
+                        </div>
+                        <div class="cat-item" onclick="app.filterCategory('Aulas')">
+                            <div class="cat-icon"><i class="fa-solid fa-dumbbell"></i></div>
+                            <span>Fitness</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h3>Profissionais Recomendados</h3>
+                    <div id="professionals-list" class="pro-list">
+                        <!-- JS Render -->
+                    </div>
+                </section>
+            </div>
+
+            <nav class="bottom-nav">
+                <div class="nav-item active" onclick="router.navigate('home')">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Início</span>
+                </div>
+                <div class="nav-item" onclick="router.navigate('appointments')">
+                    <i class="fa-regular fa-calendar"></i>
+                    <span>Agenda</span>
+                </div>
+                <div class="nav-item" onclick="router.navigate('profile')">
+                    <i class="fa-regular fa-user"></i>
+                    <span>Perfil</span>
+                </div>
+            </nav>
+        </section>
+
+        <!-- PROFESSIONAL PROFILE SCREEN -->
+        <section id="screen-pro-profile" class="screen">
+            <div class="pro-hero">
+                <button class="back-btn" onclick="router.back()"><i class="fa-solid fa-chevron-left"></i></button>
+                <img id="pro-cover" src="" alt="Cover" class="hero-img">
+                <div class="pro-hero-info">
+                    <img id="pro-avatar" src="" alt="Avatar" class="pro-avatar-large">
+                    <h2 id="pro-name">Nome do Profissional</h2>
+                    <p id="pro-cat" class="text-mute">Categoria</p>
+                </div>
+            </div>
+
+            <div class="content-scroll with-hero">
+                <div class="pro-stats">
+                    <div class="stat"><i class="fa-solid fa-star"></i> <span id="pro-rating">4.9</span></div>
+                    <div class="stat"><i class="fa-solid fa-location-dot"></i> <span>Mapa</span></div>
+                    <div class="stat"><i class="fa-brands fa-whatsapp"></i> <span>Whats</span></div>
+                </div>
+
+                <div class="pro-tabs">
+                    <button class="tab-btn active" onclick="app.switchProTab('services')">Serviços</button>
+                    <button class="tab-btn" onclick="app.switchProTab('portfolio')">Portfólio</button>
+                    <button class="tab-btn" onclick="app.switchProTab('info')">Sobre</button>
+                </div>
+
+                <div id="pro-tab-services" class="tab-content active">
+                    <div id="services-list" class="services-list">
+                        <!-- JS Render -->
+                    </div>
+                </div>
+
+                <div id="pro-tab-portfolio" class="tab-content">
+                    <div id="portfolio-grid" class="portfolio-grid">
+                        <!-- JS Render -->
+                    </div>
+                </div>
+                
+                <div id="pro-tab-info" class="tab-content">
+                    <p id="pro-desc" class="pro-description">Descrição do profissional...</p>
+                    <div class="info-item">
+                        <i class="fa-solid fa-map-pin"></i>
+                        <span id="pro-address">Endereço completo aqui</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="booking-bar" class="booking-bar hidden">
+                <div class="booking-info">
+                    <span id="selected-count">1 serviço</span>
+                    <strong id="total-price">R$ 0,00</strong>
+                </div>
+                <button class="btn-main small" onclick="app.startBooking()">Agendar Agora</button>
+            </div>
+        </section>
+
+        <!-- SCHEDULING SCREEN -->
+        <section id="screen-scheduling" class="screen">
+            <header class="app-header-simple">
+                <button class="icon-btn" onclick="router.back()"><i class="fa-solid fa-arrow-left"></i></button>
+                <h3>Escolher Horário</h3>
+                <div style="width: 24px;"></div>
+            </header>
+
+            <div class="content-scroll">
+                <div class="calendar-mock">
+                    <div class="calendar-header">
+                        <strong>Abril 2026</strong>
+                    </div>
+                    <div class="calendar-days">
+                        <div class="day-name">D</div><div class="day-name">S</div><div class="day-name">T</div>
+                        <div class="day-name">Q</div><div class="day-name">Q</div><div class="day-name">S</div><div class="day-name">S</div>
+                        <!-- Mock Days -->
+                        <div class="day disabled">29</div><div class="day disabled">30</div><div class="day disabled">31</div>
+                        <div class="day">1</div><div class="day">2</div><div class="day">3</div><div class="day">4</div>
+                        <div class="day selected">5</div><div class="day">6</div><div class="day">7</div><div class="day">8</div>
+                        <div class="day">9</div><div class="day">10</div><div class="day">11</div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h4>Horários Disponíveis</h4>
+                    <div id="time-slots" class="time-slots">
+                        <!-- JS Render -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-3">
+                <button id="confirm-booking-btn" class="btn-main disabled" onclick="app.completeBooking()">Confirmar Agendamento</button>
+            </div>
+        </section>
+
+        <!-- MY APPOINTMENTS SCREEN -->
+        <section id="screen-appointments" class="screen">
+            <header class="main-header">
+                <h3>Minha Agenda</h3>
+            </header>
+
+            <div class="content-scroll">
+                <div id="appointments-list" class="appointments-list">
+                    <!-- JS Render -->
+                </div>
+            </div>
+
+            <nav class="bottom-nav">
+                <div class="nav-item" onclick="router.navigate('home')">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Início</span>
+                </div>
+                <div class="nav-item active" onclick="router.navigate('appointments')">
+                    <i class="fa-solid fa-calendar"></i>
+                    <span>Agenda</span>
+                </div>
+                <div class="nav-item" onclick="router.navigate('profile')">
+                    <i class="fa-regular fa-user"></i>
+                    <span>Perfil</span>
+                </div>
+            </nav>
+        </section>
+
+        <!-- PROFILE SCREEN -->
+        <section id="screen-profile" class="screen">
+            <header class="main-header">
+                <h3>Meu Perfil</h3>
+            </header>
+
+            <div class="content-scroll text-center">
+                <div class="profile-header">
+                    <div class="user-avatar-huge">A</div>
+                    <h2>Administrador</h2>
+                    <p class="text-mute">admin@teste.com</p>
+                </div>
+
+                <div class="menu-list">
+                    <div class="menu-item"><i class="fa-regular fa-user"></i> <span>Editar Dados</span> <i class="fa-solid fa-chevron-right"></i></div>
+                    <div class="menu-item" onclick="app.showTelegramInfo()"><i class="fa-brands fa-telegram"></i> <span>Telegram Vinculado</span> <span class="badge">Ativo</span></div>
+                    <div class="menu-item"><i class="fa-solid fa-shield-halved"></i> <span>Segurança</span> <i class="fa-solid fa-chevron-right"></i></div>
+                    <div class="menu-item"><i class="fa-solid fa-headset"></i> <span>Suporte</span> <i class="fa-solid fa-chevron-right"></i></div>
+                    <div class="menu-item text-danger" onclick="router.navigate('login')"><i class="fa-solid fa-right-from-bracket"></i> <span>Sair da Conta</span></div>
+                </div>
+            </div>
+
+            <nav class="bottom-nav">
+                <div class="nav-item" onclick="router.navigate('home')">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Início</span>
+                </div>
+                <div class="nav-item" onclick="router.navigate('appointments')">
+                    <i class="fa-regular fa-calendar"></i>
+                    <span>Agenda</span>
+                </div>
+                <div class="nav-item active" onclick="router.navigate('profile')">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Perfil</span>
+                </div>
+            </nav>
+        </section>
+
+    </div>
+
+    <!-- NOTIFICATION SNACKBAR -->
+    <div id="snackbar">
+        <div class="snack-icon"><i class="fa-brands fa-telegram"></i></div>
+        <div class="snack-body">
+            <strong>Confirmação Enviada!</strong>
+            <p>Notificação de agendamento enviada via Telegram.</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

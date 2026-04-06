@@ -3,350 +3,548 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfólio - Valdir Jr</title>
+    <meta name="description" content="Portfólio de Valdir Jr - Estudante de Programação especializado em Flutter e Laravel">
+    <meta name="keywords" content="Flutter, Laravel, Desenvolvedor, Portfolio, Programação">
+    <meta name="author" content="Valdir Jr">
+    <title>Valdir Jr | Portfólio</title>
     
+    <!-- Favicon (placeholder) -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💻</text></svg>">
+    
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Dev Icons para Flutter e Laravel -->
+    <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
 
     <style>
-        /* --- RESET BÁSICO --- */
+        /* --- RESET E VARIÁVEIS --- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* --- ESTILO GERAL --- */
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --accent: #ff6b6b;
+            --accent-hover: #ff5252;
+            --card-bg: #1a1a1a;
+            --border: #2a2a2a;
+            --success: #4caf50;
+            --warning: #ff9800;
+        }
+
         html {
-            scroll-behavior: smooth; /* Rolagem suave */
+            scroll-behavior: smooth;
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            display: flex;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-
-        h1, h2, h3 {
-            color: #222;
-            margin-bottom: 15px;
-        }
-
-        p {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
             line-height: 1.6;
-            margin-bottom: 20px;
         }
 
-        section {
-            background-color: #ffffff;
-            margin-bottom: 20px;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        /* --- SCROLLBAR PERSONALIZADA --- */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-hover);
         }
 
-        /* --- BARRA LATERAL (SIDEBAR) --- */
+        /* --- SIDEBAR MODERNA --- */
         .sidebar {
-            width: 280px;
-            background-color: #222;
-            color: white;
-            padding: 30px;
-            height: 100vh;
             position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
             text-align: center;
+            z-index: 1000;
+            overflow-y: auto;
+            border-right: 1px solid var(--border);
         }
 
-        .sidebar .profile-pic {
+        .profile-pic {
             width: 150px;
             height: 150px;
+            margin: 0 auto 1.5rem;
             border-radius: 50%;
-            margin: 20px auto;
-            border: 5px solid #ffc107;
-            
-            /* --- EDITADO: Caminho da sua foto de perfil --- */
-            background-image: url('assets/images/foto-perfil.jpeg'); 
+            border: 3px solid var(--accent);
+            background-image: url('assets/images/foto-perfil.jpeg');
             background-size: cover;
             background-position: center;
+            transition: transform 0.3s ease;
+        }
+
+        .profile-pic:hover {
+            transform: scale(1.05);
         }
 
         .sidebar h2 {
-            color: white;
-            margin-bottom: 30px;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
         }
 
-        .sidebar nav ul {
+        .sidebar .title {
+            color: var(--accent);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Menu Navegação */
+        .nav-menu {
             list-style: none;
-            padding: 0;
+            margin: 2rem 0;
         }
 
-        .sidebar nav li {
-            margin-bottom: 15px;
+        .nav-menu li {
+            margin-bottom: 0.5rem;
         }
 
-        .sidebar nav a {
-            color: #ccc;
-            text-decoration: none;
-            font-size: 1.1em;
+        .nav-menu a {
             display: block;
-            padding: 10px;
-            border-radius: 5px;
+            padding: 0.75rem 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-menu a:hover {
+            background-color: var(--accent);
+            color: var(--bg-primary);
+            transform: translateX(5px);
+        }
+
+        .nav-menu a i {
+            margin-right: 10px;
+            width: 20px;
+        }
+
+        /* Social Links */
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .social-links a {
+            color: var(--text-secondary);
+            font-size: 1.3rem;
             transition: all 0.3s ease;
         }
 
-        .sidebar nav a:hover {
-            background-color: #ffc107;
-            color: #222;
+        .social-links a:hover {
+            color: var(--accent);
+            transform: translateY(-3px);
         }
-
-        .sidebar .social-links {
-            margin-top: 40px;
-        }
-
-        .sidebar .social-links a {
-            color: #ccc;
-            font-size: 1.5em;
-            margin: 0 10px;
-            transition: color 0.3s ease;
-        }
-        
-        .sidebar .social-links a:hover {
-            color: #ffc107;
-        }
-
 
         /* --- CONTEÚDO PRINCIPAL --- */
         .main-content {
             margin-left: 280px;
-            padding: 40px;
-            width: 100%;
+            padding: 2rem;
         }
 
-        /* Seção "Início" */
-        #inicio {
-            background-color: #333;
-            color: white;
-        }
-        #inicio h1 {
-            color: white;
-            font-size: 3em;
-        }
-        #inicio .highlight {
-            color: #ffc107;
-        }
-        #inicio p {
-            font-size: 1.5em;
-            color: #eee;
+        /* Seções */
+        section {
+            max-width: 1000px;
+            margin: 0 auto 3rem;
+            animation: fadeInUp 0.6s ease-out;
         }
 
-        /* Seção "Sobre Mim" */
-        .about-container {
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 60vh;
             display: flex;
-            gap: 30px;
-        }
-        .about-text { flex: 2; }
-        .about-skills { flex: 1; }
-        .about-skills ul { list-style: none; }
-        .about-skills li {
-            background-color: #f0f0f0;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
         }
 
-        /* Seção "Resume" */
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero .highlight {
+            color: var(--accent);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Cards e Containers */
+        .about-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .skills-list {
+            list-style: none;
+        }
+
+        .skills-list li {
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .skills-list li:hover {
+            transform: translateX(5px);
+        }
+
+        .skills-list i, .skills-list img {
+            width: 24px;
+            font-size: 1.2rem;
+            color: var(--accent);
+        }
+
+        /* Resume Items */
         .resume-item {
-            border-left: 3px solid #ffc107;
-            padding-left: 20px;
-            margin-bottom: 30px;
-        }
-        .resume-item h3 { color: #333; }
-        .resume-item .period {
-            font-style: italic;
-            color: #777;
-            margin-bottom: 5px;
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            border-left: 3px solid var(--accent);
+            transition: transform 0.3s ease;
         }
 
-        /* Seção "Portfolio" */
+        .resume-item:hover {
+            transform: translateX(5px);
+        }
+
+        .resume-item h4 {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .period {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Portfolio Grid */
         .portfolio-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
         }
-        
+
         .portfolio-item {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-            overflow: hidden; /* Para a imagem se ajustar bem */
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
         }
+
         .portfolio-item:hover {
             transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.2);
+            border-color: var(--accent);
         }
-        
-        .portfolio-item .portfolio-image {
+
+        .portfolio-image {
             width: 100%;
             height: 200px;
-            object-fit: cover; /* Garante que a imagem cubra o espaço */
-            display: block;
+            object-fit: cover;
         }
 
-        .portfolio-item .info {
-            padding: 20px;
+        .portfolio-info {
+            padding: 1.5rem;
         }
-        .portfolio-item .info h3 { color: #333; }
-        .portfolio-item .info .tags { margin-bottom: 15px; }
-        .portfolio-item .info .tags span {
-            background-color: #ffc107;
-            color: #333;
-            padding: 3px 8px;
-            border-radius: 3px;
-            font-size: 0.8em;
-            margin-right: 5px;
+
+        .portfolio-info h3 {
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
         }
-        .portfolio-item .info a {
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .tags span {
+            background: var(--bg-secondary);
+            color: var(--accent);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .portfolio-info p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .portfolio-link {
+            color: var(--accent);
             text-decoration: none;
-            color: #333;
-            font-weight: bold;
-        }
-        .portfolio-item .info a:hover { color: #ffc107; }
-
-        /* --- NOVO: Animação de "Pulsação" --- */
-        .portfolio-item.in-discussion {
-            animation: pulse-animation 4s infinite ease-in-out;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: gap 0.3s ease;
         }
 
-        @keyframes pulse-animation {
-            0% { opacity: 0.8; }
-            50% { opacity: 0.5; } /* Fica um pouco transparente */
-            100% { opacity: 0.8; }
+        .portfolio-link:hover {
+            gap: 0.8rem;
         }
-        /* --- FIM DA ANIMAÇÃO --- */
 
-
-        /* Seção "Contato" */
-        #contato p {
-            font-size: 1.2em;
+        /* Contact Section */
+        .contact-content {
             text-align: center;
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--border);
         }
-        #contato .contact-links {
-            text-align: center;
-            margin-top: 20px;
-        }
-        #contato .contact-links a {
-            font-size: 2.5em;
-            color: #333;
-            margin: 0 20px;
-            transition: color 0.3s ease;
-        }
-        #contato .contact-links a:hover { color: #ffc107; }
 
-        /* --- AJUSTES PARA TELAS PEQUENAS (MOBILE) --- */
+        .contact-content p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-links a {
+            color: var(--text-secondary);
+            font-size: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .contact-links a:hover {
+            color: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        /* Botão Voltar ao Topo */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--accent);
+            color: var(--bg-primary);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--accent-hover);
+            transform: translateY(-3px);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        /* Responsividade */
         @media (max-width: 768px) {
-            
-            body {
-                display: block; /* Remove o layout 'flex' (lado a lado) */
-            }
-
             .sidebar {
-                width: 100%;       /* Faz a barra lateral ocupar a largura total */
-                height: auto;        /* Altura se ajusta ao conteúdo */
-                position: relative;  /* Remove o 'position: fixed' */
-                padding: 20px;
+                position: relative;
+                width: 100%;
+                height: auto;
+                padding: 1rem;
             }
 
-            .sidebar .profile-pic {
-                width: 120px;    /* Diminui um pouco a foto no mobile */
-                height: 120px;
-                margin-top: 0;
-                margin-bottom: 10px;
-            }
-            
-            .sidebar nav ul {
-                display: flex;       /* Coloca os links do menu lado a lado */
-                flex-wrap: wrap;     /* Permite que quebrem a linha se não couberem */
-                justify-content: center; /* Centraliza os links */
-                margin-top: 10px;
-                margin-bottom: 10px;
+            .profile-pic {
+                width: 100px;
+                height: 100px;
             }
 
-            .sidebar nav li {
-                margin-bottom: 5px;
-                margin-left: 5px;
-                margin-right: 5px;
+            .nav-menu ul {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.5rem;
             }
 
-            .sidebar .social-links {
-                margin-top: 20px; /* Diminui o espaço dos links sociais */
+            .nav-menu li {
+                margin-bottom: 0;
+            }
+
+            .nav-menu a {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.85rem;
             }
 
             .main-content {
-                margin-left: 0;      /* Remove a margem lateral */
-                padding: 20px;       /* Reduz o padding geral do conteúdo */
+                margin-left: 0;
+                padding: 1rem;
             }
 
-            section {
-                padding: 20px;       /* Reduz o padding das seções internas */
-            }
-
-            /* Ajusta o tamanho das fontes de título */
-            #inicio h1 {
-                font-size: 2.2em;
-            }
-            #inicio p {
-                font-size: 1.2em;
-            }
-            
-            /* Faz as colunas "Sobre mim" e "Habilidades" ficarem uma em cima da outra */
             .about-container {
-                flex-direction: column; /* Empilha as colunas */
-                gap: 20px;
+                grid-template-columns: 1fr;
             }
 
-            /* Opcional: Centraliza os ícones de contato */
-            #contato .contact-links a {
-                font-size: 2.2em;
-                margin: 0 15px; /* Menos espaço entre eles */
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .back-to-top {
+                bottom: 1rem;
+                right: 1rem;
+                width: 40px;
+                height: 40px;
             }
         }
 
+        /* Loading animation para imagens */
+        .portfolio-image {
+            background: linear-gradient(90deg, var(--bg-secondary) 25%, var(--card-bg) 50%, var(--bg-secondary) 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .portfolio-image[src] {
+            animation: none;
+        }
     </style>
 </head>
 <body>
 
+    <!-- Sidebar -->
     <aside class="sidebar">
-        
         <div class="profile-pic"></div>
-        
         <h2>Valdir Jr</h2>
+        <div class="title">Estudante de Programação</div>
 
-        <nav>
-            <ul>
-                <li><a href="#inicio">Início</a></li>
-                <li><a href="#sobre-mim">Sobre Mim</a></li>
-                <li><a href="#resume">Currículo</a></li>
-                <li><a href="#portfolio">Portfólio</a></li>
-                <li><a href="#contato">Contato</a></li>
+        <nav class="nav-menu">
+            <ul style="list-style: none;">
+                <li><a href="#inicio"><i class="fas fa-home"></i> Início</a></li>
+                <li><a href="#sobre-mim"><i class="fas fa-user"></i> Sobre Mim</a></li>
+                <li><a href="#resume"><i class="fas fa-file-alt"></i> Formação</a></li>
+                <li><a href="#portfolio"><i class="fas fa-code"></i> Portfólio</a></li>
+                <li><a href="#contato"><i class="fas fa-envelope"></i> Contato</a></li>
             </ul>
         </nav>
 
         <div class="social-links">
-            <a href="https://github.com/Jrvaldir" title="GitHub"><i class="fab fa-github"></i></a>
-            <a href="https://www.linkedin.com/in/valdir-moura-89bbbb110/" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
-            <a href="https://www.instagram.com/valdir_moura/?igsh=MTZ1eHJrcjdxenpwdg%3D%3D#" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://github.com/Jrvaldir" title="GitHub" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/valdir-moura-89bbbb110/" title="LinkedIn" target="_blank"><i class="fab fa-linkedin"></i></a>
+            <a href="https://www.instagram.com/valdir_moura/" title="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
             <a href="mailto:valdirjr.vj@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+            <a href="https://wa.me/5581998049479" title="WhatsApp" target="_blank"><i class="fab fa-whatsapp"></i></a>
         </div>
     </aside>
 
+    <!-- Conteúdo Principal -->
     <main class="main-content">
-
-        <section id="inicio">
-            <h1>Olá, eu sou <span class="highlight">Valdir Jr</span></h1>
-            <p>Estudante de Programação com foco em Desenvolvimento Full-Stack.</p>
+        
+        <!-- Hero Section -->
+        <section id="inicio" class="hero">
+            <div>
+                <h1>Olá, eu sou <span class="highlight">Valdir Jr</span></h1>
+                <p>Estudante de Programação apaixonado por criar soluções inovadoras.</p>
+            </div>
         </section>
 
+        <!-- Sobre Mim -->
         <section id="sobre-mim">
-            <h2>Sobre Mim</h2>
+            <h2 class="section-title">Sobre Mim</h2>
             <div class="about-container">
                 <div class="about-text">
                     <p>
@@ -354,58 +552,56 @@
                         tornar-me um desenvolvedor Full-Stack especializado em <strong>Flutter</strong> e <strong>Laravel</strong>.
                     </p>
                     <p>
-                        Minha formação anterior como <strong>Técnico em Design de Interiores</strong> me proporcionou 
-                        uma base sólida em estética e funcionalidade. Isso me ajuda a ter um 
-                        resultado melhor em <strong>UX/UI Design</strong>, criando interfaces que 
-                        não são apenas funcionais, mas também intuitivas e agradáveis de usar.
+                        Busco aprender novas tecnologias e aplicar meus conhecimentos em projetos 
+                        que possam impactar positivamente a vida das pessoas. Acredito que a tecnologia tem o poder 
+                        de transformar realidades e é isso que me motiva a evoluir cada dia mais.
                     </p>
                 </div>
                 <div class="about-skills">
-                    <h3>Principais Habilidades</h3>
-                    <ul>
-                       <li><i class="fas fa-palette"></i> UX/UI Design</li>
-                    </ul><br>
-                    <h3>Habilidades em Construção</h3>
-                    <ul>
-                        <li><i class="fab fa-flutter"></i> Desenvolvimento Flutter</li>
-                        <li><i class="fab fa-laravel"></i> Desenvolvimento Laravel</li>
-                        <li><i class="fas fa-laptop-code"></i> Desenvolvimento Web</li>
+                    <h3>Habilidades em Desenvolvimento</h3>
+                    <ul class="skills-list">
+                        <li><i class="devicon-html5-plain colored"></i> HTML5 & CSS3</li>
+                        <li><i class="devicon-javascript-plain colored"></i> JavaScript</li>
+                        <li><i class="devicon-flutter-plain colored"></i> Flutter</li>
+                        <li><i class="devicon-laravel-plain colored"></i> Laravel</li>
                     </ul>
                 </div>
             </div>
         </section>
 
+        <!-- Currículo -->
         <section id="resume">
-            <h2>Currículo</h2>
+            <h2 class="section-title">Formação</h2>
+            
             <h3>Educação</h3>
             
             <div class="resume-item">
-                <h4>Superior em Análise e Desenvolvimento de Sistemas</h4>
+                <h4>🎓 Superior em Análise e Desenvolvimento de Sistemas</h4>
                 <div class="period">2024 - Presente</div>
-                <p><em>Unopar</em></p>
+                <p>Unopar - Universidade Norte do Paraná</p>
             </div>
             
             <div class="resume-item">
-                <h4>Técnico em Análise e Desenvolvimento de Sistemas</h4>
+                <h4>🎓 Técnico em Análise e Desenvolvimento de Sistemas</h4>
                 <div class="period">Concluído em 2023</div>
-                <p><em>ETE Antônio Arruda de Farias</em></p>
+                <p>ETE Antônio Arruda de Farias</p>
             </div>
 
             <div class="resume-item">
-                <h4>Técnico em Design de Interiores</h4>
+                <h4>🎨 Técnico em Design de Interiores</h4>
                 <div class="period">Concluído em 2022</div>
-                <p><em>ETE Antônio Arruda de Farias</em></p>
+                <p>ETE Antônio Arruda de Farias</p>
             </div>
         </section>
 
+        <!-- Portfólio -->
         <section id="portfolio">
-            <h2>Portfólio</h2>
+            <h2 class="section-title">Portfólio</h2>
             <div class="portfolio-grid">
 
                 <div class="portfolio-item">
-                    <img src="assets/images/projeto-curriculo.png" alt="Print do Criador de Currículo" class="portfolio-image">
-                    
-                    <div class="info">
+                    <img src="assets/images/projeto-curriculo.png" alt="Criador de Currículo" class="portfolio-image" loading="lazy">
+                    <div class="portfolio-info">
                         <h3>Criador de Currículo</h3>
                         <div class="tags">
                             <span>HTML</span>
@@ -413,50 +609,121 @@
                             <span>JavaScript</span>
                         </div>
                         <p>Plataforma web para criar e baixar currículos de forma simples e rápida.</p>
-                        <a href="https://criador-curriculos.vercel.app/" target="_blank">Ver Projeto &rarr;</a>
+                        <a href="https://criador-curriculos.vercel.app/" target="_blank" class="portfolio-link">Ver Projeto →</a>
                     </div>
                 </div>
 
                 <div class="portfolio-item">
-                    <img src="assets/images/projeto-agenda.png" alt="App de Agendamentos" class="portfolio-image">
-                    
-                    <div class="info">
+                    <img src="assets/images/projeto-haran.png" alt="Haran Grupo de Dança" class="portfolio-image" loading="lazy">
+                    <div class="portfolio-info">
+                        <h3>Haran Grupo de Dança</h3>
+                        <div class="tags">
+                            <span>HTML</span>
+                            <span>CSS</span>
+                            <span>JavaScript</span>
+                        </div>
+                        <p>Plataforma cultural completa desenvolvida para o Haran Grupo de Dança com catálogo e agenda.</p>
+                        <a href="./grupo_haran/index.html" target="_blank" class="portfolio-link">Ver Projeto →</a>
+                    </div>
+                </div>
+
+                <div class="portfolio-item">
+                    <img src="assets/images/projeto-agenda.png" alt="Plataforma de Agendamentos" class="portfolio-image" loading="lazy">
+                    <div class="portfolio-info">
                         <h3>Plataforma de Agendamentos</h3>
                         <div class="tags">
                             <span>Flutter</span>
                             <span>Laravel</span>
                         </div>
-                        <p>App de agendamentos para profissionais no setor estetico. (Em Breve)</p>
-                        <a href="./agenda.html" target="_blank">Ver Página de Lançamento &rarr;</a>
+                        <p>App de agendamentos para profissionais do setor estético. (Pausado)</p>
+                        <a href="./bora_agendar/agenda.html" target="_blank" class="portfolio-link">Ver Projeto →</a>
                     </div>
                 </div>
 
-                <div class="portfolio-item in-discussion"> <img src="assets/images/projeto-energia.jpg" alt="Gestor de Energia" class="portfolio-image">
-                    
-                    <div class="info">
-                        <h3>Gestão de Energia Renovável</h3> <div class="tags">
-                            <span>Em Planejamento</span>
+                <div class="portfolio-item">
+                    <img src="assets/images/projeto-plataforma-de-ingressos.png" alt="Plataforma de Ingressos" class="portfolio-image" loading="lazy">
+                    <div class="portfolio-info">
+                        <h3>Plataforma de Ingressos</h3>
+                        <div class="tags">
+                            <span>HTML</span>
+                            <span>CSS</span>
+                            <span>JavaScript</span>
                         </div>
-                        <p>Plataforma para monitoramento e gestão de sistemas de energia renovável. (Em discussão)</p>
-                        </div>
+                        <p>Plataforma para venda distribuição e validação de ingressos. (Em contrução)</p>
+                        <a href="./plataforma-ingressos/index.html" target="_blank" class="portfolio-link">Ver Projeto →</a>
+                    </div>
                 </div>
 
             </div>
         </section>
 
+        <!-- Contato -->
         <section id="contato">
-            <h2>Vamos Conversar?</h2>
-            <p>Estou aberto a novas oportunidades e conexões. Sinta-se à vontade para entrar em contato!</p>
-            
-            <div class="contact-links">
-                 <a href="https://github.com/Jrvaldir" title="GitHub"><i class="fab fa-github"></i></a>
-                <a href="https://www.linkedin.com/in/valdir-moura-89bbbb110/" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                <a href="https://www.instagram.com/valdir_moura/?igsh=MTZ1eHJrcjdxenpwdg%3D%3D#" title="Instagram"><i class="fab fa-instagram"></i></a>
-                <a href="mailto:valdirjr.vj@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+            <h2 class="section-title">Vamos Conversar?</h2>
+            <div class="contact-content">
+                <p>Estou aberto a novas oportunidades, colaborações e conexões. Sinta-se à vontade para entrar em contato!</p>
+                <div class="contact-links">
+                    <a href="https://github.com/Jrvaldir" title="GitHub" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/valdir-moura-89bbbb110/" title="LinkedIn" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://www.instagram.com/valdir_moura/" title="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="mailto:valdirjr.vj@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+                    <a href="https://wa.me/5581998049479" title="WhatsApp" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                </div>
             </div>
         </section>
 
+        <footer class="footer">
+            <p>© 2025 Valdir Jr - Todos os direitos reservados</p>
+            <p>Desenvolvido com 💻 e ☕</p>
+        </footer>
     </main>
-    
+
+    <!-- Botão Voltar ao Topo -->
+    <a href="#" class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <script>
+        // Botão Voltar ao Topo
+        const backToTop = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+
+        backToTop.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Smooth scroll para links do menu
+        document.querySelectorAll('.nav-menu a, .back-to-top').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                if (targetId && targetId.startsWith('#')) {
+                    e.preventDefault();
+                    const target = document.querySelector(targetId);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+
+        // Animação de loading das imagens
+        document.querySelectorAll('.portfolio-image').forEach(img => {
+            if (img.complete) {
+                img.style.animation = 'none';
+            } else {
+                img.addEventListener('load', () => {
+                    img.style.animation = 'none';
+                });
+            }
+        });
+    </script>
 </body>
 </html>

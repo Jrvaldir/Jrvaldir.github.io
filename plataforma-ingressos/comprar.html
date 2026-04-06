@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprar Ingresso - Ticket Fácil</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            color: #ff6b6b;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 1.5rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .card h2, .card h3 {
+            margin-bottom: 1rem;
+            color: #1a1a2e;
+        }
+
+        /* Banner do evento */
+        .evento-banner {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            background: #f0f0f0;
+        }
+
+        .evento-titulo {
+            font-size: 1.5rem;
+            color: #1a1a2e;
+            margin-bottom: 0.5rem;
+        }
+
+        .evento-descricao {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .evento-card, .sessao-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .evento-card:hover, .sessao-card:hover {
+            border-color: #ff6b6b;
+            transform: translateX(5px);
+        }
+
+        .evento-card.selecionado, .sessao-card.selecionado {
+            border-color: #ff6b6b;
+            background-color: #fff5f5;
+        }
+
+        .evento-nome {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #1a1a2e;
+        }
+
+        .evento-descricao {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .sessao-horario {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #1a1a2e;
+        }
+
+        .sessao-data, .sessao-local {
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        .sessao-preco {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ff6b6b;
+            margin-top: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .btn-comprar {
+            width: 100%;
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #888;
+        }
+
+        .erro {
+            text-align: center;
+            padding: 2rem;
+            color: #f44336;
+        }
+
+        .btn-voltar {
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background: #ccc;
+            color: #333;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: #1a1a2e;
+            color: #888;
+            margin-top: 2rem;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <h1>🎟️ TICKET FÁCIL</h1>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Início</a>
+                <a href="criar-evento.html">Criar Evento</a>
+                <a href="validar.html">Validar</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div id="conteudo"></div>
+    </main>
+
+    <footer class="footer">
+        <p>🎟️ Ticket Fácil - Plataforma de ingressos para eventos locais</p>
+    </footer>
+
+    <script>
+        // ===== CONFIGURAÇÃO =====
+        const API_URL = "https://script.google.com/macros/s/AKfycbxL4fdl7JNPJuA-7dPTNKX-OGQ6GqNn507ZBJVs5vMtKqLOiWd8cnHsugDzgTrEK5-lNA/exec";
+
+        // Funções da API
+        async function listarEventos() {
+            const response = await fetch(`${API_URL}?acao=listarEventos`);
+            return await response.json();
+        }
+
+        async function listarSessoes(eventoId) {
+            const response = await fetch(`${API_URL}?acao=listarSessoes&eventoId=${eventoId}`);
+            return await response.json();
+        }
+
+        async function criarIngresso(dados) {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ acao: 'criarIngresso', ...dados })
+            });
+            return await response.json();
+        }
+
+        // Variáveis
+        let eventos = [];
+        let eventoSelecionado = null;
+        let sessaoSelecionada = null;
+
+        // Pega o ID do evento da URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const eventoIdUrl = urlParams.get('evento');
+
+        // ===== TELA DE SELEÇÃO DE EVENTO =====
+        async function mostrarSelecaoEvento() {
+            const container = document.getElementById('conteudo');
+            container.innerHTML = '<div class="loading">🎭 Carregando eventos...</div>';
+            
+            try {
+                eventos = await listarEventos();
+                
+                if (!eventos || eventos.length === 0) {
+                    container.innerHTML = '<div class="erro">📭 Nenhum evento disponível no momento.</div>';
+                    return;
+                }
+                
+                let html = `
+                    <div class="card">
+                        <h2>🎭 Escolha o evento</h2>
+                        <div id="lista-eventos">
+                `;
+                
+                for (const evento of eventos) {
+                    // Usa a capa do evento se existir
+                    const capaUrl = evento.Capa || "https://placehold.co/600x200?text=Evento";
+                    html += `
+                        <div class="evento-card" data-id="${evento.ID}" data-nome="${evento.Nome}" data-desc="${evento.Descrição || ''}" data-capa="${capaUrl}" data-tipo="${evento.Tipo}">
+                            <img src="${capaUrl}" style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px; margin-bottom: 0.5rem;" onerror="this.src='https://placehold.co/600x120?text=Evento'">
+                            <div class="evento-nome">🎭 ${evento.Nome}</div>
+                            <div class="evento-descricao">${evento.Descrição || 'Clique para ver os horários'}</div>
+                        </div>
+                    `;
+                }
+                
+                html += `</div></div>`;
+                container.innerHTML = html;
+                
+                // Adiciona evento de clique
+                document.querySelectorAll('.evento-card').forEach(card => {
+                    card.addEventListener('click', () => selecionarEvento(card));
+                });
+                
+            } catch (error) {
+                console.error(error);
+                container.innerHTML = '<div class="erro">❌ Erro ao carregar eventos. Tente novamente.</div>';
+            }
+        }
+
+        // ===== SELECIONAR EVENTO E MOSTRAR SESSÕES =====
+        async function selecionarEvento(card) {
+            document.querySelectorAll('.evento-card').forEach(c => c.classList.remove('selecionado'));
+            card.classList.add('selecionado');
+            
+            const id = parseInt(card.dataset.id);
+            eventoSelecionado = {
+                id: id,
+                nome: card.dataset.nome,
+                descricao: card.dataset.desc,
+                tipo: card.dataset.tipo,
+                capa: card.dataset.capa
+            };
+            
+            const container = document.getElementById('conteudo');
+            container.innerHTML = '<div class="loading">🎭 Carregando horários...</div>';
+            
+            try {
+                const sessoes = await listarSessoes(id);
+                
+                if (!sessoes || sessoes.length === 0) {
+                    container.innerHTML = `
+                        <div class="card">
+                            <img class="evento-banner" src="${eventoSelecionado.capa}" alt="${eventoSelecionado.nome}" onerror="this.src='https://placehold.co/800x200?text=Evento'">
+                            <h2 class="evento-titulo">🎭 ${eventoSelecionado.nome}</h2>
+                            <p class="evento-descricao">${eventoSelecionado.descricao || 'Descrição não disponível.'}</p>
+                            <p>Nenhum horário disponível para este evento.</p>
+                            <button onclick="mostrarSelecaoEvento()" class="btn-voltar">← Voltar</button>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                let html = `
+                    <div class="card">
+                        <img class="evento-banner" src="${eventoSelecionado.capa}" alt="${eventoSelecionado.nome}" onerror="this.src='https://placehold.co/800x200?text=Evento'">
+                        <h2 class="evento-titulo">🎭 ${eventoSelecionado.nome}</h2>
+                        <p class="evento-descricao">${eventoSelecionado.descricao || 'Selecione o horário desejado:'}</p>
+                        <div id="lista-sessoes">
+                `;
+                
+                for (const sessao of sessoes) {
+                    const disponiveis = (sessao['Estoque Pago'] || 0) - (sessao['Vendidos Pago'] || 0);
+                    html += `
+                        <div class="sessao-card" data-id="${sessao.ID}" data-preco="${sessao.Preco}" data-data="${sessao.Data}" data-horario="${sessao.Horario}" data-local="${sessao.Local}">
+                            <div class="sessao-horario">🕐 ${sessao.Horario}</div>
+                            <div class="sessao-data">📅 ${sessao.Data}</div>
+                            <div class="sessao-local">📍 ${sessao.Local || 'Local não informado'}</div>
+                            <div class="sessao-preco">R$ ${sessao.Preco},00</div>
+                            <div class="sessao-estoque">📦 ${disponiveis} ingressos disponíveis</div>
+                        </div>
+                    `;
+                }
+                
+                html += `
+                        </div>
+                        <button onclick="mostrarSelecaoEvento()" class="btn-voltar">← Voltar</button>
+                    </div>
+                `;
+                
+                container.innerHTML = html;
+                
+                // Adiciona evento de clique nas sessões
+                document.querySelectorAll('.sessao-card').forEach(card => {
+                    card.addEventListener('click', () => selecionarSessao(card));
+                });
+                
+            } catch (error) {
+                console.error(error);
+                container.innerHTML = '<div class="erro">❌ Erro ao carregar horários. Tente novamente.</div>';
+            }
+        }
+
+        // ===== SELECIONAR SESSÃO E MOSTRAR FORMULÁRIO =====
+        function selecionarSessao(card) {
+            document.querySelectorAll('.sessao-card').forEach(c => c.classList.remove('selecionado'));
+            card.classList.add('selecionado');
+            
+            sessaoSelecionada = {
+                id: parseInt(card.dataset.id),
+                preco: parseFloat(card.dataset.preco),
+                data: card.dataset.data,
+                horario: card.dataset.horario,
+                local: card.dataset.local
+            };
+            
+            const container = document.getElementById('conteudo');
+            
+            let html = `
+                <div class="card">
+                    <img class="evento-banner" src="${eventoSelecionado.capa}" alt="${eventoSelecionado.nome}" onerror="this.src='https://placehold.co/800x200?text=Evento'">
+                    <h2 class="evento-titulo">🎭 ${eventoSelecionado.nome}</h2>
+                    <div style="background: #f0f0f0; padding: 0.75rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <strong>Sessão selecionada:</strong><br>
+                        🕐 ${sessaoSelecionada.horario} - ${sessaoSelecionada.data}<br>
+                        📍 ${sessaoSelecionada.local}<br>
+                        💰 R$ ${sessaoSelecionada.preco},00 por ingresso
+                    </div>
+                    
+                    <h3>📝 Seus dados</h3>
+                    <form id="form-compra">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nome">Nome completo *</label>
+                                <input type="text" id="nome" required placeholder="João Silva">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">E-mail *</label>
+                                <input type="email" id="email" required placeholder="joao@email.com">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="telefone">Telefone</label>
+                                <input type="tel" id="telefone" placeholder="(81) 99999-9999">
+                            </div>
+                            <div class="form-group">
+                                <label for="quantidade">Quantidade</label>
+                                <select id="quantidade">
+                                    <option value="1">1 ingresso</option>
+                                    <option value="2">2 ingressos</option>
+                                    <option value="3">3 ingressos</option>
+                                    <option value="4">4 ingressos</option>
+                                    <option value="5">5 ingressos</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div id="total-preco" style="text-align: right; font-size: 1.2rem; margin: 1rem 0;">
+                            <strong>Total: R$ <span id="valor-total">${sessaoSelecionada.preco}</span></strong>
+                        </div>
+                        
+                        <button type="submit" class="btn-comprar">🎟️ Gerar Ingresso</button>
+                    </form>
+                    
+                    <button onclick="voltarParaSessoes()" class="btn-voltar">← Voltar</button>
+                </div>
+            `;
+            
+            container.innerHTML = html;
+            
+            // Atualiza total quando mudar quantidade
+            document.getElementById('quantidade').addEventListener('change', function() {
+                const qtd = parseInt(this.value);
+                document.getElementById('valor-total').innerText = sessaoSelecionada.preco * qtd;
+            });
+            
+            // Submit do formulário
+            document.getElementById('form-compra').addEventListener('submit', enviarCompra);
+        }
+
+        function voltarParaSessoes() {
+            selecionarEvento(document.querySelector('.evento-card.selecionado'));
+        }
+
+        function gerarCodigoUnico() {
+            return 'ING-' + Date.now() + '-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+        }
+
+        async function enviarCompra(e) {
+            e.preventDefault();
+            
+            const nome = document.getElementById('nome').value;
+            const email = document.getElementById('email').value;
+            const quantidade = parseInt(document.getElementById('quantidade').value);
+            const codigo = gerarCodigoUnico();
+            const valorTotal = sessaoSelecionada.preco * quantidade;
+            
+            const dados = {
+                codigo: codigo,
+                tipo: 'pago',
+                sessao_id: sessaoSelecionada.id,
+                evento_id: eventoSelecionado.id,
+                comprador: nome,
+                email: email,
+                telefone: document.getElementById('telefone').value,
+                quantidade: quantidade,
+                valor_total: valorTotal
+            };
+            
+            const botao = e.target.querySelector('button[type="submit"]');
+            botao.disabled = true;
+            botao.innerText = '🔄 Gerando...';
+            
+            try {
+                const resultado = await criarIngresso(dados);
+                
+                if (resultado.success) {
+                    const container = document.getElementById('conteudo');
+                    container.innerHTML = `
+                        <div class="card" style="text-align: center;">
+                            <h2>🎉 Ingresso Gerado com Sucesso!</h2>
+                            <p style="font-size: 2rem; margin: 1rem 0;">✅</p>
+                            <p><strong>Código:</strong> ${codigo}</p>
+                            <p><strong>Total:</strong> R$ ${valorTotal}</p>
+                            <p><strong>Evento:</strong> ${eventoSelecionado.nome}</p>
+                            <p><strong>Horário:</strong> ${sessaoSelecionada.horario} - ${sessaoSelecionada.data}</p>
+                            <p style="margin-top: 1rem;">📧 Enviamos uma cópia para o e-mail <strong>${email}</strong></p>
+                            <button onclick="window.location.href='index.html'" style="margin-top: 1rem; padding: 0.75rem 1.5rem; background: #ff6b6b; color: white; border: none; border-radius: 8px; cursor: pointer;">← Voltar ao início</button>
+                        </div>
+                    `;
+                } else {
+                    alert(`❌ Erro: ${resultado.error || 'Tente novamente'}`);
+                    botao.disabled = false;
+                    botao.innerText = '🎟️ Gerar Ingresso';
+                }
+            } catch (error) {
+                alert('❌ Erro ao gerar ingresso. Tente novamente.');
+                botao.disabled = false;
+                botao.innerText = '🎟️ Gerar Ingresso';
+            }
+        }
+
+        // Inicializa
+        if (eventoIdUrl) {
+            // Se tem ID na URL, carrega direto
+            (async () => {
+                try {
+                    eventos = await listarEventos();
+                    const evento = eventos.find(e => e.ID == eventoIdUrl);
+                    if (evento) {
+                        // Cria um card virtual para selecionar
+                        const card = document.createElement('div');
+                        card.dataset.id = evento.ID;
+                        card.dataset.nome = evento.Nome;
+                        card.dataset.desc = evento.Descrição || '';
+                        card.dataset.capa = evento.Capa || "https://placehold.co/600x200?text=Evento";
+                        card.dataset.tipo = evento.Tipo;
+                        await selecionarEvento(card);
+                    } else {
+                        mostrarSelecaoEvento();
+                    }
+                } catch (error) {
+                    mostrarSelecaoEvento();
+                }
+            })();
+        } else {
+            mostrarSelecaoEvento();
+        }
+    </script>
+</body>
+</html>

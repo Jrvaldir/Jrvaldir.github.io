@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Evento - Ticket Fácil</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            color: #ff6b6b;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 1.5rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .card-form {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .card-form h2 {
+            color: #1a1a2e;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .card-form h3 {
+            color: #1a1a2e;
+            margin: 1.5rem 0 1rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #ff6b6b;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #ff6b6b;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .tipo-ingresso {
+            display: flex;
+            gap: 2rem;
+            padding: 0.5rem 0;
+        }
+
+        .tipo-ingresso label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        .upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        .upload-area:hover {
+            border-color: #ff6b6b;
+        }
+
+        .upload-area p {
+            color: #888;
+        }
+
+        .preview-imagem {
+            max-width: 100%;
+            max-height: 150px;
+            margin-top: 1rem;
+            border-radius: 8px;
+        }
+
+        .sessoes-container {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .sessao-item {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .sessao-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .sessao-titulo {
+            font-weight: bold;
+            color: #ff6b6b;
+        }
+
+        .btn-remover-sessao {
+            background: #f8d7da;
+            color: #721c24;
+            border: none;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .btn-adicionar-sessao {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 1rem;
+        }
+
+        .btn-submit:hover {
+            background-color: #ff5252;
+        }
+
+        .btn-submit:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .mensagem {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+        }
+
+        .mensagem.sucesso {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .mensagem.erro {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .mensagem.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: #1a1a2e;
+            color: #888;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .card-form {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <h1>🎟️ TICKET FÁCIL</h1>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Início</a>
+                <a href="criar-evento.html" style="color: #ff6b6b;">Criar Evento</a>
+                <a href="validar.html">Validar</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="card-form">
+            <h2>➕ Criar Novo Evento</h2>
+            
+            <form id="form-evento">
+                <!-- INFORMAÇÕES BÁSICAS -->
+                <h3>📌 Informações Básicas</h3>
+                
+                <div class="form-group">
+                    <label for="nome">Nome do evento *</label>
+                    <input type="text" id="nome" required placeholder="Ex: São João 2025">
+                </div>
+                
+                <div class="form-group">
+                    <label for="descricao">Descrição do evento</label>
+                    <textarea id="descricao" rows="3" placeholder="Descreva o evento, atrações, etc..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Tipo de ingresso *</label>
+                    <div class="tipo-ingresso">
+                        <label>
+                            <input type="radio" name="tipo" value="ticket" checked> 🎫 Ticket (digital - PDF)
+                        </label>
+                        <label>
+                            <input type="radio" name="tipo" value="pulseira"> 🎗️ Pulseira (para impressão)
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- IMAGENS -->
+                <h3>🖼️ Imagens do Evento</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Logo do evento</label>
+                        <div class="upload-area" id="upload-logo">
+                            <p>📸 Clique ou arraste a logo</p>
+                            <input type="file" id="logo-file" accept="image/*" style="display: none;">
+                        </div>
+                        <img id="logo-preview" class="preview-imagem" style="display: none;">
+                        <input type="hidden" id="logo-url" value="">
+                    </div>
+                    <div class="form-group">
+                        <label>Imagem de capa</label>
+                        <div class="upload-area" id="upload-capa">
+                            <p>📸 Clique ou arraste a capa</p>
+                            <input type="file" id="capa-file" accept="image/*" style="display: none;">
+                        </div>
+                        <img id="capa-preview" class="preview-imagem" style="display: none;">
+                        <input type="hidden" id="capa-url" value="">
+                    </div>
+                </div>
+                
+                <!-- CORES -->
+                <h3>🎨 Personalização</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="cor-principal">Cor principal</label>
+                        <input type="color" id="cor-principal" value="#ff6b6b">
+                    </div>
+                    <div class="form-group">
+                        <label for="cor-secundaria">Cor secundária</label>
+                        <input type="color" id="cor-secundaria" value="#1a1a2e">
+                    </div>
+                </div>
+                
+                <!-- SESSÕES -->
+                <h3>🎭 Sessões / Horários</h3>
+                <p style="color: #666; font-size: 0.85rem; margin-bottom: 1rem;">
+                    Adicione os horários disponíveis para este evento. Você pode ter múltiplas sessões (ex: 19:00 e 21:00).
+                </p>
+                
+                <div id="sessoes-list" class="sessoes-container">
+                    <p style="text-align: center; color: #888;">Nenhum horário adicionado. Clique em "Adicionar Horário" para começar.</p>
+                </div>
+                
+                <button type="button" id="btn-adicionar-sessao" class="btn-adicionar-sessao">➕ Adicionar Horário</button>
+                
+                <button type="submit" id="btn-submit" class="btn-submit">🚀 Criar Evento</button>
+                
+                <div id="mensagem" class="mensagem"></div>
+            </form>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>🎟️ Ticket Fácil - Plataforma de ingressos para eventos locais</p>
+        <p>© 2025 Ticket Fácil - Todos os direitos reservados</p>
+    </footer>
+
+    <script>
+        // ===== CONFIGURAÇÃO DA API =====
+        const API_URL = "https://script.google.com/macros/s/AKfycbxL4fdl7JNPJuA-7dPTNKX-OGQ6GqNn507ZBJVs5vMtKqLOiWd8cnHsugDzgTrEK5-lNA/exec";
+
+        // Função para criar evento na API
+        async function criarEventoAPI(dados) {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ acao: 'criarEvento', ...dados })
+            });
+            return await response.json();
+        }
+
+        // Array para armazenar as sessões
+        let sessoes = [];
+        let sessaoIdCounter = 1;
+        
+        // Upload de logo (simulado - depois integrar com Google Drive)
+        const uploadLogo = document.getElementById('upload-logo');
+        const logoFile = document.getElementById('logo-file');
+        const logoPreview = document.getElementById('logo-preview');
+        const logoUrl = document.getElementById('logo-url');
+
+        uploadLogo.addEventListener('click', () => logoFile.click());
+        logoFile.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    logoPreview.src = event.target.result;
+                    logoPreview.style.display = 'block';
+                    // Para simular, usamos o data URL. Na versão real, upload para Google Drive
+                    logoUrl.value = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Upload de capa
+        const uploadCapa = document.getElementById('upload-capa');
+        const capaFile = document.getElementById('capa-file');
+        const capaPreview = document.getElementById('capa-preview');
+        const capaUrl = document.getElementById('capa-url');
+
+        uploadCapa.addEventListener('click', () => capaFile.click());
+        capaFile.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    capaPreview.src = event.target.result;
+                    capaPreview.style.display = 'block';
+                    capaUrl.value = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Função para renderizar as sessões
+        function renderizarSessoes() {
+            const container = document.getElementById('sessoes-list');
+            
+            if (sessoes.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #888;">Nenhum horário adicionado. Clique em "Adicionar Horário" para começar.</p>';
+                return;
+            }
+            
+            let html = '';
+            for (let i = 0; i < sessoes.length; i++) {
+                const sessao = sessoes[i];
+                html += `
+                    <div class="sessao-item" data-index="${i}">
+                        <div class="sessao-header">
+                            <span class="sessao-titulo">Sessão ${i + 1}: ${sessao.horario || 'Horário não definido'}</span>
+                            <button type="button" class="btn-remover-sessao" onclick="removerSessao(${i})">✖ Remover</button>
+                        </div>
+                        <div class="form-row-3" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                            <div class="form-group">
+                                <label>Data *</label>
+                                <input type="date" class="sessao-data" value="${sessao.data || ''}" data-index="${i}" onchange="atualizarSessao(${i}, 'data', this.value)">
+                            </div>
+                            <div class="form-group">
+                                <label>Horário *</label>
+                                <input type="time" class="sessao-horario" value="${sessao.horario || ''}" data-index="${i}" onchange="atualizarSessao(${i}, 'horario', this.value)">
+                            </div>
+                            <div class="form-group">
+                                <label>Local</label>
+                                <input type="text" class="sessao-local" value="${sessao.local || ''}" placeholder="Local do evento" data-index="${i}" onchange="atualizarSessao(${i}, 'local', this.value)">
+                            </div>
+                        </div>
+                        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div class="form-group">
+                                <label>Preço (R$) *</label>
+                                <input type="number" class="sessao-preco" value="${sessao.preco || ''}" placeholder="20" step="0.01" data-index="${i}" onchange="atualizarSessao(${i}, 'preco', parseFloat(this.value))">
+                            </div>
+                            <div class="form-group">
+                                <label>Estoque *</label>
+                                <input type="number" class="sessao-estoque" value="${sessao.estoque || ''}" placeholder="100" data-index="${i}" onchange="atualizarSessao(${i}, 'estoque', parseInt(this.value))">
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+        }
+        
+        // Adicionar nova sessão
+        function adicionarSessao() {
+            sessoes.push({
+                id: sessaoIdCounter++,
+                data: '',
+                horario: '',
+                local: '',
+                preco: '',
+                estoque: ''
+            });
+            renderizarSessoes();
+        }
+        
+        // Remover sessão
+        function removerSessao(index) {
+            sessoes.splice(index, 1);
+            renderizarSessoes();
+        }
+        
+        // Atualizar uma sessão
+        function atualizarSessao(index, campo, valor) {
+            if (sessoes[index]) {
+                sessoes[index][campo] = valor;
+            }
+        }
+        
+        // Validar sessões
+        function validarSessoes() {
+            for (let i = 0; i < sessoes.length; i++) {
+                const s = sessoes[i];
+                if (!s.data) {
+                    alert(`Sessão ${i + 1}: Preencha a data.`);
+                    return false;
+                }
+                if (!s.horario) {
+                    alert(`Sessão ${i + 1}: Preencha o horário.`);
+                    return false;
+                }
+                if (!s.preco || s.preco <= 0) {
+                    alert(`Sessão ${i + 1}: Informe um preço válido.`);
+                    return false;
+                }
+                if (!s.estoque || s.estoque <= 0) {
+                    alert(`Sessão ${i + 1}: Informe um estoque válido.`);
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        // Botão adicionar sessão
+        document.getElementById('btn-adicionar-sessao').addEventListener('click', adicionarSessao);
+        
+        // Submit do formulário
+        const form = document.getElementById('form-evento');
+        const mensagem = document.getElementById('mensagem');
+        const btnSubmit = document.getElementById('btn-submit');
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Valida campos obrigatórios
+            const nome = document.getElementById('nome').value;
+            if (!nome) {
+                mensagem.style.display = 'block';
+                mensagem.className = 'mensagem erro';
+                mensagem.innerHTML = '❌ Preencha o nome do evento.';
+                return;
+            }
+            
+            if (sessoes.length === 0) {
+                mensagem.style.display = 'block';
+                mensagem.className = 'mensagem erro';
+                mensagem.innerHTML = '❌ Adicione pelo menos um horário para o evento.';
+                return;
+            }
+            
+            if (!validarSessoes()) {
+                return;
+            }
+            
+            // Coleta os dados
+            const dados = {
+                nome: nome,
+                descricao: document.getElementById('descricao').value,
+                tipo: document.querySelector('input[name="tipo"]:checked').value,
+                cor_principal: document.getElementById('cor-principal').value,
+                cor_secundaria: document.getElementById('cor-secundaria').value,
+                logo: logoUrl.value || "https://placehold.co/200x200?text=Logo",
+                capa: capaUrl.value || "https://placehold.co/600x400?text=Capa+Evento",
+                sessoes: sessoes.map(s => ({
+                    data: s.data,
+                    horario: s.horario,
+                    local: s.local || nome,
+                    preco: s.preco,
+                    estoque_pago: s.estoque,
+                    estoque_cortesia: 0
+                }))
+            };
+            
+            console.log("Enviando evento para API:", dados);
+            
+            // Desabilita botão
+            btnSubmit.disabled = true;
+            btnSubmit.innerText = '🔄 Criando...';
+            
+            mensagem.style.display = 'block';
+            mensagem.className = 'mensagem info';
+            mensagem.innerHTML = '🔄 Criando evento...';
+            
+            try {
+                const resultado = await criarEventoAPI(dados);
+                console.log("Resposta da API:", resultado);
+                
+                if (resultado.success) {
+                    mensagem.className = 'mensagem sucesso';
+                    mensagem.innerHTML = `
+                        ✅ Evento criado com sucesso!<br><br>
+                        <strong>${dados.nome}</strong><br>
+                        ${dados.sessoes.length} horário(s) configurado(s)<br><br>
+                        <a href="index.html" style="color: #155724;">Voltar para a página inicial</a>
+                    `;
+                    
+                    // Limpa o formulário
+                    form.reset();
+                    sessoes = [];
+                    renderizarSessoes();
+                    logoPreview.style.display = 'none';
+                    capaPreview.style.display = 'none';
+                    logoUrl.value = '';
+                    capaUrl.value = '';
+                } else {
+                    mensagem.className = 'mensagem erro';
+                    mensagem.innerHTML = `❌ Erro ao criar evento: ${resultado.error || 'Tente novamente'}`;
+                }
+            } catch (error) {
+                console.error("Erro:", error);
+                mensagem.className = 'mensagem erro';
+                mensagem.innerHTML = '❌ Erro ao conectar com a API. Verifique sua conexão e tente novamente.';
+            } finally {
+                btnSubmit.disabled = false;
+                btnSubmit.innerText = '🚀 Criar Evento';
+            }
+        });
+        
+        // Adiciona uma sessão inicial como exemplo
+        adicionarSessao();
+    </script>
+</body>
+</html>
