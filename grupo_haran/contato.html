@@ -18,11 +18,17 @@
         }
         
         .info-card {
-            background-color: var(--preto-claro);
+            background: var(--preto-claro);
             border-radius: 12px;
             padding: 1.5rem;
             border: 1px solid var(--cinza);
             margin-bottom: 1.5rem;
+            transition: all 0.3s;
+        }
+        
+        .info-card:hover {
+            border-color: var(--dourado);
+            transform: translateY(-5px);
         }
         
         .info-card h3 {
@@ -32,6 +38,7 @@
         
         .info-card p {
             margin-bottom: 0.5rem;
+            word-break: break-word;
         }
         
         .info-card a {
@@ -44,34 +51,43 @@
             color: var(--dourado);
         }
         
-        .redes-sociais {
+        .redes-contato {
             display: flex;
             gap: 1rem;
-            margin-top: 1rem;
             flex-wrap: wrap;
+            margin-top: 1rem;
         }
         
-        .rede-link {
+        .redes-contato a {
             display: inline-block;
-            background-color: transparent;
+            background: transparent;
             border: 2px solid var(--dourado);
             color: var(--dourado);
             padding: 0.5rem 1rem;
             border-radius: 30px;
             text-decoration: none;
+            font-weight: bold;
+            font-size: 0.85rem;
             transition: all 0.3s;
         }
         
-        .rede-link:hover {
-            background-color: var(--dourado);
+        .redes-contato a:hover {
+            background: linear-gradient(135deg, var(--dourado), var(--dourado-escuro));
             color: #000;
+            box-shadow: 0 0 15px var(--dourado-glow);
+            transform: scale(1.02);
         }
         
         .form-contato {
-            background-color: var(--preto-claro);
+            background: var(--preto-claro);
             border-radius: 12px;
             padding: 1.5rem;
             border: 1px solid var(--cinza);
+        }
+        
+        .form-contato h3 {
+            color: var(--dourado);
+            margin-bottom: 1rem;
         }
         
         .form-group {
@@ -88,16 +104,18 @@
         .form-group textarea {
             width: 100%;
             padding: 0.75rem;
-            background-color: #1a1a1a;
+            background: #1a1a1a;
             border: 1px solid var(--cinza);
             border-radius: 8px;
             color: white;
+            transition: all 0.3s;
         }
         
         .form-group input:focus,
         .form-group textarea:focus {
             outline: none;
             border-color: var(--dourado);
+            box-shadow: 0 0 10px var(--dourado-glow);
         }
         
         .btn-enviar {
@@ -109,16 +127,19 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
+            width: 100%;
         }
         
         .btn-enviar:hover {
             background-color: #b8860b;
+            transform: scale(1.02);
+            box-shadow: 0 0 15px var(--dourado-glow);
         }
         
-        @media (max-width: 768px) {
-            .contato-grid {
-                grid-template-columns: 1fr;
-            }
+        .loading-contato {
+            text-align: center;
+            padding: 2rem;
+            color: var(--dourado);
         }
         
         .mensagem-sucesso {
@@ -131,14 +152,10 @@
             display: none;
         }
         
-        .mensagem-erro {
-            background-color: #c82333;
-            color: white;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-top: 1rem;
-            text-align: center;
-            display: none;
+        @media (max-width: 768px) {
+            .contato-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -152,71 +169,8 @@
                 <h2 class="section-title">📞 Contato</h2>
                 <p style="text-align: center; margin-bottom: 2rem;">Entre em contato para contratações, parcerias ou convites para eventos</p>
                 
-                <div class="contato-grid">
-                    <div>
-                        <div class="info-card">
-                            <h3>📧 E-mail</h3>
-                            <p><a href="mailto:harangrupodedanca@gmail.com">harangrupodedanca@gmail.com</a></p>
-                        </div>
-                        
-                        <div class="info-card">
-                            <h3>📱 WhatsApp</h3>
-                            <p><a href="https://wa.me/5581999999999" target="_blank">(81) 99999-9999</a></p>
-                        </div>
-                        
-                        <div class="info-card">
-                            <h3>📍 Localização</h3>
-                            <p>Bom Jardim - PE</p>
-                        </div>
-                        
-                        <div class="info-card">
-                            <h3>🌐 Redes Sociais</h3>
-                            <div class="redes-sociais">
-                                <a href="#" class="rede-link" id="link-instagram">📷 Instagram</a>
-                                <a href="#" class="rede-link" id="link-facebook">📘 Facebook</a>
-                                <a href="#" class="rede-link" id="link-youtube">🎬 YouTube</a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <form class="form-contato" id="form-contato" action="https://formsubmit.co/harangrupodedanca@gmail.com" method="POST">
-                            <h3 style="color: var(--dourado); margin-bottom: 1rem;">Envie uma mensagem</h3>
-                            
-                            <input type="hidden" name="_subject" value="Novo contato do site - Haran Grupo de Dança">
-                            <input type="hidden" name="_captcha" value="false">
-                            <input type="hidden" name="_next" value="https://jrvaldir.github.io/grupo-haran/contato.html?enviado=sucesso">
-                            
-                            <div class="form-group">
-                                <label for="nome">Nome</label>
-                                <input type="text" id="nome" name="nome" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="email">E-mail</label>
-                                <input type="email" id="email" name="email" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="assunto">Assunto</label>
-                                <input type="text" id="assunto" name="assunto" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="mensagem">Mensagem</label>
-                                <textarea id="mensagem" name="mensagem" rows="5" required></textarea>
-                            </div>
-                            
-                            <button type="submit" class="btn-enviar">Enviar mensagem →</button>
-                            
-                            <div id="mensagem-sucesso" class="mensagem-sucesso">
-                                ✅ Mensagem enviada com sucesso! Entraremos em contato em breve.
-                            </div>
-                            <div id="mensagem-erro" class="mensagem-erro">
-                                ❌ Erro ao enviar mensagem. Tente novamente ou entre em contato pelo WhatsApp.
-                            </div>
-                        </form>
-                    </div>
+                <div id="contato-conteudo">
+                    <div class="loading-contato">🎭 Carregando informações de contato...</div>
                 </div>
             </div>
         </div>
@@ -225,28 +179,159 @@
     <div id="footer-placeholder"></div>
 
     <script src="js/config.js"></script>
+    <script src="js/configuracoes.js"></script>
     <script src="js/include.js"></script>
     <script src="js/efeitos.js"></script>
     <script>
-        // Atualiza os links das redes sociais com base no config.js
-        if (typeof REDES_SOCIAIS !== 'undefined') {
-            const instagramLink = document.getElementById('link-instagram');
-            const facebookLink = document.getElementById('link-facebook');
-            const youtubeLink = document.getElementById('link-youtube');
+        async function carregarContato() {
+            const container = document.getElementById('contato-conteudo');
+            container.innerHTML = '<div class="loading-contato">🎭 Carregando informações de contato...</div>';
             
-            if (instagramLink) instagramLink.href = REDES_SOCIAIS.instagram || '#';
-            if (facebookLink) facebookLink.href = REDES_SOCIAIS.facebook || '#';
-            if (youtubeLink) youtubeLink.href = REDES_SOCIAIS.youtube || '#';
+            try {
+                // Usa a função já existente no configuracoes.js
+                const config = await carregarConfiguracoes();
+                
+                const email = config.email || "harangrupodedanca@gmail.com";
+                const telefone = config.telefone || "(81) 99999-9999";
+                const instagram = config.instagram || "#";
+                const facebook = config.facebook || "#";
+                const youtube = config.youtube || "#";
+                
+                let whatsappLink = config.whatsapp || `https://wa.me/55${telefone.replace(/\D/g, '')}`;
+                if (whatsappLink !== "#" && !whatsappLink.includes("wa.me") && !whatsappLink.includes("api.whatsapp")) {
+                    const numeros = whatsappLink.replace(/\D/g, '');
+                    if (numeros.length >= 10) {
+                        whatsappLink = `https://wa.me/55${numeros}`;
+                    }
+                }
+                
+                const html = `
+                    <div class="contato-grid">
+                        <div>
+                            <div class="info-card">
+                                <h3>📧 E-mail</h3>
+                                <p><a href="mailto:${email}">${email}</a></p>
+                            </div>
+                            <div class="info-card">
+                                <h3>📱 WhatsApp</h3>
+                                <p><a href="${whatsappLink}" target="_blank">${telefone}</a></p>
+                            </div>
+                            <div class="info-card">
+                                <h3>📍 Localização</h3>
+                                <p>Bom Jardim - PE</p>
+                            </div>
+                            <div class="info-card">
+                                <h3>🌐 Redes Sociais</h3>
+                                <div class="redes-contato">
+                                    <a href="${instagram}" target="_blank" id="contato-instagram">📷 Instagram</a>
+                                    <a href="${facebook}" target="_blank" id="contato-facebook">📘 Facebook</a>
+                                    <a href="${youtube}" target="_blank" id="contato-youtube">🎬 YouTube</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <form class="form-contato" action="https://formsubmit.co/${email}" method="POST">
+                                <h3>✉️ Envie uma mensagem</h3>
+                                <input type="hidden" name="_subject" value="Novo contato do site - Haran Grupo de Dança">
+                                <input type="hidden" name="_captcha" value="false">
+                                <input type="hidden" name="_next" value="https://jrvaldir.github.io/contato.html?enviado=sucesso">
+                                
+                                <div class="form-group">
+                                    <label for="nome">Nome</label>
+                                    <input type="text" id="nome" name="nome" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email_cliente">E-mail</label>
+                                    <input type="email" id="email_cliente" name="email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="assunto">Assunto</label>
+                                    <input type="text" id="assunto" name="assunto" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="mensagem">Mensagem</label>
+                                    <textarea id="mensagem" name="mensagem" rows="5" required></textarea>
+                                </div>
+                                <button type="submit" class="btn-enviar">📨 Enviar mensagem →</button>
+                            </form>
+                            <div id="mensagem-sucesso" class="mensagem-sucesso">
+                                ✅ Mensagem enviada com sucesso! Entraremos em contato em breve.
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                container.innerHTML = html;
+                
+                // Verifica se foi enviado com sucesso
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('enviado') === 'sucesso') {
+                    const sucessoDiv = document.getElementById('mensagem-sucesso');
+                    if (sucessoDiv) {
+                        sucessoDiv.style.display = 'block';
+                        setTimeout(() => {
+                            sucessoDiv.style.display = 'none';
+                        }, 8000);
+                    }
+                }
+                
+            } catch (error) {
+                console.error("Erro ao carregar contato:", error);
+                container.innerHTML = `
+                    <div class="contato-grid">
+                        <div>
+                            <div class="info-card">
+                                <h3>📧 E-mail</h3>
+                                <p><a href="mailto:harangrupodedanca@gmail.com">harangrupodedanca@gmail.com</a></p>
+                            </div>
+                            <div class="info-card">
+                                <h3>📱 WhatsApp</h3>
+                                <p><a href="https://wa.me/5581999999999" target="_blank">(81) 99999-9999</a></p>
+                            </div>
+                            <div class="info-card">
+                                <h3>📍 Localização</h3>
+                                <p>Bom Jardim - PE</p>
+                            </div>
+                            <div class="info-card">
+                                <h3>🌐 Redes Sociais</h3>
+                                <div class="redes-contato">
+                                    <a href="#" target="_blank">📷 Instagram</a>
+                                    <a href="#" target="_blank">📘 Facebook</a>
+                                    <a href="#" target="_blank">🎬 YouTube</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <form class="form-contato" action="https://formsubmit.co/harangrupodedanca@gmail.com" method="POST">
+                                <h3>✉️ Envie uma mensagem</h3>
+                                <input type="hidden" name="_subject" value="Novo contato do site - Haran Grupo de Dança">
+                                <input type="hidden" name="_captcha" value="false">
+                                <div class="form-group">
+                                    <label for="nome">Nome</label>
+                                    <input type="text" id="nome" name="nome" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email_cliente">E-mail</label>
+                                    <input type="email" id="email_cliente" name="email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="assunto">Assunto</label>
+                                    <input type="text" id="assunto" name="assunto" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="mensagem">Mensagem</label>
+                                    <textarea id="mensagem" name="mensagem" rows="5" required></textarea>
+                                </div>
+                                <button type="submit" class="btn-enviar">📨 Enviar mensagem →</button>
+                            </form>
+                        </div>
+                    </div>
+                `;
+            }
         }
         
-        // Verifica se o formulário foi enviado com sucesso
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('enviado') === 'sucesso') {
-            document.getElementById('mensagem-sucesso').style.display = 'block';
-            setTimeout(() => {
-                document.getElementById('mensagem-sucesso').style.display = 'none';
-            }, 5000);
-        }
+        carregarContato();
     </script>
 </body>
 </html>

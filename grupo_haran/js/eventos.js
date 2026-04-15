@@ -117,7 +117,7 @@ async function carregarEventos() {
         
         console.log(`4. Total de eventos carregados: ${eventos.length}`);
         
-        // ===== ORDENAÇÃO CORRIGIDA (considera ano E mês) =====
+        // Ordenação por ano e mês (mais novo primeiro)
         eventos.sort((a, b) => {
             const dataA = a["Data"] || "";
             const dataB = b["Data"] || "";
@@ -126,18 +126,15 @@ async function carregarEventos() {
                 let ano = 0;
                 let mes = 0;
                 
-                // Procura por ano (4 dígitos)
                 const anoMatch = dataStr.match(/\d{4}/);
                 if (anoMatch) ano = parseInt(anoMatch[0]);
                 
-                // Mapeamento de meses em português
                 const meses = {
                     "janeiro": 1, "fevereiro": 2, "março": 3, "abril": 4,
                     "maio": 5, "junho": 6, "julho": 7, "agosto": 8,
                     "setembro": 9, "outubro": 10, "novembro": 11, "dezembro": 12
                 };
                 
-                // Procura por nome do mês
                 for (const [nome, num] of Object.entries(meses)) {
                     if (dataStr.toLowerCase().includes(nome)) {
                         mes = num;
@@ -145,7 +142,6 @@ async function carregarEventos() {
                     }
                 }
                 
-                // Se não achou o mês por nome, tenta número (ex: 04/2024)
                 if (mes === 0) {
                     const mesMatch = dataStr.match(/(\d{1,2})\/\d{4}/);
                     if (mesMatch) mes = parseInt(mesMatch[1]);
@@ -157,7 +153,6 @@ async function carregarEventos() {
             const dataObjA = extrairAnoMes(dataA);
             const dataObjB = extrairAnoMes(dataB);
             
-            // Ordena por ano (decrescente) e depois por mês (decrescente)
             if (dataObjA.ano !== dataObjB.ano) {
                 return dataObjB.ano - dataObjA.ano;
             }

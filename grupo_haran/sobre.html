@@ -36,11 +36,17 @@
         }
         
         .integrante-card {
-            background-color: var(--preto-claro);
+            background: var(--preto-claro);
             border-radius: 12px;
             padding: 1rem;
             text-align: center;
             border: 1px solid var(--cinza);
+            transition: all 0.3s;
+        }
+        
+        .integrante-card:hover {
+            border-color: var(--dourado);
+            transform: translateY(-5px);
         }
         
         .integrante-card img {
@@ -49,6 +55,7 @@
             border-radius: 50%;
             object-fit: cover;
             margin-bottom: 0.5rem;
+            border: 2px solid var(--dourado);
         }
         
         .integrante-nome {
@@ -59,6 +66,27 @@
         .integrante-funcao {
             font-size: 0.8rem;
             color: var(--cinza-claro);
+        }
+        
+        .integrante-social {
+            margin-top: 0.5rem;
+        }
+        
+        .integrante-social a {
+            color: var(--cinza-claro);
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: color 0.3s;
+        }
+        
+        .integrante-social a:hover {
+            color: var(--dourado);
+        }
+        
+        .loading-sobre {
+            text-align: center;
+            padding: 2rem;
+            color: var(--dourado);
         }
         
         .citacao {
@@ -79,43 +107,34 @@
             <div class="sobre-container">
                 <h2 class="section-title">🎭 Sobre o Haran Grupo de Dança</h2>
                 
-                <img class="sobre-imagem" src="https://placehold.co/900x400?text=Haran+Grupo+de+Danca" alt="Haran Grupo de Dança" onerror="this.src='https://placehold.co/900x400?text=Haran+em+Ação'">
+                <div id="sobre-imagem-container"></div>
                 
                 <div class="sobre-texto">
-                    <p>O <strong>Haran Grupo de Dança</strong> nasceu em 2015 na cidade de Bom Jardim - PE, com o propósito de levar arte, cultura e emoção através da dança teatral. Com mais de 10 anos de história, o grupo se consolidou como uma referência na região, participando de eventos importantes como as festas juninas, encenações da Paixão de Cristo e festivais de dança.</p>
+                    <p>Numa tarde de sábado no segundo semestre do ano 2000 no Programa de TV do Raul Gil, Albaneide presenciou a apresentação de um grupo de dança (Companhia de Dança Gothan) que mudaria as nossas vidas. Quando ela apresentou pra mim, Wagner Lima eu surtei não parava de assistir. Ronaldo Carlos que gravou o programa disse segunda feira eles estão no programa da Hebe e foi minha vez de gravar o programa e enfim não parar de assistir até aprender a coreografia e depois passar para as meninas que irião compor o Corpo de Baile do Bacanal de Herodes da Paixão de Cristo de Umari - Bom Jardim / PE no primeiro formato.</p>
                     
-                    <p>Com um estilo único que mistura dança contemporânea, elementos teatrais e tradições nordestinas, o Haran encanta públicos de todas as idades. Cada apresentação é pensada nos mínimos detalhes, desde a coreografia até o figurino, para proporcionar uma experiência inesquecível.</p>
+                    <p>O Haran Grupo de Dança migrou das vivências culturais do Bacanal de Heróis da Paixão de Cristo de Umari. As nossas primeiras movimentações iniciadas em 31 de outubro do ano 2000 tendo sua consolidação ao longo dos anos seguintes. Fundado em um contexto de forte expressão popular, o grupo nasceu de forma espontânea, a partir do interesse coletivo pela dança e pela experimentação artística em uma realidade de poucos recursos e acesso limitado à pesquisa.</p>
                     
-                    <p>O grupo é formado por mais de 10 bailarinos dedicados, coreógrafos e profissionais da arte que compartilham a mesma paixão: transformar histórias em movimentos e levar emoção ao público.</p>
+                    <p>Sua primeira formação contou com os integrantes Crislaime, Viviane, Rafaela, Ronielma, Albanino, Flôr e Wagner Lima, que deram início às atividades sem referências técnicas estruturadas, mas com grande criatividade e ousadia. A primeira apresentação aconteceu na EREM JUSTULINO FERREIRA GOMES na época Berenice Pessoa Diretora da Escola e Grande incentivadora da Arte e da Cultura, marcando o início de sua trajetória na cena cultural local.</p>
+                    
+                    <p>No início, o grupo enfrentou desafios como a dificuldade de acesso a materiais de pesquisa, figurinos e referências coreográficas. Ainda assim, por meio de iniciativas colaborativas, como a confecção dos primeiros figurinos por Maria Barbosa (Neguinha), e o uso de recursos como gravações em videocassete de apresentações televisivas — incluindo referências da Gotham Companhia de Dança —, o grupo construiu sua própria linguagem artística.</p>
+                    
+                    <p>Ao longo do tempo, o Haran expandiu suas atividades, participando de festivais regionais e realizando apresentações em diferentes espaços culturais, incluindo participação em programas televisivos. Com o crescimento do grupo, que chegou a contar com um elenco de 20 integrantes, onde já passaram por ele mais de 60 pessoas houve também a ampliação de sua estrutura artística, incluindo a criação de um núcleo masculino, trazendo novas estéticas e movimentos à sua proposta coreográfica.</p>
+                    
+                    <p>O grupo desenvolveu espetáculos autorais de grande relevância, como Maktub, que narra a história de uma princesa egípcia envolta em amor e mistério, e Hitus, que aborda rituais simbólicos ligados ao amor, casamento e tradições culturais. Além disso, o Haran também realizou diversas montagens temáticas, explorando estilos como dança indígena, contemporânea, danças populares e influências orientais, consolidando-se como um coletivo de linguagem predominantemente moderna, mas aberto à diversidade estética.</p>
+                    
+                    <p>Com uma trajetória marcada pela resistência, criatividade e compromisso com a cultura, o Haran Grupo de Dança se firmou como um importante agente de produção artística em sua região, contribuindo significativamente para a valorização da dança e das manifestações culturais locais. Hoje formando novos agentes culturais com oficinas de teatro e dança para crianças da comunidade.</p>
+                    
+                    <p>Hoje, sem contudo abrir mão da simplicidade, originalidade, criatividade Wagner Lima além de ser o fundador, se mantém como um dos coreógrafos, figurinistas e projetistas tem ao seu lado amigas incentivadoras como Mirelly, Ednete e Macielly e um grande elenco recheado de estrelas: Agatha, Ana Beatriz, Cauane, Eveson, Jennifer, Monnik, Nicoly, Pedro, Sevem e Thaysa que transcendem o significado de Grupo.</p>
                 </div>
                 
-                <div class="citacao">
+                <!--<div class="citacao">
                     "A dança é nossa forma de contar histórias. Cada movimento carrega emoção, cada apresentação é um pedaço da nossa alma no palco."
                     <br>— Fundador do Haran Grupo de Dança
-                </div>
+                </div>-->
                 
-                <h3 style="color: var(--dourado); margin-top: 2rem;">💃 Integrantes</h3>
-                <div class="integrantes-grid">
-                    <div class="integrante-card">
-                        <img src="https://placehold.co/100x100?text=Perfil" alt="Integrante">
-                        <div class="integrante-nome">[Nome do Integrante]</div>
-                        <div class="integrante-funcao">Coreógrafo / Fundador</div>
-                    </div>
-                    <div class="integrante-card">
-                        <img src="https://placehold.co/100x100?text=Perfil" alt="Integrante">
-                        <div class="integrante-nome">[Nome do Integrante]</div>
-                        <div class="integrante-funcao">Bailarina / Professora</div>
-                    </div>
-                    <div class="integrante-card">
-                        <img src="https://placehold.co/100x100?text=Perfil" alt="Integrante">
-                        <div class="integrante-nome">[Nome do Integrante]</div>
-                        <div class="integrante-funcao">Bailarino</div>
-                    </div>
-                    <div class="integrante-card">
-                        <img src="https://placehold.co/100x100?text=Perfil" alt="Integrante">
-                        <div class="integrante-nome">[Nome do Integrante]</div>
-                        <div class="integrante-funcao">Figurinista</div>
-                    </div>
+                <h3 style="color: var(--dourado); margin-top: 2rem;">💃 Nossos Integrantes</h3>
+                <div id="integrantes-container">
+                    <div class="loading-sobre">🎭 Carregando integrantes...</div>
                 </div>
                 
                 <div style="text-align: center; margin-top: 2rem;">
@@ -127,8 +146,92 @@
     </main>
 
     <div id="footer-placeholder"></div>
-    <script src="js/include.js"></script>
+
     <script src="js/config.js"></script>
+    <script src="js/configuracoes.js"></script>
+    <script src="js/include.js"></script>
     <script src="js/efeitos.js"></script>
+    <script>
+    async function carregarIntegrantesPagina() {
+        const container = document.getElementById('integrantes-container');
+        if (!container) return;
+        
+        try {
+            console.log("Carregando integrantes da planilha...");
+            const integrantes = await carregarIntegrantes();
+            console.log("Integrantes carregados:", integrantes);
+            
+            if (integrantes && integrantes.length > 0) {
+                let html = '<div class="integrantes-grid">';
+                
+                for (const integrante of integrantes) {
+                    // Pega os dados da planilha
+                    const nome = integrante.Nome || "Nome não informado";
+                    const funcao = integrante.Funcao || "Membro";
+                    let fotoUrl = integrante.FotoURL || "";
+                    const instagram = integrante.Instagram ? integrante.Instagram.replace('@', '') : "";
+                    
+                    console.log(`Processando: ${nome}, Foto: ${fotoUrl}`);
+                    
+                    // Converte o link do Google Drive se necessário
+                    if (fotoUrl && !fotoUrl.includes('placehold.co')) {
+                        fotoUrl = converterLinkGoogleDrive(fotoUrl, "w200");
+                    }
+                    
+                    if (!fotoUrl) {
+                        fotoUrl = "https://placehold.co/100x100?text=Perfil";
+                    }
+                    
+                    html += `
+                        <div class="integrante-card">
+                            <img src="${fotoUrl}" alt="${nome}" onerror="this.src='https://placehold.co/100x100?text=Perfil'">
+                            <div class="integrante-nome">${nome}</div>
+                            <div class="integrante-funcao">${funcao}</div>
+                            ${instagram ? `<div class="integrante-social"><a href="https://instagram.com/${instagram}" target="_blank">📷 @${instagram}</a></div>` : ''}
+                        </div>
+                    `;
+                }
+                
+                html += `</div>`;
+                container.innerHTML = html;
+                console.log("✅ Integrantes exibidos com sucesso!");
+            } else {
+                console.log("Nenhum integrante encontrado na planilha");
+                container.innerHTML = '<p style="text-align: center; color: var(--cinza-claro);">Em breve, nossa equipe completa...</p>';
+            }
+            
+        } catch (error) {
+            console.error("Erro ao carregar integrantes:", error);
+            container.innerHTML = '<p style="text-align: center; color: var(--cinza-claro);">Erro ao carregar integrantes. Tente novamente mais tarde.</p>';
+        }
+    }
+    
+    // Aguarda o carregamento completo da página
+    document.addEventListener('DOMContentLoaded', function() {
+        carregarIntegrantesPagina();
+    });
+</script>
+    <script>
+    async function carregarImagemSobre() {
+        const container = document.getElementById('sobre-imagem-container');
+        if (!container) return;
+        
+        try {
+            const config = await carregarConfiguracoes();
+            const imagemUrl = config.banner_url ? converterLinkGoogleDrive(config.banner_url, "w900") : "";
+            
+            if (imagemUrl) {
+                container.innerHTML = `<img class="sobre-imagem" src="${imagemUrl}" alt="Haran Grupo de Dança" onerror="this.src='https://placehold.co/900x400?text=Haran+em+Ação'">`;
+            } else {
+                container.innerHTML = `<img class="sobre-imagem" src="https://placehold.co/900x400?text=Haran+Grupo+de+Danca" alt="Haran Grupo de Dança">`;
+            }
+        } catch (error) {
+            console.error("Erro ao carregar imagem:", error);
+            container.innerHTML = `<img class="sobre-imagem" src="https://placehold.co/900x400?text=Haran+Grupo+de+Danca" alt="Haran Grupo de Dança">`;
+        }
+    }
+    
+    carregarImagemSobre();
+</script>
 </body>
 </html>

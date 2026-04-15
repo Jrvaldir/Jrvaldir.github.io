@@ -1,4 +1,41 @@
 <footer class="footer">
-    <p>📸 Fotos e vídeos hospedados no Google Drive | 🔗 Catálogo atualizado automaticamente</p>
-    <p>© Haran Grupo de Dança - Bom Jardim/PE | <a href="contato.html">Contato</a></p>
+    <div class="container">
+        <div class="redes-sociais">
+            <a id="footer-instagram" href="#" target="_blank" rel="noopener noreferrer">📷 Instagram</a>
+            <a id="footer-facebook" href="#" target="_blank" rel="noopener noreferrer">📘 Facebook</a>
+            <a id="footer-whatsapp" href="#" target="_blank" rel="noopener noreferrer">📱 WhatsApp</a>
+            <a id="footer-youtube" href="#" target="_blank" rel="noopener noreferrer">🎬 YouTube</a>
+        </div>
+        
+        <p>© Haran Grupo de Dança - Bom Jardim/PE | <a href="contato.html">Contato</a></p>
+        
+        <div class="dev-credits">
+            <p>🚀 Desenvolvido por <a href="https://jrvaldir.github.io/" target="_blank" style="color: var(--dourado);">Valdir Jr</a></p>
+        </div>
+    </div>
 </footer>
+
+<style>
+    .redes-sociais {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+    }
+    .redes-sociais a {
+        color: var(--dourado);
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+    .redes-sociais a:hover {
+        text-shadow: 0 0 8px var(--dourado-glow);
+        transform: scale(1.05);
+    }
+    .dev-credits {
+        margin-top: 1rem;
+        padding-top: 0.5rem;
+        border-top: 1px solid var(--cinza);
+        font-size: 0.7rem;
+    }
+</style>

@@ -111,12 +111,6 @@
             padding: 3rem;
             color: var(--dourado);
         }
-        
-        .erro {
-            text-align: center;
-            padding: 3rem;
-            color: #ff6b6b;
-        }
     </style>
 </head>
 <body>
@@ -125,7 +119,7 @@
 
     <main>
         <div class="container">
-            <h2 class="section-title">📅 Agenda de Apresentações</h2>
+            <h2 class="section-title">Agenda de Apresentações</h2>
             <p style="text-align: center; margin-bottom: 2rem;">Fique por dentro das próximas apresentações do Haran Grupo de Dança</p>
             
             <div id="agenda-proximos" class="agenda-lista">
@@ -133,7 +127,7 @@
             </div>
             
             <div class="legenda">
-                ⭐ Agenda atualizada automaticamente a partir da planilha. Para convites e contratações, entre em contato pelo <a href="contato.html" style="color: var(--dourado);">nosso WhatsApp</a>.
+                ⭐ Para convites e contratações, entre em contato pelo <a href="contato.html" style="color: var(--dourado);">nosso WhatsApp</a>.
             </div>
         </div>
     </main>
@@ -216,7 +210,6 @@
                         const dataReal = item["Data Real"];
                         let exibir = true;
                         
-                        // Lógica de exibição
                         if (status === "Cancelado") {
                             exibir = true;
                         } else if (status === "Pendente") {
@@ -245,11 +238,10 @@
                     }
                 }
                 
-                // Ordena por data (mais próximo primeiro)
+                // Ordena por data
                 agenda.sort((a, b) => {
                     function converterData(dataStr) {
                         if (!dataStr) return new Date(8640000000000000);
-                        
                         const partes = dataStr.split(/[\/\-]/);
                         if (partes.length >= 3) {
                             const dia = parseInt(partes[0]);
@@ -259,18 +251,12 @@
                                 return new Date(ano, mes, dia);
                             }
                         }
-                        
                         const dataObj = new Date(dataStr);
-                        if (!isNaN(dataObj.getTime())) {
-                            return dataObj;
-                        }
-                        
+                        if (!isNaN(dataObj.getTime())) return dataObj;
                         return new Date(8640000000000000);
                     }
-                    
                     const dataA = converterData(a["Data Real"] || a["Data"]);
                     const dataB = converterData(b["Data Real"] || b["Data"]);
-                    
                     return dataA - dataB;
                 });
                 
@@ -294,7 +280,6 @@
             
             let html = '';
             for (const item of agenda) {
-                // Usa a data de exibição se tiver, senão usa a Data Real
                 const dataExibicao = item["Data"] || item["Data Real"] || "Data a confirmar";
                 const titulo = item["Título"] || "Apresentação";
                 const local = item["Local"] || "Local a confirmar";
@@ -317,11 +302,9 @@
                     </div>
                 `;
             }
-            
             container.innerHTML = html;
         }
         
-        // Carrega a agenda quando a página abrir
         carregarAgenda().then(agenda => {
             exibirAgenda(agenda);
         });

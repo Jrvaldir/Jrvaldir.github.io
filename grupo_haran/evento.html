@@ -107,7 +107,6 @@
             transform: scale(1.05);
         }
         
-        /* Modal para ver foto em tamanho grande */
         .modal {
             display: none;
             position: fixed;
@@ -188,7 +187,6 @@
         </div>
     </main>
 
-    <!-- Modal para fotos em tamanho grande -->
     <div id="modal" class="modal" onclick="fecharModal()">
         <span class="modal-close">&times;</span>
         <img id="modal-img" src="">
@@ -201,84 +199,55 @@
     <script src="js/include.js"></script>
     <script src="js/efeitos.js"></script>
     <script>
-        // Função para extrair o ID da pasta do Google Drive
         function extrairIdPasta(link) {
             if (!link) return null;
-            
-            // Formato: /folders/ID
             let match = link.match(/\/folders\/([^\/?]+)/);
             if (match) return match[1];
-            
-            // Formato: id=ID
             match = link.match(/[?&]id=([^&]+)/);
             if (match) return match[1];
-            
-            // Formato: /file/d/ID (se for arquivo, não pasta)
             match = link.match(/\/file\/d\/([^\/]+)/);
             if (match) return match[1];
-            
             return null;
         }
         
-        // Função para carregar fotos da pasta do Google Drive
         async function carregarFotosDaPasta(pastaId) {
-            if (!pastaId || !GOOGLE_DRIVE_API_KEY) {
+            if (!pastaId || !GOOGLE_DRIVE_API_KEY || GOOGLE_DRIVE_API_KEY === "SUA_API_KEY_AQUI") {
                 return [];
             }
             
             try {
-                const url = `https://www.googleapis.com/drive/v3/files?q='${pastaId}'+in+parents&key=${GOOGLE_DRIVE_API_KEY}&fields=files(id,name,mimeType,webContentLink)&pageSize=50`;
+                const url = `https://www.googleapis.com/drive/v3/files?q='${pastaId}'+in+parents&key=${GOOGLE_DRIVE_API_KEY}&fields=files(id,name,mimeType)&pageSize=50`;
                 const resposta = await fetch(url);
                 const dados = await resposta.json();
-                
                 if (!dados.files) return [];
-                
-                // Filtra apenas imagens
                 const imagens = dados.files.filter(file => file.mimeType.startsWith('image/'));
-                
-                // Retorna os links das imagens
                 return imagens.map(img => ({
                     id: img.id,
                     nome: img.name,
                     url: `https://drive.google.com/thumbnail?id=${img.id}&sz=w800`
                 }));
-                
             } catch (error) {
                 console.error("Erro ao carregar fotos:", error);
                 return [];
             }
         }
         
-        // Função para converter link do Google Drive
         function converterLinkGoogleDrive(link) {
             if (!link) return "https://placehold.co/600x400?text=Sem+Imagem";
-            
             if (link.includes("placehold.co") || link.includes("imgur.com") || link.includes("i.ibb.co")) {
                 return link;
             }
-            
             let id = null;
             let match = link.match(/\/file\/d\/([^\/]+)/);
             if (match) id = match[1];
-            
-            if (!id) {
-                match = link.match(/[?&]id=([^&]+)/);
-                if (match) id = match[1];
-            }
-            
-            if (!id) {
-                match = link.match(/thumbnail\?id=([^&]+)/);
-                if (match) id = match[1];
-            }
-            
-            if (id) {
-                return `https://drive.google.com/thumbnail?id=${id}&sz=w800`;
-            }
-            
+            if (!id) match = link.match(/[?&]id=([^&]+)/);
+            if (match) id = match[1];
+            if (!id) match = link.match(/thumbnail\?id=([^&]+)/);
+            if (match) id = match[1];
+            if (id) return `https://drive.google.com/thumbnail?id=${id}&sz=w800`;
             return link;
         }
         
-        // Modal para ver fotos
         function abrirModal(url) {
             const modal = document.getElementById('modal');
             const modalImg = document.getElementById('modal-img');
@@ -332,33 +301,28 @@
             const linkPasta = evento["Link da Pasta"] || "";
             const pastaId = extrairIdPasta(linkPasta);
             
-            // HTML base do evento
             let html = `
                 <div class="evento-detalhe">
                     <img class="evento-detalhe-imagem" src="${linkCapa}" alt="${titulo}" onerror="this.src='https://placehold.co/800x500?text=Imagem+Indisponível'">
                     <div class="evento-detalhe-conteudo">
                         <span class="evento-detalhe-categoria">${categoria}</span>
                         <h1 class="evento-detalhe-titulo">${titulo}</h1>
-                        
                         <div class="evento-info">
                             <div class="evento-info-item"><span>📅</span> ${data}</div>
                             <div class="evento-info-item"><span>📍</span> ${local}</div>
                             <div class="evento-info-item"><span>⏱️</span> ${duracao}</div>
                             <div class="evento-info-item"><span>💃</span> Coreógrafo: ${coreografo}</div>
                         </div>
-                        
                         <div class="evento-descricao">
                             <h3 style="color: var(--dourado); margin-bottom: 0.5rem;">📖 Sinopse</h3>
                             <p>${sinopse}</p>
                         </div>
-                        
                         <div class="evento-galeria">
                             <h3>📸 Galeria de Fotos</h3>
                             <div id="galeria-fotos" class="galeria-grid">
                                 <div class="carregando-fotos">🎭 Carregando fotos...</div>
                             </div>
                         </div>
-                        
                         <a href="catalogo.html" class="btn-voltar">← Voltar ao catálogo</a>
                     </div>
                 </div>
@@ -366,11 +330,9 @@
             
             document.getElementById('detalhe-evento').innerHTML = html;
             
-            // Carrega as fotos da pasta se tiver ID
             if (pastaId && GOOGLE_DRIVE_API_KEY && GOOGLE_DRIVE_API_KEY !== "SUA_API_KEY_AQUI") {
                 const fotos = await carregarFotosDaPasta(pastaId);
                 const galeriaContainer = document.getElementById('galeria-fotos');
-                
                 if (fotos.length === 0) {
                     galeriaContainer.innerHTML = `<div class="sem-fotos">📭 Nenhuma foto encontrada nesta pasta.</div>`;
                 } else {
@@ -384,13 +346,6 @@
                     }
                     galeriaContainer.innerHTML = galeriaHtml;
                 }
-            } else if (pastaId && (!GOOGLE_DRIVE_API_KEY || GOOGLE_DRIVE_API_KEY === "SUA_API_KEY_AQUI")) {
-                document.getElementById('galeria-fotos').innerHTML = `
-                    <div class="sem-fotos">
-                        ⚠️ API do Google Drive não configurada. 
-                        <a href="${linkPasta}" target="_blank" style="color: var(--dourado);">Clique aqui</a> para ver as fotos no Google Drive.
-                    </div>
-                `;
             } else if (linkPasta) {
                 document.getElementById('galeria-fotos').innerHTML = `
                     <div class="sem-fotos">

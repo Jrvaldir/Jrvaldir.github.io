@@ -1,7 +1,8 @@
 <header class="header">
     <div class="nav-container">
         <div class="logo">
-            <img src="/assets/images/logo-haran.png" alt="Haran Grupo de Dança" style="height: 50px;">
+            <img id="logo-grupo" src="/assets/images/logo-haran.png" alt="Haran Grupo de Dança" style="height: 50px;">
+            <p>Grupo de Dança</p>
         </div>
         <nav class="nav-links">
             <a href="index.html">Início</a>
@@ -12,3 +13,66 @@
         </nav>
     </div>
 </header>
+
+<script>
+    // Carrega a logo da planilha de configurações
+    async function carregarLogoConfig() {
+        try {
+            const CONFIG_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQAnEvp2vlEz0mhHuIQw4OjNXTJuDRfXCGvOWpLfMEOcOYj7jXL5lCyC22UR5-Q5PXziNmUXIjFDI97/pub?gid=667900171&single=true&output=csv";
+            
+            const response = await fetch(CONFIG_URL);
+            const texto = await response.text();
+            
+            const linhas = texto.split("\n").filter(l => l.trim() !== "");
+            let logoUrl = "";
+            
+            for (let i = 1; i < linhas.length; i++) {
+                const valores = [];
+                let temp = "";
+                let dentroAspas = false;
+                
+                for (let char of linhas[i]) {
+                    if (char === '"') {
+                        dentroAspas = !dentroAspas;
+                    } else if (char === "," && !dentroAspas) {
+                        valores.push(temp.trim());
+                        temp = "";
+                    } else {
+                        temp += char;
+                    }
+                }
+                valores.push(temp.trim());
+                
+                const chave = valores[0]?.replace(/^"|"$/g, "");
+                const valor = valores[1]?.replace(/^"|"$/g, "");
+                
+                if (chave === "logo_url" && valor) {
+                    logoUrl = valor;
+                    break;
+                }
+            }
+            
+            if (logoUrl) {
+                const logoImg = document.getElementById('logo-grupo');
+                if (logoImg) {
+                    // Converte link do Google Drive se necessário
+                    let id = null;
+                    let match = logoUrl.match(/\/file\/d\/([^\/]+)/);
+                    if (match) id = match[1];
+                    if (!id) match = logoUrl.match(/[?&]id=([^&]+)/);
+                    if (match) id = match[1];
+                    
+                    if (id) {
+                        logoImg.src = `https://drive.google.com/thumbnail?id=${id}&sz=w200`;
+                    } else {
+                        logoImg.src = logoUrl;
+                    }
+                }
+            }
+        } catch (error) {
+            console.error("Erro ao carregar logo da planilha:", error);
+        }
+    }
+    
+    carregarLogoConfig();
+</script>
