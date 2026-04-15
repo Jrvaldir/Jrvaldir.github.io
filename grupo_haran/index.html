@@ -36,9 +36,7 @@
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;">
                 <div>
                     <h2 class="section-title" style="text-align: left;">Sobre o Grupo</h2>
-                    <div id="resumo-historia">
-                        <div class="loading">🎭 Carregando...</div>
-                    </div>
+                    <p>Numa tarde de sábado no segundo semestre do ano 2000 no Programa de TV do Raul Gil, Albaneide presenciou a apresentação de um grupo de dança (Companhia de Dança Gothan) que mudaria as nossas vidas. Quando ela apresentou pra mim, Wagner Lima eu surtei não parava de assistir. Ronaldo Carlos que gravou o programa disse segunda feira eles estão no programa da Hebe e foi minha vez de gravar o programa e enfim não parar de assistir até aprender a coreografia...</p>
                     <a href="sobre.html" class="card-botao" style="margin-top: 1rem;">Saiba mais →</a>
                 </div>
                 <div>
@@ -87,30 +85,8 @@
             }
         }
         
-        // Carrega resumo da história da planilha
-        async function carregarResumoHistoria() {
-            const container = document.getElementById('resumo-historia');
-            if (!container) return;
-            
-            try {
-                const config = await carregarConfiguracoes();
-                const historiaCompleta = config.historia || "";
-                
-                if (historiaCompleta) {
-                    const resumo = historiaCompleta.substring(0, 400) + (historiaCompleta.length > 400 ? "..." : "");
-                    container.innerHTML = `<p>${resumo}</p>`;
-                } else {
-                    container.innerHTML = `<p>História do grupo em breve...</p>`;
-                }
-            } catch (error) {
-                console.error("Erro ao carregar resumo:", error);
-                container.innerHTML = `<p>Carregando história do grupo...</p>`;
-            }
-        }
-        
-        // Executa tudo
+        // Executa
         carregarImagensIndex();
-        carregarResumoHistoria();
     </script>
 </body>
 </html>
