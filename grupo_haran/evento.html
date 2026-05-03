@@ -291,7 +291,12 @@
             const categoria = evento["Categoria"] || "Apresentação";
             const data = evento["Data"] || "Data não informada";
             const local = evento["Local"] || "Local não informado";
-            const sinopse = evento["Sinopse/Descrição"] || evento["Descrição"] || "Descrição não disponível.";
+            let sinopse = evento["Sinopse/Descrição"] || evento["Descrição"] || "Descrição não disponível.";
+            
+            // Converte // em quebra de linha HTML
+            sinopse = sinopse.replace(/\s*\/\/\s*/g, "<br>");
+            sinopse = sinopse.replace(/\s*\/\s*/g, "<br>");
+            
             const duracao = evento["Duração"] || "Não informada";
             const coreografo = evento["Coreógrafo(s)"] || "Não informado";
             

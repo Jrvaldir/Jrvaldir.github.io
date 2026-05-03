@@ -193,7 +193,43 @@ function exibirEventos(eventos, containerId, limite = 0) {
         const categoria = evento["Categoria"] || "Apresentação";
         const data = evento["Data"] || "";
         const local = evento["Local"] || "";
-        const sinopse = evento["Sinopse/Descrição"] || evento["Descrição"] || "";
+        let sinopse = evento["Sinopse/Descrição"] || evento["Descrição"] || "";
+        
+        // Converte // em quebra de linha HTML
+        sinopse = sinopse.replace(/\s*\/\/\s*/g, "<br>");
+        sinopse = sinopse.replace(/\s*\/\s*/g, "<br>");
+        
+        // Para os cards, mostra a sinopse com quebras de linha, mas limitada a 120 caracteres (sem contar as tags)
+        // Primeiro remove as tags <br> para contar
+        const sinopseSemTags = sinopse.replace(/<br>/g, " ");
+        let sinopseFinal = sinopse;
+        if (sinopseSemTags.length > 120) {
+            // Precisa cortar mantendo as tags
+            let caracteres = 0;
+            let cortado = false;
+            let resultado = "";
+            for (let i = 0; i < sinopse.length; i++) {
+                if (sinopse[i] === '<') {
+                    // Estamos dentro de uma tag, adiciona até o fechamento
+                    while (i < sinopse.length && sinopse[i] !== '>') {
+                        resultado += sinopse[i];
+                        i++;
+                    }
+                    resultado += sinopse[i]; // adiciona o '>'
+                } else {
+                    caracteres++;
+                    if (caracteres <= 120) {
+                        resultado += sinopse[i];
+                    } else {
+                        if (!cortado) {
+                            resultado += "...";
+                            cortado = true;
+                        }
+                    }
+                }
+            }
+            sinopseFinal = resultado;
+        }
         
         let linkCapa = evento["Link da Capa"] || "https://placehold.co/600x400?text=Sem+Imagem";
         linkCapa = converterLinkGoogleDrive(linkCapa);
@@ -206,7 +242,7 @@ function exibirEventos(eventos, containerId, limite = 0) {
                     <h2 class="card-titulo">${titulo}</h2>
                     ${data ? `<div class="card-info"><span>📅</span> ${data}</div>` : ""}
                     ${local ? `<div class="card-info"><span>📍</span> ${local}</div>` : ""}
-                    ${sinopse ? `<div class="card-descricao">${sinopse.substring(0, 120)}${sinopse.length > 120 ? "..." : ""}</div>` : ""}
+                    ${sinopse ? `<div class="card-descricao" style="white-space: normal;">${sinopseFinal}</div>` : ""}
                     <a href="evento.html?evento=${encodeURIComponent(titulo)}" class="card-botao">📖 Ver detalhes</a>
                 </div>
             </div>
