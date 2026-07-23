@@ -163,7 +163,7 @@ canvas { position: absolute; inset: 0; pointer-events: none; }
 </head>
 <body>
     <a class="demo-back" href="./teste-site-vendavel.html">← Voltar ao site</a>
-    <div class="demo-badge">Modo vitrine: sem acesso à automação real</div>
+    <div class="demo-badge">Demonstração do projeto LÚMINUS</div>
     <div id="startOverlay"><div class="start-btn">INICIAR DEMO</div></div>
     <video id="curiosityVideo" playsinline muted></video>
     
@@ -177,7 +177,7 @@ canvas { position: absolute; inset: 0; pointer-events: none; }
                 <span class="material-symbols-outlined weather-icon" id="wIcon">cloud</span>
                 <div class="weather-info"><span class="weather-temp" id="wTemp">--°</span><span class="weather-desc" id="wDesc">...</span></div>
             </div>
-            <div class="camera-status" id="cameraStatus">DEMO: sem acesso real</div>
+            <div class="camera-status" id="cameraStatus">DEMO: projeto em desenvolvimento</div>
         </div>
         <div class="clock-widget"><div class="time" id="clockTime">--:--</div><div class="date" id="clockDate">-- -- --</div></div>
     </div>
@@ -204,7 +204,7 @@ canvas { position: absolute; inset: 0; pointer-events: none; }
         <div class="assistant-state" id="assistantState">EM ESPERA</div>
         <div class="speech-bubble" id="speechBubble">
             <div class="bubble-line"><span class="bubble-label">VOCÊ</span><span class="bubble-text" id="userSpeech">—</span></div>
-            <div class="bubble-line"><span class="bubble-label">LÚMINUS</span><span class="bubble-text" id="botSpeech">Lúminus online — modo demonstração.</span></div>
+            <div class="bubble-line"><span class="bubble-label">LÚMINUS</span><span class="bubble-text" id="botSpeech">Simulação online.</span></div>
         </div>
     </div>
 
@@ -231,7 +231,7 @@ canvas { position: absolute; inset: 0; pointer-events: none; }
             <button class="mobile-btn" data-entity="input_boolean.luz_sala" onclick="toggleDevice('input_boolean.luz_sala', this)"><span class="material-symbols-outlined">chair</span><span class="mobile-label">Sala</span></button>
             <button class="mobile-btn" data-entity="script.modo_cinema" onclick="toggleDevice('script.modo_cinema', this)"><span class="material-symbols-outlined">theaters</span><span class="mobile-label">Cinema</span></button>
         </div>
-        <div class="mobile-log" id="mobileLog">Modo demonstração: nenhum dispositivo real será acionado.</div>
+        <div class="mobile-log" id="mobileLog">Simulação online.</div>
     </div>
 
     <div class="control-panel" id="controlPanel" onclick="resetIdleTimer()">
@@ -247,7 +247,7 @@ canvas { position: absolute; inset: 0; pointer-events: none; }
 
 
 <script>
-// Demo seguro: intercepta chamadas locais e impede acesso à automação real.
+// Demo seguro: respostas simuladas para a vitrine pública.
 (function(){
   const demoStates = {
     'switch.maquete_teste_luz_teste_maquete':'off',
@@ -274,7 +274,7 @@ canvas { position: absolute; inset: 0; pointer-events: none; }
       else if(t.includes('sala')) entity='input_boolean.luz_sala';
       else if(t.includes('cinema')) entity='script.modo_cinema';
       if(entity) demoStates[entity] = (t.includes('desligar') || t.includes('apagar')) ? 'off' : 'on';
-      return new Response(JSON.stringify({status:'sucesso', mensagem:'Comando simulado. Nenhum dispositivo real foi acionado.'}), {headers:{'Content-Type':'application/json'}});
+      return new Response(JSON.stringify({status:'sucesso', mensagem:'Comando simulado.'}), {headers:{'Content-Type':'application/json'}});
     }
     return originalFetch(url, opts);
   };
@@ -358,10 +358,10 @@ canvas { position: absolute; inset: 0; pointer-events: none; }
     document.getElementById('startOverlay').addEventListener('click',async function(){
         try{
             sfx.init(); sfx.open(); this.style.display='none';
-            setCamStatus('DEMO: câmera e microfone desativados', 'warn');
+            setCamStatus('DEMO: projeto em desenvolvimento', 'warn');
             syncStates(); updateStats(); updateWeather();
-            setConversation('bot', 'Lúminus online — modo demonstração. Esta vitrine não acessa a automação real.');
-            speak("Luminus online. Modo demonstração. Esta vitrine não acessa a automação real.");
+            setConversation('bot', 'Simulação online. O LÚMINUS está sendo desenvolvido para centralizar comandos de voz, cenas, sensores e dispositivos inteligentes em uma casa conectada.');
+            speak("Simulação online. O Luminus está sendo desenvolvido para centralizar comandos de voz, cenas, sensores e dispositivos inteligentes em uma casa conectada.");
         }catch(e){ this.style.display='none'; setCamStatus('DEMO: erro inicial', 'error'); }
     });
 
