@@ -97,11 +97,11 @@ canvas { position: absolute; inset: 0; pointer-events: none; }
 .core-wrapper.active-mode .luminus-eye { box-shadow: 0 0 16px #bd00ff, 0 0 30px rgba(189,0,255,.8); }
 .core-wrapper.speaking-mode .luminus-eye { height: 20px; top: 34px; animation: eyeTalk .45s ease-in-out infinite alternate; }
 @keyframes eyeTalk { from { opacity: .65; transform: translate(calc(var(--look-x, 0px) * .20), calc(var(--look-y, 0px) * .15)) scaleY(.72); } to { opacity: 1; transform: translate(calc(var(--look-x, 0px) * .28), calc(var(--look-y, 0px) * .20)) scaleY(1.08); } }
-.core-wrapper.speaking-mode .luminus-mouth { width: 42px; height: 8px; bottom: 30px; border: 2px solid rgba(234,255,255,.92); border-radius: 999px; background: rgba(2, 8, 18, .92); box-shadow: inset 0 0 8px rgba(0,0,0,.8), 0 0 10px rgba(0,243,255,.62); transform: translateX(-50%); animation: mouthTalk .20s ease-in-out infinite; }
+.core-wrapper.speaking-mode .luminus-mouth { --mouth-open: 0; width: calc(38px + (var(--mouth-open) * 10px)); height: calc(6px + (var(--mouth-open) * 20px)); bottom: 30px; border: 2px solid rgba(234,255,255,.92); border-radius: 999px; background: rgba(2, 8, 18, .92); box-shadow: inset 0 0 8px rgba(0,0,0,.8), 0 0 10px rgba(0,243,255,.62); transform: translateX(-50%); transition: width .08s ease, height .08s ease, opacity .08s ease; opacity: calc(.72 + (var(--mouth-open) * .28)); }
 .core-wrapper.active-mode .luminus-mouth { width: 28px; height: 8px; border-bottom-color: #bd00ff; filter: drop-shadow(0 0 8px rgba(189,0,255,.9)); }
 .core-wrapper.curious-mode .luminus-mouth { width: 56px; height: 18px; }
 .core-wrapper.idle-blink .luminus-eye { height: 5px; top: 62px; }
-@keyframes mouthTalk { 0%,100% { width: 40px; height: 6px; border-radius: 999px; opacity: .78; } 45% { width: 34px; height: 24px; border-radius: 50%; opacity: 1; } 72% { width: 46px; height: 12px; border-radius: 999px; opacity: .9; } }
+@keyframes mouthTalk { 0%,100% { opacity: .78; } 45% { opacity: 1; } 72% { opacity: .9; } }
 
 /* ESTADOS DE COR */
 .core-wrapper.active-mode { filter: drop-shadow(0 0 36px rgba(189,0,255,.35)); }
@@ -542,6 +542,26 @@ canvas { position: absolute; inset: 0; pointer-events: none; }
     if(window.speechSynthesis) window.speechSynthesis.onvoiceschanged = selectLuminusVoice;
     selectLuminusVoice();
 
+    let mouthTimer = null, mouthCloseTimer = null;
+    function mouthElement(){ return coreWrapper ? coreWrapper.querySelector('.luminus-mouth') : null; }
+    function setMouthOpen(v){ const m=mouthElement(); if(m)m.style.setProperty('--mouth-open', String(Math.max(0, Math.min(1, v)))); }
+    function stopMouthSync(){ clearInterval(mouthTimer); clearTimeout(mouthCloseTimer); mouthTimer=null; mouthCloseTimer=null; setMouthOpen(0); }
+    function pulseMouth(v=1){ setMouthOpen(v); clearTimeout(mouthCloseTimer); mouthCloseTimer=setTimeout(()=>setMouthOpen(.12), 85); }
+    function startMouthSync(text){
+        stopMouthSync();
+        const chars = String(text||'').replace(/\s+/g,' ').trim();
+        let i = 0;
+        mouthTimer = setInterval(()=>{
+            if(!speaking){ stopMouthSync(); return; }
+            const ch = chars[i % Math.max(chars.length,1)] || ' ';
+            const next = chars[(i+1) % Math.max(chars.length,1)] || ' ';
+            let open = /[aáàâãeéêiíoóôõuú]/i.test(ch) ? .88 : /[,.!?;]/.test(ch) ? .08 : /[mnrszfvjl]/i.test(ch) ? .38 : .58;
+            if(next === ' ') open *= .55;
+            pulseMouth(open);
+            i++;
+        }, 115);
+    }
+
     function speak(t){
         window.speechSynthesis.cancel(); const spokenText = String(t).replace(/L[ÚU]MINUS/gi, 'Luminus').replace(/Lúminus/gi, 'Luminus'); const u=new SpeechSynthesisUtterance(spokenText); u.lang='pt-BR';
         const voice = luminusVoice || selectLuminusVoice();
@@ -550,11 +570,13 @@ canvas { position: absolute; inset: 0; pointer-events: none; }
         u.pitch = 0.92;  // masculino sem distorcer a voz do navegador
         u.volume = 1;
         setConversation('bot', t);
-        u.onstart=()=>{speaking=true;coreWrapper.classList.remove('active-mode');coreWrapper.classList.remove('processing-mode');coreWrapper.classList.add('speaking-mode');setAssistantState('FALANDO', 'speaking');}; 
-        u.onend=()=>{ resetState(); setTimeout(()=>{try{if(recognition)recognition.start()}catch{}},700); };
+        u.onstart=()=>{speaking=true;coreWrapper.classList.remove('active-mode');coreWrapper.classList.remove('processing-mode');coreWrapper.classList.add('speaking-mode');setAssistantState('FALANDO', 'speaking');startMouthSync(spokenText);}; 
+        u.onboundary=()=>{ if(speaking) pulseMouth(.95); }; 
+        u.onend=()=>{ stopMouthSync(); resetState(); setTimeout(()=>{try{if(recognition)recognition.start()}catch{}},700); };
+        u.onerror=()=>{ stopMouthSync(); resetState(); };
         window.speechSynthesis.speak(u);
     }
-    function resetState(){ speaking=false; isProcessing=false; wakeWordDetected=false; coreWrapper.classList.remove('active-mode'); coreWrapper.classList.remove('processing-mode'); coreWrapper.classList.remove('speaking-mode'); coreWrapper.classList.remove('idle-blink'); if(assistantState) setAssistantState('EM ESPERA', ''); }
+    function resetState(){ stopMouthSync(); speaking=false; isProcessing=false; wakeWordDetected=false; coreWrapper.classList.remove('active-mode'); coreWrapper.classList.remove('processing-mode'); coreWrapper.classList.remove('speaking-mode'); coreWrapper.classList.remove('idle-blink'); if(assistantState) setAssistantState('EM ESPERA', ''); }
 
     const sc=document.getElementById('starfield'), sctx=sc.getContext('2d');
     let sw,sh; function rz(){sw=sc.width=window.innerWidth;sh=sc.height=window.innerHeight} window.addEventListener('resize',rz); rz();
