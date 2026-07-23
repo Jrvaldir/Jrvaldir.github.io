@@ -114,18 +114,16 @@
         .portfolio-info { padding: 1.35rem; }
         .luminus-preview { position: relative; display:grid; place-items:center; overflow:hidden; background: radial-gradient(circle at bottom, #0b1021 0%, #000 100%); }
         .luminus-preview::before { content:'SYSTEM ONLINE'; position:absolute; top:24px; left:0; right:0; text-align:center; color:rgba(200,220,255,.18); letter-spacing:8px; font-weight:800; font-size:.85rem; }
-        .mini-luminus-core { position:relative; width:116px; height:116px; border-radius:50%; filter:drop-shadow(0 0 22px rgba(0,243,255,.45)); animation: miniFloat 2.8s ease-in-out infinite; }
+        .mini-luminus-core { position:relative; width:92px; height:92px; border-radius:50%; filter:drop-shadow(0 0 18px rgba(0,243,255,.42)); animation: miniFloat 2.8s ease-in-out infinite; }
         .mini-luminus-ring { position:absolute; inset:0; border-radius:50%; border:1px solid rgba(120,230,255,.24); animation: miniSpin 12s linear infinite; }
-        .mini-luminus-ring::after { content:''; position:absolute; inset:14px; border-radius:50%; border:1px dashed rgba(180,220,255,.2); animation: miniSpin 8s linear reverse infinite; }
-        .mini-luminus-face { position:absolute; top:50%; left:50%; width:88px; height:64px; transform:translate(-50%,-50%); border-radius:28px; background:linear-gradient(145deg,rgba(5,24,70,.96),rgba(0,180,255,.30)); border:1px solid rgba(120,230,255,.38); box-shadow:inset 0 0 18px rgba(0,243,255,.22),0 0 24px rgba(0,243,255,.32); }
-        .mini-luminus-eye { position:absolute; top:20px; width:15px; height:20px; border-radius:999px; background:#eaffff; box-shadow:0 0 10px #00f3ff; animation: miniEyes 2.2s ease-in-out infinite; }
-        .mini-luminus-eye.left { left:23px; } .mini-luminus-eye.right { right:23px; }
-        .mini-luminus-mouth { position:absolute; left:50%; bottom:13px; width:22px; height:7px; transform:translateX(-50%); border-bottom:3px solid #eaffff; border-radius:0 0 18px 18px; filter:drop-shadow(0 0 6px rgba(0,243,255,.9)); animation: miniMouth 1.5s ease-in-out infinite; }
+        .mini-luminus-ring::after { content:''; position:absolute; inset:11px; border-radius:50%; border:1px dashed rgba(180,220,255,.2); animation: miniSpin 8s linear reverse infinite; }
+        .mini-luminus-face { position:absolute; top:50%; left:50%; width:70px; height:52px; transform:translate(-50%,-50%); border-radius:23px; background:linear-gradient(145deg,rgba(5,24,70,.96),rgba(0,180,255,.30)); border:1px solid rgba(120,230,255,.38); box-shadow:inset 0 0 16px rgba(0,243,255,.22),0 0 20px rgba(0,243,255,.32); }
+        .mini-luminus-eye { position:absolute; top:16px; width:12px; height:17px; border-radius:999px; background:#eaffff; box-shadow:0 0 9px #00f3ff; animation: miniEyes 2.2s ease-in-out infinite; }
+        .mini-luminus-eye.left { left:18px; } .mini-luminus-eye.right { right:18px; }
         .mini-demo-label { position:absolute; left:0; right:0; bottom:18px; text-align:center; color:rgba(0,243,255,.86); font-size:.72rem; letter-spacing:2px; font-weight:800; }
         @keyframes miniSpin { to { transform:rotate(360deg); } }
         @keyframes miniFloat { 50% { transform:translateY(-7px); } }
-        @keyframes miniEyes { 0%,92%,100% { height:20px; } 95% { height:4px; top:28px; } }
-        @keyframes miniMouth { 0%,100% { width:22px; height:7px; } 45% { width:16px; height:17px; border:2px solid #eaffff; border-radius:50%; } }
+        @keyframes miniEyes { 0%,92%,100% { height:20px; } 95% { height:4px; top:22px; } }
 
         .portfolio-info h3 { margin-bottom: .6rem; }
         .tags { display: flex; flex-wrap: wrap; gap: .45rem; margin: .8rem 0; }
@@ -346,7 +344,6 @@
                             <div class="mini-luminus-face">
                                 <span class="mini-luminus-eye left"></span>
                                 <span class="mini-luminus-eye right"></span>
-                                <span class="mini-luminus-mouth"></span>
                             </div>
                         </div>
                         <div class="mini-demo-label">SIMULAÇÃO ONLINE</div>
