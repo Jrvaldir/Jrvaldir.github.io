@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Simulação do LÚMINUS, assistente residencial em construção por Valdir Moura para automação com Home Assistant.">
+  <title>LÚMINUS | Simulação de Automação Residencial</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0} :root{--bg:#061014;--card:#102129;--soft:#17323c;--txt:#fff;--muted:#bfd3da;--cyan:#00d4ff;--gold:#ffb703;--ok:#34d399;--off:#6b7f87;--border:rgba(255,255,255,.12)}
+    body{font-family:'Segoe UI',Tahoma,sans-serif;background:radial-gradient(circle at top right,rgba(0,212,255,.18),transparent 35%),var(--bg);color:var(--txt);line-height:1.6;min-height:100vh;padding:24px}
+    .wrap{max-width:1100px;margin:auto}.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:24px}.back{color:var(--cyan);text-decoration:none;font-weight:800}.badge{color:var(--gold);font-weight:900;letter-spacing:2px;text-transform:uppercase;font-size:.78rem}
+    .hero{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center}.card{background:linear-gradient(180deg,var(--card),rgba(16,33,41,.75));border:1px solid var(--border);border-radius:24px;padding:28px;box-shadow:0 18px 55px rgba(0,0,0,.25)}
+    h1{font-size:clamp(2.1rem,5vw,4rem);line-height:1.05;margin:10px 0 16px}.highlight{color:var(--cyan)}p{color:var(--muted)}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}.btn{border:1px solid var(--border);background:var(--soft);color:var(--txt);padding:12px 15px;border-radius:14px;font-weight:800;cursor:pointer;transition:.2s}.btn:hover{transform:translateY(-2px);border-color:var(--cyan)}.btn.primary{background:var(--cyan);color:#061014}.btn:disabled{opacity:.55;cursor:not-allowed}
+    .avatar-box{display:grid;place-items:center;text-align:center}.core{width:230px;height:230px;border-radius:50%;background:radial-gradient(circle,#163844,#08191f 68%);border:2px solid rgba(0,212,255,.4);box-shadow:0 0 55px rgba(0,212,255,.25),inset 0 0 35px rgba(0,212,255,.12);position:relative;margin:10px auto 22px;animation:float 3s ease-in-out infinite}.eye{position:absolute;top:72px;width:38px;height:22px;border-radius:50%;background:var(--cyan);box-shadow:0 0 16px var(--cyan)}.eye.left{left:55px}.eye.right{right:55px}.mouth{position:absolute;left:50%;bottom:62px;transform:translateX(-50%);width:62px;height:24px;border:4px solid var(--cyan);border-top:0;border-radius:0 0 60px 60px}.speaking .mouth{animation:talk .22s infinite alternate}.speaking .eye{height:28px}@keyframes float{50%{transform:translateY(-8px)}}@keyframes talk{to{height:38px;width:46px}}
+    .speech{background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.22);border-radius:18px;padding:16px;color:var(--muted);min-height:86px}.speech strong{color:var(--cyan)}
+    .panel{margin-top:24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}.device{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px}.device-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.device i{font-size:1.5rem;color:var(--cyan)}.state{font-size:.78rem;font-weight:900;color:var(--off)}.state.on{color:var(--ok)}.switch{width:54px;height:30px;border-radius:999px;background:#344b54;position:relative;cursor:pointer}.switch::after{content:'';position:absolute;width:24px;height:24px;border-radius:50%;background:white;left:3px;top:3px;transition:.2s}.switch.on{background:var(--ok)}.switch.on::after{left:27px}.note{margin-top:22px;color:var(--muted);font-size:.95rem}.grid{margin-top:24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}.mini h3{margin-bottom:8px}.mini i{color:var(--gold);margin-right:8px}
+    @media(max-width:850px){body{padding:14px}.hero{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.card{padding:20px}.core{width:190px;height:190px}.eye{top:60px}.eye.left{left:45px}.eye.right{right:45px}.mouth{bottom:52px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a class="back" href="./teste-site-vendavel.html"><i class="fas fa-arrow-left"></i> Voltar ao site</a><span class="badge">Simulação segura</span></div>
+    <section class="hero">
+      <div class="card">
+        <div class="badge">LÚMINUS em construção</div>
+        <h1>Uma prévia do assistente residencial que estou criando.</h1>
+        <p>Esta página mostra uma simulação do LÚMINUS: um assistente para automação residencial com comandos de voz, Home Assistant, sensores e dispositivos inteligentes.</p>
+        <p class="note"><strong>Importante:</strong> esta demonstração não acessa minha automação real. É apenas uma vitrine segura para o usuário entender a ideia.</p>
+        <div class="actions">
+          <button class="btn primary" onclick="intro()"><i class="fas fa-volume-high"></i> Ouvir explicação</button>
+          <button class="btn" onclick="demoScene()"><i class="fas fa-wand-magic-sparkles"></i> Simular cena</button>
+        </div>
+      </div>
+      <div class="card avatar-box">
+        <div class="core" id="avatar"><div class="eye left"></div><div class="eye right"></div><div class="mouth"></div></div>
+        <div class="speech" id="speech"><strong>LÚMINUS:</strong> Olá. Eu sou uma simulação do assistente residencial em desenvolvimento.</div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="device"><div class="device-head"><div><i class="fas fa-lightbulb"></i> Luz da sala</div><span class="state" id="s1">desligada</span></div><div class="switch" onclick="toggle(this,'s1')"></div></div>
+      <div class="device"><div class="device-head"><div><i class="fas fa-fan"></i> Ventilador</div><span class="state" id="s2">desligado</span></div><div class="switch" onclick="toggle(this,'s2')"></div></div>
+      <div class="device"><div class="device-head"><div><i class="fas fa-shield-halved"></i> Segurança</div><span class="state" id="s3">monitorando</span></div><div class="switch on" onclick="toggle(this,'s3')"></div></div>
+      <div class="device"><div class="device-head"><div><i class="fas fa-temperature-half"></i> Clima</div><span class="state on" id="s4">confortável</span></div><div class="switch on" onclick="toggle(this,'s4')"></div></div>
+    </section>
+
+    <section class="grid">
+      <div class="card mini"><h3><i class="fas fa-microphone"></i> Comandos de voz</h3><p>Ideia: controlar luzes, cenas e dispositivos falando naturalmente.</p></div>
+      <div class="card mini"><h3><i class="fas fa-house-signal"></i> Home Assistant</h3><p>Integração planejada para centralizar automações e dispositivos inteligentes.</p></div>
+      <div class="card mini"><h3><i class="fas fa-microchip"></i> ESP32/ESP8266</h3><p>Protótipos para sensores, relés, iluminação e pequenas automações residenciais.</p></div>
+    </section>
+  </div>
+
+  <script>
+    const speech=document.getElementById('speech'), avatar=document.getElementById('avatar');
+    function say(text){ speech.innerHTML='<strong>LÚMINUS:</strong> '+text; avatar.classList.add('speaking'); if('speechSynthesis' in window){ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(text); u.lang='pt-BR'; u.rate=.94; u.pitch=.95; u.onend=()=>avatar.classList.remove('speaking'); speechSynthesis.speak(u); } else setTimeout(()=>avatar.classList.remove('speaking'),2200); }
+    function intro(){ say('Olá. Eu sou o LÚMINUS, um assistente residencial em construção. A ideia é ajudar no controle da casa inteligente, integrando luzes, sensores, cenas, segurança e comandos de voz com Home Assistant. Esta é apenas uma simulação segura, sem acesso à automação real.'); }
+    function demoScene(){ document.querySelectorAll('.switch').forEach((el,i)=>{ if(i<2&&!el.classList.contains('on')) el.click(); }); say('Cena simulada ativada. Luz da sala ligada, ventilador ligado e ambiente pronto. No projeto real, isso poderá ser integrado a dispositivos da casa.'); }
+    function toggle(el,id){ el.classList.toggle('on'); const st=document.getElementById(id); const on=el.classList.contains('on'); st.classList.toggle('on',on); if(id==='s1') st.textContent=on?'ligada':'desligada'; else if(id==='s2') st.textContent=on?'ligado':'desligado'; else if(id==='s3') st.textContent=on?'monitorando':'pausado'; else st.textContent=on?'confortável':'desligado'; say((st.parentElement.textContent||'Dispositivo').trim()+'. Estado: '+st.textContent+'.'); }
+  </script>
+</body>
+</html>
