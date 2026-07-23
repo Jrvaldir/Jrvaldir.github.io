@@ -1,36 +1,617 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="description" content="Simulação segura do LÚMINUS, assistente residencial em construção por Valdir Moura.">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#000000">
+<meta name="mobile-web-app-capable" content="yes">
 <title>LÚMINUS | Simulação segura</title>
+
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;700&display=swap" rel="stylesheet">
+
 <style>
-:root{--bg:#000;--aura:rgba(100,200,255,.3);--glow:rgba(180,220,255,.8);--rune:rgba(180,220,255,.42);--text:rgba(220,238,255,.86);--glass:rgba(20,30,50,.42);--glass-border:rgba(100,200,255,.22)}
-*{box-sizing:border-box}body{margin:0;width:100vw;min-height:100vh;background:radial-gradient(circle at bottom,#0b1021 0%,#000 100%);overflow-x:hidden;font-family:Rajdhani,sans-serif;color:#fff;user-select:none}.back{position:fixed;left:18px;bottom:18px;z-index:50;color:#00f3ff;text-decoration:none;border:1px solid var(--glass-border);background:rgba(5,10,24,.62);border-radius:999px;padding:10px 14px;font-weight:700;letter-spacing:1px}.title-bg{position:fixed;top:10%;width:100%;text-align:center;font-size:clamp(22px,7vw,48px);letter-spacing:14px;color:var(--text);text-transform:uppercase;opacity:.24;font-weight:700;text-shadow:0 0 20px rgba(0,243,255,.2)}
-.top-bar{position:fixed;top:20px;left:20px;right:20px;display:flex;justify-content:space-between;z-index:15;pointer-events:none}.brand-container{display:flex;align-items:center;gap:10px}.brand{font-size:14px;letter-spacing:2px;color:var(--rune);font-weight:700}.led{width:8px;height:8px;background:#00f3ff;border-radius:50%;box-shadow:0 0 10px #00f3ff}.weather{display:flex;align-items:center;gap:8px;color:rgba(200,220,255,.9);margin-top:8px}.weather .material-symbols-outlined{color:#00f3ff;text-shadow:0 0 10px rgba(0,243,255,.4)}.clock{text-align:right}.time{font-size:42px;font-weight:700;text-shadow:0 0 10px rgba(0,243,255,.5);line-height:1}.date{font-size:14px;letter-spacing:2px;color:var(--rune);text-transform:uppercase;margin-top:5px}
-.core-container{min-height:100vh;display:flex;justify-content:center;align-items:center;padding:130px 18px 170px}.core-wrapper{position:relative;width:270px;height:270px;filter:drop-shadow(0 0 28px rgba(0,243,255,.28));cursor:pointer}.halo{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(120,230,255,.18);animation:spin 18s linear infinite}.halo:after{content:'';position:absolute;inset:28px;border-radius:50%;border:1px dashed rgba(180,220,255,.22);animation:spin 14s linear reverse infinite}.face{position:absolute;top:50%;left:50%;width:190px;height:140px;transform:translate(-50%,-50%);border-radius:58px;background:linear-gradient(145deg,rgba(5,24,70,.96),rgba(0,180,255,.30));border:1px solid rgba(120,230,255,.38);box-shadow:inset 0 0 24px rgba(0,243,255,.22),0 0 34px rgba(0,243,255,.32)}.eye{position:absolute;top:43px;width:34px;height:43px;border-radius:999px;background:#eaffff;box-shadow:0 0 14px #00f3ff,0 0 26px rgba(0,243,255,.65)}.eye.left{left:48px}.eye.right{right:48px}.mouth{position:absolute;left:50%;bottom:28px;width:48px;height:20px;transform:translateX(-50%);border-bottom:4px solid #eaffff;border-radius:0 0 30px 30px;filter:drop-shadow(0 0 8px rgba(0,243,255,.9))}.face:before,.face:after{content:'';position:absolute;top:52px;width:26px;height:48px;border-radius:999px;background:linear-gradient(180deg,#675cff,#00f3ff);opacity:.9;box-shadow:0 0 16px rgba(0,243,255,.45)}.face:before{left:-21px}.face:after{right:-21px}.speaking .eye{height:20px;top:34px;animation:eyeTalk .45s ease-in-out infinite alternate}.speaking .mouth{width:34px;height:30px;bottom:24px;border:3px solid #eaffff;border-top:0;animation:mouthTalk .28s ease-in-out infinite alternate}@keyframes spin{to{transform:rotate(360deg)}}@keyframes eyeTalk{from{opacity:.65;transform:scaleY(.72)}to{opacity:1;transform:scaleY(1.08)}}@keyframes mouthTalk{from{height:12px;width:30px;opacity:.75}to{height:34px;width:42px;opacity:1}}
-.conversation{position:fixed;left:50%;bottom:88px;transform:translateX(-50%);width:min(88vw,660px);z-index:16;text-align:center}.state{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:rgba(180,220,255,.72);text-shadow:0 0 12px rgba(0,243,255,.25);margin-bottom:8px}.bubble{padding:14px 18px;border-radius:18px;border:1px solid rgba(120,230,255,.18);background:rgba(5,10,24,.58);backdrop-filter:blur(10px);box-shadow:0 0 24px rgba(0,0,0,.28),inset 0 0 22px rgba(0,243,255,.055);text-align:left}.line{display:flex;gap:10px;align-items:baseline;font-size:15px}.label{min-width:82px;color:rgba(180,220,255,.55);letter-spacing:1.5px;text-transform:uppercase;font-size:11px}.txt{color:rgba(235,248,255,.92)}
-.panel{position:fixed;inset:0;background:rgba(0,0,0,.86);backdrop-filter:blur(8px);display:none;z-index:30;align-items:center;justify-content:center;padding:24px}.panel.active{display:flex}.panel-box{width:min(92vw,520px)}.panel-title{font-size:24px;letter-spacing:5px;text-align:center;margin-bottom:24px;border-bottom:1px solid var(--rune);padding-bottom:10px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.glass-btn{background:var(--glass);border:1px solid var(--glass-border);border-radius:15px;padding:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:rgba(255,255,255,.75);cursor:pointer;transition:.2s}.glass-btn .material-symbols-outlined{font-size:36px;margin-bottom:10px}.glass-btn.on{border-color:#00f3ff;background:rgba(0,243,255,.15);box-shadow:0 0 25px rgba(0,243,255,.15)}.glass-btn.on .material-symbols-outlined{color:#00f3ff;text-shadow:0 0 15px #00f3ff}.close{margin:24px auto 0;display:block;width:max-content;padding:10px 28px;border-radius:999px;border:1px solid rgba(255,100,100,.3);color:rgba(255,120,120,.9);cursor:pointer}.actions{position:fixed;top:50%;right:22px;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;z-index:18}.action{border:1px solid var(--glass-border);background:rgba(5,10,24,.72);color:#eafcff;border-radius:999px;padding:11px 14px;font-family:inherit;font-weight:700;letter-spacing:1px;cursor:pointer}.action:hover{border-color:#00f3ff}.safe{position:fixed;left:20px;top:104px;color:rgba(180,220,255,.55);font-size:11px;letter-spacing:1.6px;text-transform:uppercase;z-index:15}@media(max-width:760px){.title-bg{display:none}.time{font-size:30px}.core-wrapper{width:230px;height:230px}.actions{position:static;transform:none;flex-direction:row;flex-wrap:wrap;justify-content:center;margin-top:-145px;padding-bottom:160px}.grid{grid-template-columns:1fr}.conversation{bottom:72px}.back{bottom:12px}.safe{display:none}}
+/* --- ESTILO GERAL --- */
+:root { --bg: #000000; --aura: rgba(100, 200, 255, 0.3); --glow: rgba(180, 220, 255, 0.8); --rune: rgba(180, 220, 255, 0.4); --text: rgba(200, 220, 255, 0.8); --glass: rgba(20, 30, 50, 0.4); --glass-border: rgba(100, 200, 255, 0.2); }
+* { box-sizing: border-box; }
+body { margin: 0; width: 100vw; height: 100vh; background: radial-gradient(circle at bottom, #0b1021 0%, #000000 100%); overflow: hidden; font-family: "Rajdhani", sans-serif; user-select: none; color: white; }
+
+.title-bg { position: absolute; top: 12%; width: 100%; text-align: center; font-size: clamp(20px, 6vw, 40px); letter-spacing: 14px; color: var(--text); text-transform: uppercase; user-select: none; opacity: 0.3; transition: opacity 0.5s; font-weight: 700; text-shadow: 0 0 20px rgba(0, 243, 255, 0.2); }
+canvas { position: absolute; inset: 0; pointer-events: none; }
+#curiosityVideo { position: fixed; width: 1px; height: 1px; opacity: 0; pointer-events: none; left: -10px; top: -10px; }
+
+/* TOPO */
+.top-bar { position: absolute; top: 20px; left: 20px; right: 20px; display: flex; justify-content: space-between; align-items: flex-start; z-index: 15; pointer-events: none; }
+.top-left { text-align: left; display: flex; flex-direction: column; gap: 5px; }
+
+/* Marca e LED Integrados */
+.brand-container { display: flex; align-items: center; gap: 10px; }
+.brand { font-size: 14px; letter-spacing: 2px; color: var(--rune); font-weight: bold; }
+#statusLed { width: 8px; height: 8px; background: #00f3ff; border-radius: 50%; box-shadow: 0 0 10px #00f3ff; transition: 0.3s; }
+
+/* Clima */
+.weather-widget { display: flex; align-items: center; gap: 8px; color: rgba(200, 220, 255, 0.9); margin-top: 5px; }
+.weather-icon { font-size: 24px; color: #00f3ff; text-shadow: 0 0 10px rgba(0, 243, 255, 0.4); }
+.weather-info { display: flex; align-items: baseline; gap: 5px; }
+.weather-temp { font-size: 20px; font-weight: 700; line-height: 1; }
+.weather-desc { font-size: 12px; color: var(--rune); text-transform: uppercase; letter-spacing: 1px; }
+.camera-status { margin-top: 4px; font-size: 10px; letter-spacing: 1.4px; color: rgba(180,220,255,.55); text-transform: uppercase; }
+.camera-status.active { color: #00f3ff; text-shadow: 0 0 8px rgba(0,243,255,.65); }
+.camera-status.warn { color: #ffcc66; }
+.camera-status.error { color: #ff4d7d; }
+
+/* Relógio */
+.clock-widget { text-align: right; }
+.time { font-size: 42px; font-weight: 700; color: #fff; text-shadow: 0 0 10px rgba(0,243,255,0.5); line-height: 1; }
+.date { font-size: 14px; letter-spacing: 2px; color: var(--rune); text-transform: uppercase; margin-top: 5px; }
+
+/* CONVERSA / ESTADOS */
+.conversation-card { position: absolute; left: 50%; bottom: 92px; transform: translateX(-50%); width: min(88vw, 620px); z-index: 16; pointer-events: none; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.assistant-state { font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: rgba(180,220,255,.72); text-shadow: 0 0 12px rgba(0,243,255,.25); }
+.assistant-state.listening { color: #bd00ff; text-shadow: 0 0 16px rgba(189,0,255,.75); }
+.assistant-state.processing { color: #ffcc66; text-shadow: 0 0 16px rgba(255,184,77,.75); }
+.assistant-state.speaking { color: #00f3ff; text-shadow: 0 0 16px rgba(0,243,255,.75); }
+.assistant-state.error { color: #ff4d7d; text-shadow: 0 0 16px rgba(255,77,125,.75); }
+.speech-bubble { min-height: 52px; width: 100%; padding: 13px 18px; border-radius: 18px; border: 1px solid rgba(120,230,255,.18); background: rgba(5, 10, 24, .52); backdrop-filter: blur(10px); box-shadow: 0 0 24px rgba(0,0,0,.28), inset 0 0 22px rgba(0,243,255,.055); opacity: .86; transition: all .22s ease; }
+.speech-bubble.active { opacity: 1; border-color: rgba(0,243,255,.34); box-shadow: 0 0 30px rgba(0,243,255,.12), inset 0 0 22px rgba(0,243,255,.08); }
+.bubble-line { display: flex; gap: 10px; align-items: baseline; font-size: 15px; line-height: 1.25; }
+.bubble-line + .bubble-line { margin-top: 6px; }
+.bubble-label { min-width: 74px; color: rgba(180,220,255,.55); letter-spacing: 1.5px; text-transform: uppercase; font-size: 11px; }
+.bubble-text { color: rgba(235,248,255,.92); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.core-wrapper.processing-mode { filter: drop-shadow(0 0 42px rgba(255,184,77,.42)); }
+.core-wrapper.processing-mode .luminus-face { border-color: rgba(255,184,77,.72); box-shadow: inset 0 0 26px rgba(255,184,77,.16), 0 0 42px rgba(255,184,77,.38); }
+.core-wrapper.processing-mode .luminus-eye { box-shadow: 0 0 16px #ffcc66, 0 0 30px rgba(255,184,77,.75); }
+.core-wrapper.error-mode { animation: errorShake .25s linear 2; filter: drop-shadow(0 0 42px rgba(255,77,125,.42)); }
+.core-wrapper.error-mode .luminus-face { border-color: rgba(255,77,125,.85); box-shadow: inset 0 0 26px rgba(255,77,125,.18), 0 0 42px rgba(255,77,125,.42); }
+.core-wrapper.error-mode .luminus-eye { box-shadow: 0 0 16px #ff4d7d, 0 0 30px rgba(255,77,125,.75); }
+.core-wrapper.error-mode .luminus-mouth { width: 38px; height: 8px; border-radius: 20px; border-bottom-color: #ff4d7d; }
+@keyframes errorShake { 0%,100%{ transform: translate(var(--cur-x,0), var(--cur-y,0)); } 25%{ transform: translate(calc(var(--cur-x,0) - 6px), var(--cur-y,0)); } 75%{ transform: translate(calc(var(--cur-x,0) + 6px), var(--cur-y,0)); } }
+
+/* RODAPÉ */
+.stats-bar { position: absolute; bottom: 20px; left: 0; width: 100%; display: flex; justify-content: center; gap: 30px; z-index: 15; pointer-events: none; opacity: 0.7; }
+.stat-item { display: flex; flex-direction: column; align-items: center; }
+.stat-label { font-size: 10px; letter-spacing: 2px; color: var(--rune); margin-bottom: 5px; }
+.stat-value { font-size: 16px; font-weight: bold; color: #00f3ff; font-family: monospace; }
+.stat-bar { width: 40px; height: 3px; background: #222; margin-top: 5px; border-radius: 2px; overflow: hidden; }
+.stat-fill { height: 100%; background: #00f3ff; width: 0%; transition: width 1s; }
+
+/* NÚCLEO ESTRUTURAL */
+.core-container { position: absolute; inset: 0; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s ease, transform 0.5s ease; z-index: 10; }
+.core-wrapper { position: relative; width: 260px; height: 260px; filter: drop-shadow(0 0 28px rgba(0,243,255,.28)); }
+.core { display: none; }
+.ring { display: none; }
+.ring.inner { display: none; }
+
+/* ROSTO CENTRAL */
+.core-logo { display: none; }
+.luminus-face { position: absolute; top: 50%; left: 50%; width: 190px; height: 140px; transform: translate(-50%, -50%); border-radius: 58px; z-index: 6; pointer-events: none; background: linear-gradient(145deg, rgba(5,24,70,.96), rgba(0,180,255,.30)); border: 1px solid rgba(120, 230, 255, .38); box-shadow: inset 0 0 24px rgba(0,243,255,.22), 0 0 34px rgba(0,243,255,.32); transition: box-shadow .25s, border-color .25s, transform .18s ease-out; }
+.luminus-eye { position: absolute; top: 43px; width: 34px; height: 43px; border-radius: 999px; background: #eaffff; box-shadow: 0 0 14px #00f3ff, 0 0 26px rgba(0,243,255,.65); transform: translate(calc(var(--look-x, 0px) * .34), calc(var(--look-y, 0px) * .30)); transition: transform .12s ease-out, height .18s ease, opacity .18s ease; }
+.luminus-eye.left { left: 48px; } .luminus-eye.right { right: 48px; }
+.luminus-mouth { position: absolute; left: 50%; bottom: 28px; width: 48px; height: 20px; transform: translateX(-50%); border-bottom: 4px solid #eaffff; border-radius: 0 0 30px 30px; filter: drop-shadow(0 0 8px rgba(0,243,255,.9)); opacity: .95; transition: all .18s ease; }
+.luminus-face::before, .luminus-face::after { content: ''; position: absolute; top: 52px; width: 26px; height: 48px; border-radius: 999px; background: linear-gradient(180deg, #675cff, #00f3ff); opacity: .9; box-shadow: 0 0 16px rgba(0,243,255,.45); }
+.luminus-face::before { left: -21px; } .luminus-face::after { right: -21px; }
+.core-wrapper.curious-mode { transition: transform .18s ease-out; }
+.core-wrapper.curious-mode .luminus-face { box-shadow: inset 0 0 28px rgba(0,243,255,.28), 0 0 42px rgba(103,92,255,.38); }
+.core-wrapper.active-mode .luminus-face { border-color: rgba(189,0,255,.75); box-shadow: inset 0 0 26px rgba(189,0,255,.25), 0 0 42px rgba(189,0,255,.45); }
+.core-wrapper.active-mode .luminus-eye { box-shadow: 0 0 16px #bd00ff, 0 0 30px rgba(189,0,255,.8); }
+.core-wrapper.speaking-mode .luminus-eye { height: 20px; top: 34px; animation: eyeTalk .45s ease-in-out infinite alternate; }
+@keyframes eyeTalk { from { opacity: .65; transform: translate(calc(var(--look-x, 0px) * .20), calc(var(--look-y, 0px) * .15)) scaleY(.72); } to { opacity: 1; transform: translate(calc(var(--look-x, 0px) * .28), calc(var(--look-y, 0px) * .20)) scaleY(1.08); } }
+.core-wrapper.speaking-mode .luminus-mouth { width: 34px; height: 30px; bottom: 24px; border: 3px solid #eaffff; border-top: 0; animation: mouthTalk .28s ease-in-out infinite alternate; }
+.core-wrapper.active-mode .luminus-mouth { width: 28px; height: 8px; border-bottom-color: #bd00ff; filter: drop-shadow(0 0 8px rgba(189,0,255,.9)); }
+.core-wrapper.curious-mode .luminus-mouth { width: 56px; height: 18px; }
+.core-wrapper.idle-blink .luminus-eye { height: 5px; top: 62px; }
+@keyframes mouthTalk { from { height: 12px; width: 30px; opacity: .75; } to { height: 34px; width: 42px; opacity: 1; } }
+
+/* ESTADOS DE COR */
+.core-wrapper.active-mode { filter: drop-shadow(0 0 36px rgba(189,0,255,.35)); }
+.core-wrapper.speaking-mode { filter: drop-shadow(0 0 42px rgba(0,243,255,.45)); }
+
+/* PAINEL */
+.control-panel { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); opacity: 0; pointer-events: none; transform: scale(1.1); transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); z-index: 20; }
+.control-panel.active { opacity: 1; pointer-events: auto; transform: scale(1); }
+.panel-title { color: white; font-size: 24px; letter-spacing: 5px; margin-bottom: 40px; text-transform: uppercase; opacity: 0.9; font-weight: 700; border-bottom: 1px solid var(--rune); padding-bottom: 10px;}
+.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; width: 90%; max-width: 400px; }
+.glass-btn { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 15px; padding: 25px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: rgba(255,255,255,0.7); cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; }
+.glass-btn:active { transform: scale(0.96); background: rgba(255,255,255,0.1); }
+.glass-btn .icon { font-size: 36px; margin-bottom: 10px; transition: color 0.3s, text-shadow 0.3s; }
+.glass-btn .label { font-size: 14px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
+.glass-btn.on { border-color: #00f3ff; background: rgba(0, 243, 255, 0.15); box-shadow: 0 0 25px rgba(0, 243, 255, 0.15); }
+.glass-btn.on .icon { color: #00f3ff; text-shadow: 0 0 15px #00f3ff; }
+.glass-btn.on .label { color: white; }
+.close-btn { margin-top: 40px; padding: 10px 30px; border-radius: 50px; border: 1px solid rgba(255,100,100,0.3); color: rgba(255,100,100,0.8); font-size: 12px; letter-spacing: 2px; cursor: pointer; transition: 0.3s; }
+.close-btn:hover { background: rgba(255, 0, 0, 0.1); }
+
+/* PAINEL MOBILE */
+.mobile-panel { display: none; position: absolute; inset: 0; z-index: 30; padding: 92px 18px 24px; background: radial-gradient(circle at top, rgba(11,16,33,.96), #02040a 75%); overflow-y: auto; }
+.mobile-header { margin-bottom: 18px; }
+.mobile-kicker { font-size: 12px; letter-spacing: 3px; color: var(--rune); text-transform: uppercase; }
+.mobile-title { font-size: 32px; font-weight: 700; letter-spacing: 5px; margin-top: 4px; color: #eafcff; text-shadow: 0 0 16px rgba(0,243,255,.35); }
+.mobile-subtitle { font-size: 14px; color: rgba(210,230,255,.68); margin-top: 4px; }
+.mobile-status-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 18px 0; }
+.mobile-status-card { border: 1px solid rgba(120,230,255,.18); border-radius: 14px; background: rgba(10, 20, 38, .55); padding: 12px 10px; text-align: center; }
+.mobile-status-label { display:block; font-size: 10px; letter-spacing: 1.6px; color: var(--rune); text-transform: uppercase; }
+.mobile-status-value { display:block; margin-top: 5px; font-size: 17px; font-weight: 700; color: #00f3ff; }
+.mobile-actions { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 13px; }
+.mobile-btn { min-height: 104px; border: 1px solid var(--glass-border); border-radius: 18px; background: rgba(20,30,50,.62); color: rgba(255,255,255,.82); display:flex; flex-direction:column; align-items:center; justify-content:center; gap: 8px; font-family: inherit; cursor:pointer; box-shadow: inset 0 0 20px rgba(0,243,255,.04); }
+.mobile-btn .material-symbols-outlined { font-size: 34px; color: rgba(180,220,255,.82); }
+.mobile-btn .mobile-label { font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; }
+.mobile-btn.on { border-color: #00f3ff; background: rgba(0,243,255,.14); box-shadow: 0 0 24px rgba(0,243,255,.14); }
+.mobile-btn.on .material-symbols-outlined { color: #00f3ff; text-shadow: 0 0 14px rgba(0,243,255,.9); }
+.mobile-log { margin-top: 18px; border: 1px solid rgba(120,230,255,.14); border-radius: 16px; background: rgba(5,10,24,.48); padding: 12px 14px; color: rgba(235,248,255,.82); font-size: 13px; min-height: 44px; }
+@media (max-width: 767px) {
+  #startOverlay, .core-container, .conversation-card, .stats-bar, .control-panel, #audio { display: none !important; }
+  .title-bg { display:none; }
+  .top-bar { top: 18px; left: 18px; right: 18px; }
+  .clock-widget .time { font-size: 28px; }
+  .date { font-size: 11px; }
+  .weather-widget { margin-top: 3px; }
+  .mobile-panel { display: block; }
+}
+
+/* OVERLAY */
+#startOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 999; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+.start-btn { border: 1px solid var(--rune); color: var(--glow); padding: 20px 40px; font-size: 24px; letter-spacing: 5px; text-transform: uppercase; border-radius: 50px; box-shadow: 0 0 20px var(--aura); animation: pulse-btn 2s infinite; }
+
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+@keyframes pulse-btn { 0% { box-shadow: 0 0 20px var(--aura); } 50% { box-shadow: 0 0 40px var(--glow); } 100% { box-shadow: 0 0 20px var(--aura); } }
+
+.demo-back { position: fixed; left: 18px; bottom: 18px; z-index: 1001; color: #00f3ff; text-decoration: none; border: 1px solid rgba(120,230,255,.28); background: rgba(5,10,24,.68); border-radius: 999px; padding: 10px 15px; font-size: 13px; letter-spacing: 1px; font-weight: 700; }
+.demo-badge { position: fixed; left: 20px; top: 106px; z-index: 16; color: rgba(180,220,255,.62); font-size: 10px; letter-spacing: 1.6px; text-transform: uppercase; pointer-events:none; }
 </style>
 </head>
 <body>
-<a class="back" href="./teste-site-vendavel.html">← Voltar</a>
-<div class="title-bg">SYSTEM ONLINE</div>
-<div class="top-bar"><div><div class="brand-container"><div class="brand">AGRESTE TECH</div><div class="led"></div></div><div class="weather"><span class="material-symbols-outlined">cloud</span><span>DEMO • 28°</span></div></div><div class="clock"><div class="time" id="time">--:--</div><div class="date" id="date">SIMULAÇÃO</div></div></div>
-<div class="safe">Modo vitrine: sem acesso à automação real</div>
-<div class="core-container"><div class="core-wrapper" id="core" onclick="openPanel()"><div class="halo"></div><div class="face"><span class="eye left"></span><span class="eye right"></span><span class="mouth"></span></div></div></div>
-<div class="actions"><button class="action" onclick="intro()">Ouvir explicação</button><button class="action" onclick="scene()">Simular cena</button><button class="action" onclick="openPanel()">Painel demo</button></div>
-<div class="conversation"><div class="state" id="state">EM ESPERA</div><div class="bubble"><div class="line"><span class="label">LÚMINUS</span><span class="txt" id="speech">Lúminus online. Toque em “Ouvir explicação”.</span></div></div></div>
-<div class="panel" id="panel"><div class="panel-box"><div class="panel-title">CONTROLE DEMO</div><div class="grid"><div class="glass-btn" onclick="toggle(this,'Luz da sala')"><span class="material-symbols-outlined">lightbulb</span><span>Luz da sala</span></div><div class="glass-btn" onclick="toggle(this,'Ventilador')"><span class="material-symbols-outlined">mode_fan</span><span>Ventilador</span></div><div class="glass-btn" onclick="toggle(this,'Modo cinema')"><span class="material-symbols-outlined">theaters</span><span>Cinema</span></div><div class="glass-btn" onclick="toggle(this,'Sensor de presença')"><span class="material-symbols-outlined">sensors</span><span>Sensor</span></div></div><div class="close" onclick="closePanel()">VOLTAR AO NÚCLEO</div></div></div>
+    <a class="demo-back" href="./teste-site-vendavel.html">← Voltar ao site</a>
+    <div class="demo-badge">Modo vitrine: sem acesso à automação real</div>
+    <div id="startOverlay"><div class="start-btn">INICIAR DEMO</div></div>
+    <video id="curiosityVideo" playsinline muted></video>
+    
+    <div class="top-bar">
+        <div class="top-left">
+            <div class="brand-container">
+                <div class="brand">AGRESTE TECH</div>
+                <div id="statusLed"></div>
+            </div>
+            <div class="weather-widget">
+                <span class="material-symbols-outlined weather-icon" id="wIcon">cloud</span>
+                <div class="weather-info"><span class="weather-temp" id="wTemp">--°</span><span class="weather-desc" id="wDesc">...</span></div>
+            </div>
+            <div class="camera-status" id="cameraStatus">DEMO: sem acesso real</div>
+        </div>
+        <div class="clock-widget"><div class="time" id="clockTime">--:--</div><div class="date" id="clockDate">-- -- --</div></div>
+    </div>
+
+    <div class="title-bg" id="mainTitle">SYSTEM ONLINE</div>
+    
+    <canvas id="starfield"></canvas>
+    <canvas id="audio"></canvas>
+    
+    <div class="core-container" id="coreView" onclick="openPanel()">
+        <div class="core-wrapper" id="coreWrapper">
+            <div class="ring"></div><div class="ring inner"></div>
+            <div class="core" id="core"></div>
+            <div class="luminus-face" id="luminusFace">
+                <span class="luminus-eye left"></span>
+                <span class="luminus-eye right"></span>
+                <span class="luminus-mouth"></span>
+            </div>
+            <div class="core-logo">L</div>
+        </div>
+    </div>
+    
+    <div class="conversation-card" id="conversationCard">
+        <div class="assistant-state" id="assistantState">EM ESPERA</div>
+        <div class="speech-bubble" id="speechBubble">
+            <div class="bubble-line"><span class="bubble-label">VOCÊ</span><span class="bubble-text" id="userSpeech">—</span></div>
+            <div class="bubble-line"><span class="bubble-label">LÚMINUS</span><span class="bubble-text" id="botSpeech">Lúminus online — modo demonstração.</span></div>
+        </div>
+    </div>
+
+    <div class="stats-bar">
+        <div class="stat-item"><span class="stat-label">CPU</span><span class="stat-value" id="statCpu">0%</span><div class="stat-bar"><div class="stat-fill" id="barCpu"></div></div></div>
+        <div class="stat-item"><span class="stat-label">RAM</span><span class="stat-value" id="statRam">0%</span><div class="stat-bar"><div class="stat-fill" id="barRam"></div></div></div>
+        <div class="stat-item"><span class="stat-label">TEMP</span><span class="stat-value" id="statTemp">0°</span><div class="stat-bar"><div class="stat-fill" id="barTemp"></div></div></div>
+    </div>
+
+    <div class="mobile-panel" id="mobilePanel">
+        <div class="mobile-header">
+            <div class="mobile-kicker">AGRESTE TECH</div>
+            <div class="mobile-title">LÚMINUS</div>
+            <div class="mobile-subtitle">Simulação segura da automação</div>
+        </div>
+        <div class="mobile-status-grid">
+            <div class="mobile-status-card"><span class="mobile-status-label">CPU</span><span class="mobile-status-value" id="mCpu">--%</span></div>
+            <div class="mobile-status-card"><span class="mobile-status-label">RAM</span><span class="mobile-status-value" id="mRam">--%</span></div>
+            <div class="mobile-status-card"><span class="mobile-status-label">TEMP</span><span class="mobile-status-value" id="mTemp">--°</span></div>
+        </div>
+        <div class="mobile-actions">
+            <button class="mobile-btn" data-entity="switch.maquete_teste_luz_teste_maquete" onclick="toggleDevice('switch.maquete_teste_luz_teste_maquete', this)"><span class="material-symbols-outlined">lightbulb</span><span class="mobile-label">Maquete</span></button>
+            <button class="mobile-btn" data-entity="switch.maquete_teste_led_da_placa" onclick="toggleDevice('switch.maquete_teste_led_da_placa', this)"><span class="material-symbols-outlined">settings_input_component</span><span class="mobile-label">LED Placa</span></button>
+            <button class="mobile-btn" data-entity="input_boolean.luz_sala" onclick="toggleDevice('input_boolean.luz_sala', this)"><span class="material-symbols-outlined">chair</span><span class="mobile-label">Sala</span></button>
+            <button class="mobile-btn" data-entity="script.modo_cinema" onclick="toggleDevice('script.modo_cinema', this)"><span class="material-symbols-outlined">theaters</span><span class="mobile-label">Cinema</span></button>
+        </div>
+        <div class="mobile-log" id="mobileLog">Modo demonstração: nenhum dispositivo real será acionado.</div>
+    </div>
+
+    <div class="control-panel" id="controlPanel" onclick="resetIdleTimer()">
+        <div class="panel-title">CONTROLE MANUAL</div>
+        <div class="grid">
+            <div class="glass-btn" data-entity="input_boolean.luz_do_laboratorio" onclick="toggleDevice('input_boolean.luz_do_laboratorio', this)"><span class="material-symbols-outlined icon">lightbulb</span><span class="label">Laboratório</span></div>
+            <div class="glass-btn" data-entity="input_boolean.ventilador" onclick="toggleDevice('input_boolean.ventilador', this)"><span class="material-symbols-outlined icon">mode_fan</span><span class="label">Ventilador</span></div>
+            <div class="glass-btn" data-entity="input_boolean.luz_sala" onclick="toggleDevice('input_boolean.luz_sala', this)"><span class="material-symbols-outlined icon">chair</span><span class="label">Sala</span></div>
+            <div class="glass-btn" data-entity="script.modo_cinema" onclick="toggleDevice('script.modo_cinema', this)"><span class="material-symbols-outlined icon">theaters</span><span class="label">Cinema</span></div>
+        </div>
+        <div class="close-btn" onclick="closePanel()">VOLTAR AO NÚCLEO</div>
+    </div>
+
+
 <script>
-const core=document.getElementById('core'), speech=document.getElementById('speech'), state=document.getElementById('state'), panel=document.getElementById('panel');
-function tick(){const n=new Date;time.textContent=n.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});date.textContent=n.toLocaleDateString('pt-BR',{weekday:'short',day:'numeric',month:'short'}).toUpperCase()}setInterval(tick,1000);tick();
-function bestVoice(){const vs=speechSynthesis.getVoices();return vs.filter(v=>(v.lang||'').toLowerCase().startsWith('pt')).sort((a,b)=>score(b)-score(a))[0]||null}function score(v){const n=(v.name||'').toLowerCase();let s=0;if((v.lang||'').toLowerCase().includes('pt-br'))s+=20;if(n.includes('google'))s+=8;if(/antonio|daniel|ricardo|felipe|brasil|brazil/.test(n))s+=10;if(/maria|female|feminina|luciana/.test(n))s-=8;return s}if('speechSynthesis'in window)speechSynthesis.onvoiceschanged=bestVoice;
-function say(display,spoken){speech.textContent=display;state.textContent='FALANDO';core.classList.add('speaking');if('speechSynthesis'in window){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(spoken||display.replace(/L[úu]minus/gi,'Luminus').replace(/LÚMINUS/g,'Luminus'));u.lang='pt-BR';const v=bestVoice();if(v)u.voice=v;u.rate=.90;u.pitch=.98;u.onend=()=>{core.classList.remove('speaking');state.textContent='EM ESPERA'};speechSynthesis.speak(u)}else setTimeout(()=>{core.classList.remove('speaking');state.textContent='EM ESPERA'},2500)}
-function intro(){say('Eu sou uma simulação do LÚMINUS, assistente residencial em construção para controlar automações, luzes, sensores e cenas com Home Assistant. Esta vitrine não acessa a automação real.', 'Eu sou uma simulação do Luminus, assistente residencial em construção para controlar automações, luzes, sensores e cenas com Home Assistant. Esta vitrine não acessa a automação real.')}function scene(){document.querySelectorAll('.glass-btn').forEach((b,i)=>{if(i<3)b.classList.add('on')});say('Cena demo ativada: luz, ventilador e modo cinema ligados. Na versão real, comandos assim poderão controlar dispositivos integrados ao Home Assistant.', 'Cena demo ativada: luz, ventilador e modo cinema ligados. Na versão real, comandos assim poderão controlar dispositivos integrados ao Home Assistant.')}function openPanel(){panel.classList.add('active');say('Painel demo aberto. Estes botões são apenas uma simulação segura.', 'Painel demo aberto. Estes botões são apenas uma simulação segura.')}function closePanel(){panel.classList.remove('active')}function toggle(el,name){el.classList.toggle('on');say(name+' '+(el.classList.contains('on')?'ligado':'desligado')+'.', name+' '+(el.classList.contains('on')?'ligado':'desligado')+'.')}
+// Demo seguro: intercepta chamadas locais e impede acesso à automação real.
+(function(){
+  const demoStates = {
+    'switch.maquete_teste_luz_teste_maquete':'off',
+    'switch.maquete_teste_led_da_placa':'on',
+    'input_boolean.luz_do_laboratorio':'off',
+    'input_boolean.ventilador':'off',
+    'input_boolean.luz_sala':'on',
+    'script.modo_cinema':'off'
+  };
+  const originalFetch = window.fetch.bind(window);
+  window.fetch = async function(url, opts){
+    const u = String(url);
+    if(u === '/hardware') return new Response(JSON.stringify({cpu:18, ram:42, temp:39}), {headers:{'Content-Type':'application/json'}});
+    if(u === '/weather') return new Response(JSON.stringify({temp:28, condition:'demo'}), {headers:{'Content-Type':'application/json'}});
+    if(u === '/status') return new Response(JSON.stringify(demoStates), {headers:{'Content-Type':'application/json'}});
+    if(u === '/comando'){
+      let cmd=''; try{ cmd = JSON.parse((opts&&opts.body)||'{}').comando || ''; }catch{}
+      const t = cmd.toLowerCase();
+      let entity = null;
+      if(t.includes('maquete')) entity='switch.maquete_teste_luz_teste_maquete';
+      else if(t.includes('led')) entity='switch.maquete_teste_led_da_placa';
+      else if(t.includes('laboratorio') || t.includes('laboratório')) entity='input_boolean.luz_do_laboratorio';
+      else if(t.includes('ventilador')) entity='input_boolean.ventilador';
+      else if(t.includes('sala')) entity='input_boolean.luz_sala';
+      else if(t.includes('cinema')) entity='script.modo_cinema';
+      if(entity) demoStates[entity] = (t.includes('desligar') || t.includes('apagar')) ? 'off' : 'on';
+      return new Response(JSON.stringify({status:'sucesso', mensagem:'Comando simulado. Nenhum dispositivo real foi acionado.'}), {headers:{'Content-Type':'application/json'}});
+    }
+    return originalFetch(url, opts);
+  };
+})();
 </script>
+<script>
+    const sfx={ctx:null,init:function(){this.ctx=new(window.AudioContext||window.webkitAudioContext)},click:function(){if(!this.ctx)return;const o=this.ctx.createOscillator(),g=this.ctx.createGain();o.type='sine';o.frequency.setValueAtTime(800,this.ctx.currentTime);o.frequency.exponentialRampToValueAtTime(300,this.ctx.currentTime+0.03);g.gain.setValueAtTime(0.15,this.ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.01,this.ctx.currentTime+0.03);o.connect(g);g.connect(this.ctx.destination);o.start();o.stop(this.ctx.currentTime+0.04)},open:function(){if(!this.ctx)return;const o=this.ctx.createOscillator(),g=this.ctx.createGain();o.type='sine';o.frequency.setValueAtTime(200,this.ctx.currentTime);o.frequency.linearRampToValueAtTime(400,this.ctx.currentTime+0.2);g.gain.setValueAtTime(0.01,this.ctx.currentTime);g.gain.linearRampToValueAtTime(0.1,this.ctx.currentTime+0.1);g.gain.linearRampToValueAtTime(0.01,this.ctx.currentTime+0.3);o.connect(g);g.connect(this.ctx.destination);o.start();o.stop(this.ctx.currentTime+0.3)},close:function(){if(!this.ctx)return;const o=this.ctx.createOscillator(),g=this.ctx.createGain();o.type='sine';o.frequency.setValueAtTime(400,this.ctx.currentTime);o.frequency.linearRampToValueAtTime(200,this.ctx.currentTime+0.2);g.gain.setValueAtTime(0.05,this.ctx.currentTime);g.gain.linearRampToValueAtTime(0.01,this.ctx.currentTime+0.2);o.connect(g);g.connect(this.ctx.destination);o.start();o.stop(this.ctx.currentTime+0.3)}};
+
+    let idleTimer, speaking=false, isProcessing=false, blobTime=0;
+    let audioContext, analyser, dataArray, wakeWordDetected=false, silenceTimer=null;
+    const core = document.getElementById('core'), coreWrapper = document.getElementById('coreWrapper'), controlPanel = document.getElementById('controlPanel'), coreView = document.getElementById('coreView');
+    const assistantState = document.getElementById('assistantState'), userSpeech = document.getElementById('userSpeech'), botSpeech = document.getElementById('botSpeech'), speechBubble = document.getElementById('speechBubble');
+    
+    let starSpeed = 0.15;
+    let curiosity={x:0,y:0,tx:0,ty:0,last:0};
+
+    function updateClock(){const n=new Date;document.getElementById('clockTime').innerText=n.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});document.getElementById('clockDate').innerText=n.toLocaleDateString('pt-BR',{weekday:'short',day:'numeric',month:'short'})}setInterval(updateClock,1000);updateClock();
+
+    function updateStats(){
+        fetch('/hardware').then(r=>r.json()).then(d=>{
+            document.getElementById('statCpu').innerText=d.cpu+"%";document.getElementById('barCpu').style.width=d.cpu+"%";document.getElementById('barCpu').style.background=d.cpu>80?'#f05':'#0ff'; if(document.getElementById('mCpu'))document.getElementById('mCpu').innerText=d.cpu+'%';
+            document.getElementById('statRam').innerText=d.ram+"%";document.getElementById('barRam').style.width=d.ram+"%"; if(document.getElementById('mRam'))document.getElementById('mRam').innerText=d.ram+'%';
+            if(d.temp>0){document.getElementById('statTemp').innerText=d.temp+"°";document.getElementById('barTemp').style.width=Math.min(d.temp,100)+"%";document.getElementById('barTemp').style.background=d.temp>70?'#f05':'#0ff'; if(document.getElementById('mTemp'))document.getElementById('mTemp').innerText=d.temp+'°'}
+        }).catch(()=>{});
+    }
+    setInterval(updateStats,5000); updateStats();
+
+    function updateWeather(){
+        fetch('/weather').then(r=>r.json()).then(d=>{
+            const map = { 'clear-night':'bedtime','cloudy':'cloud','fog':'foggy','partlycloudy':'partly_cloudy_day','pouring':'rainy','rainy':'rainy','sunny':'sunny' };
+            const iconName = map[d.condition] || 'cloud';
+            document.getElementById('wIcon').innerText = iconName; 
+            document.getElementById('wTemp').innerText = d.temp + "°"; 
+            const hum = (d.humidity ?? '--');
+            const windTxt = (d.wind_speed ?? 0);
+            document.getElementById('wDesc').innerText = `UR ${hum}% · V ${windTxt}`;
+            
+            let wind = parseFloat(d.wind_speed) || 0;
+            starSpeed = 0.1 + (wind * 0.05); 
+        }).catch(()=>{});
+    }
+    setInterval(updateWeather, 60000); updateWeather();
+
+    function openPanel(){sfx.open();coreView.style.opacity='0';coreView.style.pointerEvents='none';controlPanel.classList.add('active');resetIdleTimer();syncStates()}
+    function closePanel(){sfx.close();controlPanel.classList.remove('active');coreView.style.opacity='1';coreView.style.pointerEvents='auto'}
+    function resetIdleTimer(){clearTimeout(idleTimer);if(controlPanel.classList.contains('active'))idleTimer=setTimeout(closePanel,10000)}
+    
+    // SYNC STATES E LED STATUS
+    function syncStates(){
+        const led = document.getElementById('statusLed');
+        fetch('/status').then(r=>r.json()).then(s=>{
+            // Online: Azul
+            led.style.background = "#00f3ff"; led.style.boxShadow = "0 0 10px #00f3ff";
+            for(const[k,v]of Object.entries(s)){document.querySelectorAll(`.glass-btn[data-entity="${k}"], .mobile-btn[data-entity="${k}"]`).forEach(b=>v==='on'?b.classList.add('on'):b.classList.remove('on'))}
+        }).catch(()=>{
+            // Offline: Vermelho
+            led.style.background = "#ff0055"; led.style.boxShadow = "0 0 10px #ff0055";
+        });
+    }
+
+    function entityCommandName(id){
+        const map={
+            'switch.maquete_teste_luz_teste_maquete':'luz da maquete',
+            'switch.maquete_teste_led_da_placa':'led da placa',
+            'input_boolean.luz_do_laboratorio':'luz do laboratorio',
+            'input_boolean.ventilador':'ventilador',
+            'input_boolean.luz_sala':'luz da sala',
+            'script.modo_cinema':'modo cinema'
+        };
+        return map[id] || id.split('.')[1].replace(/_/g,' ');
+    }
+    function mobileSay(t){ const m=document.getElementById('mobileLog'); if(m)m.innerText=t; setConversation && setConversation('bot', t); }
+    function toggleDevice(id,el){
+        sfx.click();resetIdleTimer();el.classList.toggle('on');
+        const on=el.classList.contains('on'), txt=(on?"ligar ":"desligar ")+entityCommandName(id);
+        fetch('/comando',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({comando:txt})})
+          .then(r=>r.json()).then(d=>{mobileSay(d.mensagem||'Comando enviado.');syncStates();})
+          .catch(()=>{mobileSay('Erro ao enviar comando.');syncStates();});
+    }
+
+    document.getElementById('startOverlay').addEventListener('click',async function(){
+        try{
+            sfx.init(); sfx.open(); this.style.display='none';
+            setCamStatus('DEMO: câmera e microfone desativados', 'warn');
+            syncStates(); updateStats(); updateWeather();
+            setConversation('bot', 'Lúminus online — modo demonstração. Esta vitrine não acessa a automação real.');
+            speak("Luminus online. Modo demonstração. Esta vitrine não acessa a automação real.");
+        }catch(e){ this.style.display='none'; setCamStatus('DEMO: erro inicial', 'error'); }
+    });
+
+
+    function setCuriosityTarget(nx, ny){
+        const nextX = Math.max(-1, Math.min(1, nx));
+        const nextY = Math.max(-1, Math.min(1, ny));
+        curiosity.tx = curiosity.tx * 0.65 + nextX * 0.35;
+        curiosity.ty = curiosity.ty * 0.65 + nextY * 0.35;
+        curiosity.last = Date.now();
+        coreWrapper.classList.add('curious-mode');
+    }
+    function curiosityLoop(){
+        curiosity.x += (curiosity.tx - curiosity.x) * 0.018;
+        curiosity.y += (curiosity.ty - curiosity.y) * 0.018;
+        // Movimento amplo: o core sai do centro e quase persegue o movimento até as bordas.
+        const maxX = Math.min(window.innerWidth * 0.31, 310);
+        const maxY = Math.min(window.innerHeight * 0.23, 220);
+        const bodyX = curiosity.x * maxX, bodyY = curiosity.y * maxY;
+        const eyeX = curiosity.x * 24, eyeY = curiosity.y * 16;
+        coreWrapper.style.transform = `translate(${bodyX}px, ${bodyY}px)`;
+        coreWrapper.style.setProperty('--look-x', `${eyeX}px`);
+        coreWrapper.style.setProperty('--look-y', `${eyeY}px`);
+        if(Date.now() - curiosity.last > 2800){
+            curiosity.tx *= .975; curiosity.ty *= .975;
+            if(Math.abs(curiosity.tx) < .03 && Math.abs(curiosity.ty) < .03) coreWrapper.classList.remove('curious-mode');
+        }
+        requestAnimationFrame(curiosityLoop);
+    }
+    curiosityLoop();
+
+    function pointerCuriosity(ev){
+        const p = ev.touches ? ev.touches[0] : ev;
+        setCuriosityTarget((p.clientX / window.innerWidth - .5) * 2, (p.clientY / window.innerHeight - .5) * 2);
+    }
+    window.addEventListener('mousemove', pointerCuriosity, {passive:true});
+    window.addEventListener('touchmove', pointerCuriosity, {passive:true});
+
+    function setCamStatus(text, cls=''){
+        const el=document.getElementById('cameraStatus');
+        if(!el) return;
+        el.className='camera-status '+cls;
+        el.innerText=text;
+    }
+
+    async function initCuriosityCamera(){
+        setCamStatus('CAM: pedindo permissão...', 'warn');
+        try{
+            const devices = await navigator.mediaDevices.enumerateDevices().catch(()=>[]);
+            const cams = devices.filter(d=>d.kind==='videoinput');
+            if(devices.length && cams.length===0) throw new DOMException('Nenhuma câmera encontrada pelo Chrome', 'NotFoundError');
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video:{ width:{ideal:320}, height:{ideal:240} },
+                audio:false
+            });
+            setCamStatus('CAM: ativa — procurando movimento', 'active');
+            const video = document.getElementById('curiosityVideo') || document.createElement('video');
+            video.playsInline = true; video.setAttribute('playsinline',''); video.muted = true; video.srcObject = stream;
+            if(!video.parentNode) document.body.appendChild(video);
+            await new Promise(resolve=>{
+                if(video.readyState >= 2) return resolve();
+                video.onloadedmetadata = resolve;
+                setTimeout(resolve, 1200);
+            });
+            try { await video.play(); } catch(e) { console.log('video.play ignorado', e && e.name); }
+            const c = document.createElement('canvas'), ctx = c.getContext('2d', {willReadFrequently:true});
+            c.width = 96; c.height = 72;
+            let prev = null, lastSeen = 0;
+            setInterval(()=>{
+                if(video.readyState < 2) return;
+                ctx.drawImage(video,0,0,c.width,c.height);
+                const cur = ctx.getImageData(0,0,c.width,c.height).data;
+                if(prev){
+                    let sx=0, sy=0, total=0, points=0;
+                    for(let y=0;y<c.height;y+=2){ for(let x=0;x<c.width;x+=2){
+                        const i=(y*c.width+x)*4;
+                        const d=Math.abs(cur[i]-prev[i])+Math.abs(cur[i+1]-prev[i+1])+Math.abs(cur[i+2]-prev[i+2]);
+                        if(d>28){ sx+=x*d; sy+=y*d; total+=d; points++; }
+                    }}
+                    if(total>9000 && points>7){
+                        lastSeen = Date.now();
+                        let nx = -(((sx/total)/c.width-.5)*2); // câmera frontal é espelhada: inverte X
+                        let ny = ((sy/total)/c.height-.5)*2;
+                        if(Math.abs(nx) < .10) nx = 0;
+                        if(Math.abs(ny) < .10) ny = 0;
+                        setCuriosityTarget(nx, ny);
+                        setCamStatus('CAM: movimento detectado', 'active');
+                    } else if(Date.now()-lastSeen>1800) {
+                        setCamStatus('CAM: ativa — procurando movimento', 'active');
+                    }
+                }
+                prev = new Uint8ClampedArray(cur);
+            }, 90);
+        }catch(e){
+            const name = e && e.name ? e.name : 'Erro';
+            const msg = e && e.message ? e.message : '';
+            setCamStatus('CAM: '+name+' '+msg, 'error');
+            console.log('Câmera indisponível; usando mouse/touch para curiosidade.', name, msg, e);
+        }
+    }
+
+    async function initAudioVisuals(hasMic){
+        audioContext=sfx.ctx;analyser=audioContext.createAnalyser();analyser.fftSize=256;dataArray=new Uint8Array(analyser.frequencyBinCount);
+        if(hasMic){const s=await navigator.mediaDevices.getUserMedia({audio:true}),src=audioContext.createMediaStreamSource(s);src.connect(analyser);}
+        audioLoop();
+    }
+
+    const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+    const recognition = SpeechRecognition ? new SpeechRecognition() : null;
+    if(recognition){ recognition.continuous=true; recognition.interimResults=true; recognition.lang='pt-BR'; }
+
+    function setAssistantState(text, cls=''){
+        if(!assistantState) return;
+        assistantState.className = 'assistant-state ' + cls;
+        assistantState.innerText = text;
+    }
+    function setConversation(who, text){
+        if(!text) return;
+        if(who === 'user' && userSpeech) userSpeech.innerText = text;
+        if(who === 'bot' && botSpeech) botSpeech.innerText = text;
+        if(speechBubble){ speechBubble.classList.add('active'); clearTimeout(window.__bubbleTimer); window.__bubbleTimer=setTimeout(()=>speechBubble.classList.remove('active'), 8000); }
+    }
+    function markError(){
+        coreWrapper.classList.add('error-mode');
+        setTimeout(()=>coreWrapper.classList.remove('error-mode'), 900);
+    }
+
+    if(recognition) recognition.onresult=(e)=>{
+        if(speaking||isProcessing)return;
+        let t=e.results[e.resultIndex][0].transcript.toLowerCase().trim();
+        if(!t) return;
+        if(!wakeWordDetected && ['luminus','lúminus'].some(x=>t.includes(x))){
+            wakeWordDetected=true;
+            if(controlPanel.classList.contains('active')) closePanel();
+            coreWrapper.classList.add('active-mode');
+            setAssistantState('PODE FALAR', 'listening');
+            setConversation('bot', 'Pode falar.');
+            setConversation('user', t);
+        }
+        if(wakeWordDetected){
+            setConversation('user', t);
+            clearTimeout(silenceTimer);
+            silenceTimer = setTimeout(()=>{ processCommand(t); wakeWordDetected=false; }, 1600);
+        }
+    };
+    if(recognition) recognition.onend=()=>{ if(!speaking) setTimeout(()=>{try{recognition.start()}catch{}}, 700); };
+    if(recognition) recognition.onerror=(e)=>{ setAssistantState('ERRO DE VOZ', 'error'); setConversation('bot', 'Não consegui ouvir direito.'); markError(); };
+
+    async function processCommand(t){
+        isProcessing=true; coreWrapper.classList.remove('active-mode'); coreWrapper.classList.add('processing-mode');
+        setAssistantState('SÓ UM INSTANTE', 'processing');
+        setConversation('bot', 'Só um instante.');
+        try{
+            const r=await fetch('/comando',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({comando:t})}), d=await r.json();
+            setConversation('bot', d.mensagem || 'Não consegui.');
+            if(d.status==='sucesso'){speak(d.mensagem || 'Feito.');syncStates()}else{markError();speak(d.mensagem || 'Não consegui.')}
+        }catch{markError();setConversation('bot', 'Não consegui processar.');speak("Não consegui processar.");resetState()}
+    }
+
+    let luminusVoice = null;
+    function scoreVoice(v){
+        const name=(v.name||'').toLowerCase(), lang=(v.lang||'').toLowerCase();
+        let score=0;
+        if(lang.includes('pt-br')) score+=50;
+        else if(lang.startsWith('pt')) score+=25;
+        ['antonio','daniel','ricardo','felipe','brasil','brazil','português','portugues'].forEach(x=>{ if(name.includes(x)) score+=12; });
+        ['maria','francisca','helena','female','feminina','luciana'].forEach(x=>{ if(name.includes(x)) score-=18; });
+        if(name.includes('google')) score+=5;
+        if(v.localService) score+=2;
+        return score;
+    }
+    function selectLuminusVoice(){
+        const voices = window.speechSynthesis.getVoices ? window.speechSynthesis.getVoices() : [];
+        if(!voices.length) return null;
+        luminusVoice = voices.slice().sort((a,b)=>scoreVoice(b)-scoreVoice(a))[0] || null;
+        return luminusVoice;
+    }
+    if(window.speechSynthesis) window.speechSynthesis.onvoiceschanged = selectLuminusVoice;
+    selectLuminusVoice();
+
+    function speak(t){
+        window.speechSynthesis.cancel(); const spokenText = String(t).replace(/L[ÚU]MINUS/gi, 'Luminus').replace(/Lúminus/gi, 'Luminus'); const u=new SpeechSynthesisUtterance(spokenText); u.lang='pt-BR';
+        const voice = luminusVoice || selectLuminusVoice();
+        if(voice) u.voice = voice;
+        u.rate = 0.90;   // mais calmo, sem arrastar demais
+        u.pitch = 0.92;  // masculino sem distorcer a voz do navegador
+        u.volume = 1;
+        setConversation('bot', t);
+        u.onstart=()=>{speaking=true;coreWrapper.classList.remove('active-mode');coreWrapper.classList.remove('processing-mode');coreWrapper.classList.add('speaking-mode');setAssistantState('FALANDO', 'speaking');}; 
+        u.onend=()=>{ resetState(); setTimeout(()=>{try{if(recognition)recognition.start()}catch{}},700); };
+        window.speechSynthesis.speak(u);
+    }
+    function resetState(){ speaking=false; isProcessing=false; wakeWordDetected=false; coreWrapper.classList.remove('active-mode'); coreWrapper.classList.remove('processing-mode'); coreWrapper.classList.remove('speaking-mode'); coreWrapper.classList.remove('idle-blink'); if(assistantState) setAssistantState('EM ESPERA', ''); }
+
+    const sc=document.getElementById('starfield'), sctx=sc.getContext('2d');
+    let sw,sh; function rz(){sw=sc.width=window.innerWidth;sh=sc.height=window.innerHeight} window.addEventListener('resize',rz); rz();
+    const stars=Array.from({length:160},()=>{
+        const r=Math.random(); let color='#ffffff'; if(r<.1)color='#f2e9c2'; else if(r<.2)color='#c7dceb';
+        return{x:Math.random()*sw,y:Math.random()*sh,z:Math.random()*2+.5,o:Math.random(),color:color}
+    });
+    function drawSpace(){
+        sctx.clearRect(0,0,sw,sh);
+        stars.forEach(s=>{
+            s.x -= starSpeed * s.z; 
+            if(s.x<0){s.x=sw;s.y=Math.random()*sh}
+            if(Math.random()>.98)s.o=Math.random()*.5+.5;
+            sctx.globalAlpha=s.o*.7; sctx.fillStyle=s.color; sctx.beginPath(); sctx.arc(s.x,s.y,s.z*.6,0,Math.PI*2); sctx.fill();
+        });
+        requestAnimationFrame(drawSpace);
+    } drawSpace();
+
+    const ac=document.getElementById('audio'), actx=ac.getContext('2d');
+    function rza(){ac.width=window.innerWidth;ac.height=window.innerHeight} window.addEventListener('resize',rza); rza();
+
+    function audioLoop(){
+        if(!analyser) return;
+        actx.clearRect(0, 0, ac.width, ac.height);
+        analyser.getByteFrequencyData(dataArray); 
+        const avg = dataArray.reduce((a,b)=>a+b,0) / dataArray.length;
+
+        if(!controlPanel.classList.contains('active')) {
+            let r, g, b;
+            if (isProcessing || wakeWordDetected) { r=189; g=0; b=255; } // ROXO
+            else if (speaking) { r=0; g=255; b=255; } // CIANO
+            else { r=0; g=100; b=255; } // AZUL
+
+            // avatar-only: visualizador circular removido
+        }
+        requestAnimationFrame(audioLoop);
+    }
+
+
+    setInterval(()=>{
+        if(!speaking && !isProcessing){
+            coreWrapper.classList.add('idle-blink');
+            setTimeout(()=>coreWrapper.classList.remove('idle-blink'), 140);
+        }
+    }, 4200 + Math.random()*1200);
+
+    function greeting() {
+        const h = new Date().getHours();
+        const title = document.getElementById('mainTitle');
+        let text = "LÚMINUS CORE";
+        if (h >= 5 && h < 12) text = "BOM DIA.";
+        else if (h >= 12 && h < 18) text = "BOA TARDE.";
+        else text = "BOA NOITE.";
+        title.innerText = text;
+    }
+    setInterval(greeting, 60000); greeting();
+</script>
+<script>if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('/sw.js').catch(()=>{}); }); }</script>
 </body>
 </html>
